@@ -1,0 +1,44 @@
+# Le issue e le pull request ferme da tempo si segnano «inattiva» e poi si chiudono da sole: con tante richieste, quelle vive
+# restano visibili. Una risposta o un commit tolgono il segno; l'etichetta «accettata» le tiene aperte. Gira una volta al giorno
+# e non esegue mai il codice delle pull request.
+name: Pulizia
+
+on:
+  schedule:
+    - cron: '17 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inattive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/stale@4391f3da665fdf50b6810c1a66712fb9ba21aa93 # v11.0.0
+        with:
+          days-before-issue-stale: 60
+          days-before-issue-close: 14
+          days-before-pr-stale: 21
+          days-before-pr-close: 14
+          stale-issue-label: inattiva
+          stale-pr-label: inattiva
+          exempt-issue-labels: accettata
+          exempt-pr-labels: accettata
+          exempt-draft-pr: false
+          remove-stale-when-updated: true
+          operations-per-run: 100
+          stale-issue-message: >
+            Questa issue è ferma da 60 giorni: fra 14 giorni si chiude da sola. Se è ancora attuale, basta un commento.
+            / No activity for 60 days: it will close in 14 days. Comment if it is still relevant.
+          close-issue-message: >
+            Chiusa perché inattiva. Si può riaprire con un commento. / Closed for inactivity; comment to reopen.
+          stale-pr-message: >
+            Questa pull request è ferma da 21 giorni: fra 14 giorni si chiude da sola. Un commit o un commento la tengono aperta.
+            / No activity for 21 days: it will close in 14 days. A commit or a comment keeps it open.
+          close-pr-message: >
+            Chiusa perché inattiva. Grazie del lavoro: si può riaprire quando è pronta. / Closed for inactivity; reopen it when it is ready.

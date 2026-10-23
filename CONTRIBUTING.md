@@ -6,6 +6,9 @@
 > English translation of every page string in `web/lingue/en/`; issues and pull requests in English are welcome. Open an issue
 > before large changes, keep pull requests small, and never add a dependency, an external script or a real key. Security problems
 > go through [SECURITY.md](SECURITY.md), never through a public issue. Contributions are licensed under the project's MIT license.
+> New features need an issue labelled «accettata» first; at most three open pull requests per person; CI on pull requests from
+> forks starts after a maintainer approves it; inactive pull requests close automatically; during traffic spikes we may limit
+> for a few days who can open issues and pull requests.
 
 Grazie di voler migliorare Repobay. Qui trovi come accenderlo, come girano le prove, le regole del codice e delle frasi, e come
 proporre una modifica. Puoi scrivere in italiano o in inglese.
@@ -115,6 +118,22 @@ Repobay parla a persone che non programmano: negozi, bar, saloni, tecnici. Le fr
 4. Per le pagine metti una schermata, chiara e scura, anche dal telefono.
 5. Nella descrizione: cosa cambia, perché, come l'hai provato. Il modello si compila da solo.
 6. La GitHub Action deve essere verde: prove con Node 22 e 24, nessuna dipendenza, nessun segreto (gitleaks).
+
+### Come gestiamo le pull request
+
+Repobay lo mantengono poche persone. Perché ogni proposta riceva una revisione vera valgono queste regole:
+
+- **Prima la issue, poi il codice**, per tutto quello che non è una correzione piccola: una funzione nuova arriva come pull request
+  solo dopo che la sua issue ha l'etichetta «accettata». Senza, la pull request può essere chiusa senza una revisione completa.
+- **Al massimo tre pull request aperte per persona.** Le altre aspettano che una si chiuda.
+- **Le prove delle pull request che arrivano dai fork partono dopo un sì di chi mantiene il progetto.** Vedere «in attesa di
+  approvazione» è normale: serve a non far girare codice sconosciuto senza uno sguardo.
+- **Quello che è fermo si chiude da solo:** una pull request senza attività per 21 giorni prende l'etichetta «inattiva» e si chiude
+  14 giorni dopo; una issue dopo 60 giorni, più 14. Un commento o un commit la tengono aperta, e si può sempre riaprire.
+- **Niente modifiche in massa** senza un problema da risolvere (riformattare tutto, rinominare, cambiare lingua al codice, toccare
+  molti file per una virgola): si chiudono.
+- **Nei momenti di traffico molto alto** possiamo limitare per qualche giorno chi apre issue e pull request agli account che hanno
+  già una storia su GitHub o che hanno già contribuito.
 
 Contribuendo accetti che il tuo codice sia distribuito con la [licenza MIT](LICENSE) del progetto, e il
 [codice di comportamento](CODE_OF_CONDUCT.md).

@@ -11,6 +11,7 @@
 
 ## Controlli / Checklist
 
+- [ ] per una funzione nuova c'è una issue con l'etichetta «accettata» / for a new feature there is an issue labelled «accettata»
 - [ ] `npm test` passa / passes
 - [ ] nessuna dipendenza nuova (`package.json` senza `dependencies`) / no new dependencies
 - [ ] le prove nuove o cambiate coprono la modifica / new or updated tests cover the change
