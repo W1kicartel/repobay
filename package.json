@@ -1,0 +1,18 @@
+{
+  "name": "repobay",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Repobay: chi scrive software open source trova chi lo installa nelle attività vere; ogni pagamento si divide da solo fra builder, installatore e piattaforma (Stripe Connect o crypto non custodial).",
+  "license": "MIT",
+  "author": "W1kicartel",
+  "type": "module",
+  "engines": { "node": ">=22.13" },
+  "scripts": {
+    "start": "node server/avvia.js",
+    "locale": "bash strumenti/avvia-locale.sh",
+    "demo": "node strumenti/demo.mjs 4610",
+    "test": "node --test --test-timeout=60000 test/*.test.mjs",
+    "prova:stripe": "node strumenti/prova-stripe.mjs",
+    "prova:testnet": "node strumenti/prova-testnet.mjs --rete tutte"
+  }
+}

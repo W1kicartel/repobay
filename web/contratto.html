@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Condizioni · {{NOME}}</title>
+<meta name="description" content="Le condizioni della piattaforma per chi sviluppa, chi installa e le attività che comprano."><meta property="og:type" content="website"><meta property="og:site_name" content="{{NOME}}"><meta property="og:title" content="Condizioni · {{NOME}}"><meta property="og:description" content="Le condizioni della piattaforma per chi sviluppa, chi installa e le attività che comprano."><meta property="og:image" content="{{URL}}/img/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="/stile.css"><link rel="stylesheet" href="/stile-legale.css"><link rel="icon" href="/icona.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header class="barra"></header>
+<main id="contenuto" class="contenitore documento">
+  <div class="testa-documento" data-codice="RB-L01">
+      <h1>Condizioni</h1>
+      <p class="aggiornato">Ultimo aggiornamento: [data].</p>
+      <p class="avviso attesa bozza">BOZZA da far rivedere a un avvocato e al commercialista prima di aprire le iscrizioni. Le parti tra [parentesi] vanno completate.</p>
+  </div>
+  <div class="foglio">
+    <nav class="indice" aria-labelledby="indice-contratto">
+      <p class="etichetta" id="indice-contratto">Indice</p>
+      <ol>
+        <li><a href="#art-1"><span class="art-n">01</span> Le parti</a></li>
+        <li><a href="#art-2"><span class="art-n">02</span> Cosa vende la Piattaforma</a></li>
+        <li><a href="#art-3"><span class="art-n">03</span> Il Builder</a></li>
+        <li><a href="#art-4"><span class="art-n">04</span> I Collaboratori e la divisione della parte del Builder</a></li>
+        <li><a href="#art-5"><span class="art-n">05</span> L'Installatore</a></li>
+        <li><a href="#art-6"><span class="art-n">06</span> I progetti non rivendicati</a></li>
+        <li><a href="#art-7"><span class="art-n">07</span> Come si divide un pagamento</a></li>
+        <li><a href="#art-8"><span class="art-n">08</span> Incassi in nome e per conto</a></li>
+        <li><a href="#art-9"><span class="art-n">09</span> Come e quando si paga</a></li>
+        <li><a href="#art-10"><span class="art-n">10</span> Pagamenti in crypto</a></li>
+        <li><a href="#art-11"><span class="art-n">11</span> Le recensioni</a></li>
+        <li><a href="#art-12"><span class="art-n">12</span> API e webhook</a></li>
+        <li><a href="#art-13"><span class="art-n">13</span> La modalità prelancio</a></li>
+        <li><a href="#art-14"><span class="art-n">14</span> Il Cliente</a></li>
+        <li><a href="#art-15"><span class="art-n">15</span> Dati personali</a></li>
+        <li><a href="#art-16"><span class="art-n">16</span> Aspetti fiscali e legali</a></li>
+        <li><a href="#art-17"><span class="art-n">17</span> Durata e recesso</a></li>
+        <li><a href="#art-18"><span class="art-n">18</span> Legge e foro</a></li>
+      </ol>
+    </nav>
+    <article class="testo-legale">
+      <div class="in-breve">
+      <p class="etichetta">In breve:</p>
+      <ul>
+        <li>ognuno è responsabile delle proprie tasse: la Piattaforma non tutela né rappresenta chi evade;</li>
+        <li>la Piattaforma presenta solo le proprie comunicazioni, compresa la DAC7, che è un obbligo suo;</li>
+        <li>la privacy degli iscritti è garantita: dati minimi, cifrati quando sono riservati, nessuna cessione oltre l'obbligo di legge.</li>
+      </ul>
+      </div>
+      <h2 id="art-1"><span class="art-n">01</span> Le parti</h2>
+      <p>[Ragione sociale o nome, sede, P. IVA], che gestisce {{NOME}} («la Piattaforma»), e chi si iscrive: chi mette in vendita un proprio progetto («il Builder»), chi lo mantiene insieme al Builder («il Collaboratore»), chi lo vende e lo installa presso le attività («l'Installatore») e l'attività che compra («il Cliente»). La stessa persona può avere più ruoli.</p>
+      <h2 id="art-2"><span class="art-n">02</span> Cosa vende la Piattaforma</h2>
+      <p>La Piattaforma vende al Cliente un servizio: l'installazione e la configurazione di un software open source nella sua attività, eseguite dall'Installatore, e, se previsto, l'assistenza mensile, data dall'Installatore con la Piattaforma dietro di lui (punto 5); a chi non ha l'assistenza attiva, la Piattaforma offre interventi a chiamata (punto 14). Il software resta sotto la sua licenza open source: il Cliente non paga il programma in sé, ma il servizio.</p>
+      <p>Alcuni prodotti hanno una licenza d'uso interno (per esempio la Sustainable Use License di n8n o la Elastic License 2.0): si possono usare gratis per la propria attività, sul proprio server. Per questi la Piattaforma vende solo l'installazione e l'assistenza sul server del Cliente; l'Installatore non ospita il software sui propri server per conto del Cliente. Finché l'azienda che li sviluppa non aderisce alla Piattaforma, nessuna parte del pagamento è destinata a lei e la Piattaforma non è affiliata a quell'azienda. [Le licenze d'uso interno sono lette a mano dalla Piattaforma: la valutazione va confermata con un legale e, dove possibile, con l'azienda.]</p>
+      <p>La Piattaforma incassa i pagamenti come descritto al punto 8 ed emette [fattura / ricevuta] al Cliente.</p>
+      <h2 id="art-3"><span class="art-n">03</span> Il Builder</h2>
+      <p>Il Builder dichiara di essere titolare dei diritti sul progetto o di essere autorizzato da chi li ha (la Piattaforma verifica con GitHub che sia amministratore del repository), che il progetto è pubblicato con una licenza open source e che non viola diritti di terzi.</p>
+      <p>Il Builder sceglie la propria percentuale (punto 7), scrive una descrizione onesta e una guida d'installazione, e mantiene il progetto: correzioni di sicurezza e risposte alla Piattaforma e agli Installatori quando lo coinvolgono su un problema del codice [entro … giorni]. Il suo compenso è la percentuale sulle installazioni (punto 7) e, se la offre, la voce degli aggiornamenti garantiti. Il prezzo dell'installazione non lo decide il Builder ma ciascun Installatore. Ogni prodotto passa una revisione prima di comparire nel catalogo; la Piattaforma può respingerlo o sospenderlo, con una nota che spiega il motivo.</p>
+      <p>Ogni release nuova passa dai controlli automatici di sicurezza della Piattaforma (punteggio OpenSSF Scorecard, antivirus, componenti con vulnerabilità note) prima di essere annunciata agli Installatori. Una release con un problema grave non viene annunciata finché il Builder non la corregge o la Piattaforma non verifica che si tratta di un falso allarme. I controlli riducono i rischi ma non li escludono: [la Piattaforma non garantisce l'assenza di vulnerabilità nel software di terzi].</p>
+      <h2 id="art-4"><span class="art-n">04</span> I Collaboratori e la divisione della parte del Builder</h2>
+      <p>Il Builder può invitare chi mantiene il progetto insieme a sé, indicando il nome utente GitHub della persona e la parte che le spetta.</p>
+      <ul>
+        <li>La parte di ogni Collaboratore è una percentuale della parte del Builder, da 1% a 90%; insieme, le parti dei Collaboratori non superano il 90% della parte del Builder.</li>
+        <li>Si diventa Collaboratore solo accettando l'invito dalla propria area; fino ad allora non si riceve niente.</li>
+        <li>La divisione vale per i pagamenti incassati mentre la collaborazione è attiva. Il Builder può cambiare le parti o togliere un Collaboratore, e il Collaboratore può uscire in ogni momento: le modifiche valgono per i pagamenti successivi.</li>
+        <li>Ogni Collaboratore riceve la sua parte direttamente, alle stesse condizioni del Builder (punti 9 e 10), ed è l'unico responsabile della propria posizione fiscale (punto 16).</li>
+        <li>Builder e Collaboratori regolano fra loro ogni altro aspetto del loro rapporto: la Piattaforma esegue soltanto la divisione indicata dal Builder.</li>
+      </ul>
+      <h2 id="art-5"><span class="art-n">05</span> L'Installatore</h2>
+      <p>L'Installatore sceglie i prodotti che sa installare, la zona in cui lavora e, per ciascun prodotto, il prezzo dell'installazione (punto 7); vende, installa e configura presso il Cliente e mette nel software lo strumento con cui il Cliente chiede assistenza alla Piattaforma. Agisce in autonomia, senza vincolo di subordinazione né esclusiva, e non può impegnare la Piattaforma o il Builder oltre quanto scritto qui. Non promette funzioni che il prodotto non ha e non presenta il prodotto come proprio.</p>
+      <p>L'Installatore risponde alle richieste che i business gli mandano dalla Piattaforma e usa i loro dati solo per rispondere e, se nasce un accordo, per servirli.</p>
+      <p>Per offrire prodotti l'Installatore supera il test del corso per installatori della Piattaforma. I prodotti segnati come impegnativi li offre dopo [3] installazioni confermate dai Clienti, oppure quando la Piattaforma li sblocca a chi dimostra di fare già questo lavoro. Il corso e il test servono a dare un metodo comune: non sono una certificazione, e la Piattaforma non garantisce per questo la competenza dell'Installatore, che resta responsabile del proprio lavoro.</p>
+      <p>Per l'Installatore che offre un prodotto il cui sviluppatore ha un programma partner, vale anche questo: l'Installatore ne rispetta le condizioni per quel prodotto, e la Piattaforma mostra il link per aderire. Quando la conferma è richiesta, l'Installatore non compare fra chi installa il prodotto finché non la dà. [Le condizioni dei programmi sono riassunte dalla Piattaforma: fa fede il testo dell'azienda.]</p>
+      <p>L'assistenza ai Clienti che la pagano la dà l'Installatore che ha fatto l'installazione, con la Piattaforma dietro di lui: le richieste che arrivano dalla bolla, dalla pagina di assistenza o dall'area clienti vanno a lui, che risponde per primo [entro 24 ore, nei giorni lavorativi], e insieme alla squadra della Piattaforma, che le vede dall'inizio, controlla il programma da fuori, manda al Cliente il rapporto del mese e interviene se l'Installatore non risponde nei tempi o se il Cliente lo segnala. La Piattaforma può coinvolgere il Builder quando il problema riguarda il codice; il Builder risponde se vuole e quando può. Per questo lavoro all'Installatore spetta una parte del canone (punto 7).</p>
+      <p>Se il Cliente non paga l'assistenza, dopo [7] giorni di grazia la Piattaforma sospende l'assistenza finché il pagamento non arriva. In nessun caso la Piattaforma, l'Installatore o il Builder bloccano, disattivano o alterano il software installato, né trattengono dati, credenziali o copie di sicurezza del Cliente per ottenere un pagamento: il software e i dati sono del Cliente, e farlo può costituire reato (art. 392 c.p.). [Se l'Installatore ospita il software su un server proprio per conto del Cliente, può sospendere quel servizio dopo un preavviso scritto di almeno 15 giorni, consegnando al Cliente i suoi dati in un formato esportabile.]</p>
+      <h2 id="art-6"><span class="art-n">06</span> I progetti non rivendicati</h2>
+      <p>La Piattaforma può mettere in vetrina un progetto open source prima che chi lo mantiene si iscriva («progetto non rivendicato»). Lo fa solo per progetti pubblici con una licenza open source che ne permette l'uso commerciale, e lo segnala chiaramente sulla pagina del prodotto.</p>
+      <ul>
+        <li><strong>Vetrina.</strong> Il progetto compare nel catalogo con il nome, la descrizione e il README pubblicati su GitHub, e con l'indicazione che non è ancora stato rivendicato.</li>
+        <li><strong>Quote in attesa.</strong> Sulle vendite di un progetto non rivendicato, la parte che spetterebbe al Builder non viene versata a nessuno: resta in attesa, registrata a parte per quel progetto.</li>
+        <li><strong>Rivendicazione con GitHub.</strong> Chi è amministratore del repository su GitHub entra con GitHub, accetta queste condizioni e diventa il Builder del progetto. Da quel momento riceve le quote in attesa, alle condizioni dei punti 9 e 10, e decide la propria percentuale e la descrizione come ogni Builder.</li>
+        <li><strong>Rinuncia.</strong> Il maintainer che non vuole il suo progetto sulla Piattaforma può chiedere di toglierlo scrivendo a [email]: il progetto esce dal catalogo [entro … giorni].</li>
+      </ul>
+      <p class="avviso attesa da-decidere">[da decidere con l'avvocato] Se nessuno rivendica il progetto entro [termine], le quote in attesa [destinazione: per esempio restituite ai Clienti, donate al progetto o a una fondazione open source]. Finché questo punto non è deciso, la funzione resta spenta.</p>
+      <h2 id="art-7"><span class="art-n">07</span> Come si divide un pagamento</h2>
+      <p>Il prezzo dell'installazione lo decide l'Installatore, per ciascun prodotto, fra [5] e [50.000] euro, e lo può cambiare in ogni momento; il Cliente vede il prezzo intero prima di pagare. Il canone mensile dell'assistenza lo fissa la Piattaforma, per ciascun prodotto.</p>
+      <p>Per ogni pagamento del Cliente con carta, prima della divisione si toglie il costo che Stripe addebita per quel pagamento, nell'importo effettivo indicato da Stripe e senza ricarichi; prima del pagamento la Piattaforma ne mostra una stima. Se un pagamento comprende più voci (per esempio l'installazione e il primo mese di assistenza), il costo si divide fra le voci in proporzione al loro importo. Di quello che resta, la Piattaforma trattiene il [5]%. Per i pagamenti in crypto la Piattaforma trattiene il [1]% e non ci sono altri costi da togliere. Al Cliente non si applica nessun sovrapprezzo per il mezzo di pagamento scelto: il costo di Stripe è compreso nella divisione. [La Piattaforma può decidere di sostenere in proprio il costo di Stripe, avvisando gli iscritti come al punto 17.]</p>
+      <p>Di quello che resta dell'installazione, al Builder spetta la percentuale che ha scelto per quel prodotto, da [0]% a [80]%, o l'[80]% se non l'ha scelta, divisa con i Collaboratori come descritto al punto 4; all'Installatore spetta il resto, di regola il [20]%. Il Builder può cambiare la propria percentuale in ogni momento: la nuova vale per le vendite concluse dopo il cambio, e la Piattaforma ne avvisa gli Installatori del prodotto. Gli importi si calcolano sul pagato, [al netto dell'IVA].</p>
+      <p>Quando un Installatore ha concluso [10] vendite dello stesso prodotto, la parte del Builder sui pagamenti successivi delle sue vendite di quel prodotto si riduce ai [13/16] (con la percentuale di regola, dall'80% al 65%, e all'Installatore spetta il [35]%); dopo [25] vendite, ai [5/8] (dall'80% al 50%, e all'Installatore spetta il [50]%). La riduzione vale per i pagamenti incassati da quando la soglia è raggiunta. Non contano le vendite rimborsate dopo una segnalazione, i primi addebiti non andati a buon fine né le riattivazioni dell'assistenza (punto 14), che non sono vendite nuove.</p>
+      <p>Il canone dell'assistenza, tolto il costo di Stripe se il Cliente paga con carta, si divide così: il [60]% all'Installatore che ha fatto l'installazione e risponde al Cliente (punto 5), finché il Cliente paga e l'Installatore resta iscritto, e il [40]% alla Piattaforma, per il controllo del programma, il rapporto mensile, l'incasso e il secondo livello di assistenza. Al Builder non spetta una parte del canone, [salvo che la Piattaforma ne preveda una, indicata sulla pagina del prodotto]: il suo ricorrente è la voce degli aggiornamenti garantiti (sotto). Le parti del canone sono quelle in vigore il giorno della vendita. Se l'Installatore non è più iscritto, la sua parte resta alla Piattaforma, che risponde al Cliente.</p>
+      <p>Il Builder può offrire, per un singolo prodotto, gli aggiornamenti garantiti: una voce facoltativa per il Cliente, a un prezzo mensile fissato dal Builder, con quello che il Builder si impegna a fare (per esempio ogni quanto esce una versione e in quanto tempo corregge i problemi di sicurezza), scritto sulla pagina del prodotto. Per questa voce, tolti il costo di Stripe e la parte della Piattaforma, al Builder spetta il [100]%. Il Builder mantiene quello che ha promesso; se smette, [la Piattaforma può togliere la voce, e il Cliente non la paga più dal periodo successivo]. Il programma installato funziona anche senza questa voce.</p>
+      <p>L'Installatore e il Builder possono concordare per iscritto sulla Piattaforma, per un singolo prodotto, una divisione diversa fra loro due, che prende il posto della percentuale scelta dal Builder: uno dei due la propone dalla propria area e l'altro la accetta o la rifiuta. La nuova divisione si applica ai pagamenti delle vendite concluse dopo che entrambi l'hanno accettata. Ogni vendita conserva la percentuale o la divisione in vigore il giorno della vendita, salvo la riduzione per le soglie di vendita descritta sopra.</p>
+      <p>Il Builder può mandare una mancia a un Installatore che vende i suoi prodotti, da [5] a [500] euro, con carta. Si tolgono il costo di Stripe e la parte della Piattaforma, come per gli altri pagamenti con carta; il resto spetta all'Installatore e matura come le altre quote (punto 9). La mancia è un riconoscimento libero: non è un corrispettivo dovuto e non crea obblighi fra le parti. [Trattamento fiscale delle mance da verificare con il commercialista.]</p>
+      <p>Entro [14] giorni da un pagamento con carta il Cliente può confermare l'installazione o segnalare un problema dalla propria area. Con una segnalazione aperta le quote di quell'acquisto restano trattenute finché la Piattaforma, sentite le parti, non decide fra regolarità, rimborso totale o parziale sulla carta, oppure archiviazione. [Da rivedere con il legale: criteri e tempi della decisione.] I pagamenti in crypto, essendo diretti fra i wallet, non sono rimborsabili dalla Piattaforma.</p>
+      <h2 id="art-8"><span class="art-n">08</span> Incassi in nome e per conto</h2>
+      <p class="avviso attesa da-decidere">[da confermare col commercialista]</p>
+      <p>La Piattaforma incassa i pagamenti dei Clienti in nome e per conto di Builder, Collaboratori e Installatori, ciascuno per la sua parte, e trattiene la propria commissione. Le somme che spettano a loro non sono ricavi della Piattaforma: le riceve come mandataria all'incasso e le trasferisce ai beneficiari. Del canone dell'assistenza è un ricavo della Piattaforma la parte che le spetta; la parte dell'Installatore [la Piattaforma la incassa per suo conto, come per l'installazione: da confermare con il commercialista]. Gli interventi a chiamata (punto 14) sono un servizio della Piattaforma: il loro incasso è interamente suo.</p>
+      <p>Con l'iscrizione, Builder, Collaboratori e Installatori danno alla Piattaforma il mandato a incassare per loro conto e a trasferire loro le quote, al netto di rimborsi e contestazioni.</p>
+      <h2 id="art-9"><span class="art-n">09</span> Come e quando si paga</h2>
+      <p>Le quote maturano [14] giorni dopo il pagamento del Cliente e sono versate sul conto Stripe di Builder, Collaboratori e Installatori, che le trasferisce sul loro conto bancario. Se il Cliente ottiene un rimborso o contesta il pagamento, le quote corrispondenti si annullano o si stornano. Per ricevere i pagamenti si completa la verifica di Stripe, se ne accettano i termini e si compilano i dati fiscali richiesti dal punto 16.</p>
+      <h2 id="art-10"><span class="art-n">10</span> Pagamenti in crypto</h2>
+      <p>Se il Cliente paga in crypto, paga dal proprio wallet direttamente il Builder, i Collaboratori, l'Installatore e la Piattaforma, ciascuno per la sua parte: la Piattaforma non riceve né custodisce i fondi degli altri. In questo caso il Cliente paga l'installazione e [12] mesi di assistenza in anticipo, al cambio bloccato per [30] minuti al momento dell'ordine.</p>
+      <p>Sulle reti in cui la Piattaforma ha pubblicato un contratto escrow, il pagamento resta depositato nel contratto finché il Cliente non conferma l'installazione o per [14] giorni; in caso di segnalazione resta congelato e la Piattaforma, come arbitro, decide entro [60] giorni quanto torna al Cliente e quanto va a Builder, Collaboratori e Installatore, ciascuno al massimo per la propria parte; oltre quel termine il Cliente può riprendere l'intero importo dal contratto. La Piattaforma non può in nessun caso destinare a sé i fondi depositati oltre la propria quota.</p>
+      <ul>
+        <li>Le transazioni sulla blockchain sono definitive, e gli indirizzi dei wallet sono pubblici per natura.</li>
+        <li>Eventuali rimborsi si concordano direttamente fra le parti.</li>
+        <li>Ognuno è responsabile della sicurezza del proprio wallet e del trattamento fiscale delle crypto ricevute.</li>
+        <li>Ai fini della comunicazione DAC7 gli importi valgono in euro, al cambio dell'ordine.</li>
+      </ul>
+      <h2 id="art-11"><span class="art-n">11</span> Le recensioni</h2>
+      <p>Dopo un acquisto, il Cliente può lasciare una recensione sul prodotto e su chi l'ha installato: da 1 a 5 stelle e, se vuole, un breve testo, con il nome che sceglie di mostrare.</p>
+      <ul>
+        <li>Si recensisce solo quello che si è comprato davvero: una recensione per acquisto.</li>
+        <li>Le recensioni devono essere vere e pertinenti: niente insulti, dati personali di altri, pubblicità o contenuti illeciti.</li>
+        <li>Non si comprano, non si scambiano e non si scrivono recensioni su sé stessi.</li>
+        <li>Il Builder o l'Installatore può rispondere una volta, in pubblico, con lo stesso rispetto.</li>
+        <li>La Piattaforma può nascondere una recensione che viola queste regole, anche su segnalazione. La recensione resta salvata e può tornare visibile; la Piattaforma non ne modifica mai il testo né le stelle.</li>
+      </ul>
+      <h2 id="art-12"><span class="art-n">12</span> API e webhook</h2>
+      <p>Dalla propria area ogni iscritto può creare chiavi API e webhook per collegare la Piattaforma ai propri strumenti.</p>
+      <ul>
+        <li>Le chiavi sono personali: chi le crea ne risponde, le tiene segrete e le revoca se pensa che qualcuno le abbia viste. La Piattaforma ne conserva solo l'impronta e non può mostrarle di nuovo.</li>
+        <li>Limiti: al massimo 10 chiavi attive e 10 webhook per iscritto, e 120 richieste al minuto per chiave. La Piattaforma può cambiare questi limiti avvisando prima.</li>
+        <li>I webhook partono solo verso indirizzi https raggiungibili da internet e sono firmati; se un indirizzo non risponde per 20 volte di fila, il webhook si spegne e l'iscritto viene avvisato.</li>
+        <li>Le API si usano solo per i propri dati e nel rispetto di queste condizioni: niente raccolta massiva di dati, tentativi di aggirare i limiti o la sicurezza, carichi eccessivi.</li>
+        <li>La Piattaforma può sospendere una chiave o un webhook usati in modo scorretto e può cambiare le API, avvisando prima quando le modifiche non sono compatibili.</li>
+      </ul>
+      <h2 id="art-13"><span class="art-n">13</span> La modalità prelancio</h2>
+      <p>Prima di aprire i pagamenti, la Piattaforma può funzionare in prelancio.</p>
+      <ul>
+        <li>Il catalogo è aperto: i Builder pubblicano i prodotti, gli Installatori si iscrivono e scelgono cosa installare.</li>
+        <li>Nessun pagamento passa dalla Piattaforma: il Cliente chiede un preventivo all'Installatore, che lo ricontatta.</li>
+        <li>Gli accordi presi in prelancio fuori dalla Piattaforma riguardano solo il Cliente e l'Installatore: la Piattaforma non ne è parte e non trattiene commissioni.</li>
+        <li>La Piattaforma avvisa gli iscritti quando i pagamenti si aprono.</li>
+      </ul>
+      <h2 id="art-14"><span class="art-n">14</span> Il Cliente</h2>
+      <p>Il Cliente paga con carta o addebito SEPA tramite Stripe, oppure in crypto come descritto al punto 10. L'assistenza si paga in anticipo, ogni mese o ogni anno; in crypto per dodici mesi alla volta. L'abbonamento si può disdire [in ogni momento, con effetto alla fine del periodo già pagato]; [durata minima di 12 mesi per l'assistenza mensile, se prevista]. [Diritto di recesso e garanzie, se il Cliente è un consumatore.]</p>
+      <p>Se un addebito non va a buon fine, Stripe lo ritenta nei giorni successivi e il Cliente viene avvisato. Dopo [7] giorni senza pagamento l'assistenza è sospesa fino al pagamento; il software installato e i dati restano sempre del Cliente e continuano a funzionare. [Al Cliente che è un'impresa, sulle somme non pagate si applicano gli interessi di mora previsti dal D.Lgs. 231/2002 e il risarcimento forfettario di 40 euro per i costi di recupero.]</p>
+      <p>Con l'assistenza attiva la Piattaforma controlla dall'esterno, a intervalli regolari, l'indirizzo pubblico del software indicato dal Cliente o dall'Installatore, avvisa il Cliente quando non risponde e gli manda ogni mese un rapporto (disponibilità, versioni controllate, richieste risolte). La Piattaforma non accede mai ai server del Cliente. Senza l'assistenza attiva il Cliente può chiedere interventi a chiamata, a una tariffa oraria di [90] euro, su preventivo pagato prima del lavoro; gli incassi di questi interventi restano alla Piattaforma, che li esegue. Chi riattiva l'assistenza dopo aver chiuso l'abbonamento (o, in crypto, dopo più di [30] giorni dalla scadenza) paga una volta, insieme al primo pagamento del nuovo periodo, un corrispettivo di riattivazione pari a [tre] mensilità del canone, diviso come il canone (punto 7); la Piattaforma lo mostra prima del pagamento. Non lo paga chi riprende l'assistenza sospesa per un pagamento non riuscito, né chi ci ripensa prima della fine del periodo già pagato. Il Cliente può togliere in ogni momento l'indirizzo controllato dalla sua pagina di assistenza. [Da verificare con il legale se il Cliente è un consumatore.]</p>
+      <h2 id="art-15"><span class="art-n">15</span> Dati personali</h2>
+      <p>La privacy degli iscritti è garantita. La Piattaforma tratta i loro dati secondo l'informativa privacy:</p>
+      <ul>
+        <li>raccoglie solo quelli che servono al servizio e alla legge;</li>
+        <li>cifra quelli riservati, come i dati fiscali, i segreti della verifica in due passaggi e i collegamenti alle chat;</li>
+        <li>non li vende, non li cede e non li usa per pubblicità: li comunica solo quando la legge lo impone;</li>
+        <li>i documenti d'identità e i conti bancari li raccoglie e li conserva Stripe, non la Piattaforma;</li>
+        <li>all'Agenzia delle Entrate vanno solo i dati della comunicazione DAC7 descritta al punto 16.</li>
+      </ul>
+      <p>Sulle pagine pubbliche compaiono solo il nome e il profilo GitHub del Builder sui suoi prodotti, il nome e la zona che l'Installatore sceglie di mostrare sui prodotti che offre, e il nome che il Cliente sceglie per le sue recensioni.</p>
+      <p><a href="/privacy">Leggi l'informativa privacy</a></p>
+      <h2 id="art-16"><span class="art-n">16</span> Aspetti fiscali e legali</h2>
+      <p>Ogni Builder, Collaboratore e Installatore è l'unico responsabile delle proprie tasse e della propria posizione fiscale, previdenziale e legale: per esempio la partita IVA quando serve, la dichiarazione dei redditi, i documenti per le proprie quote e gli obblighi verso il Cliente.</p>
+      <p>La Piattaforma presenta all'Agenzia delle Entrate solo le proprie comunicazioni:</p>
+      <ul>
+        <li>le imposte sui ricavi della Piattaforma;</li>
+        <li>la comunicazione annuale DAC7, che è un obbligo della Piattaforma come gestore di una piattaforma digitale (direttiva europea DAC7, recepita in Italia con il D.Lgs. 32/2023), non degli iscritti.</li>
+      </ul>
+      <p>Non presenta dichiarazioni, fatture o versamenti per conto degli iscritti, non dà consulenza fiscale, non li rappresenta né li tutela verso il fisco e non risponde delle loro omissioni. La Piattaforma non tutela né rappresenta chi evade: chi non dichiara quello che riceve ne risponde da solo.</p>
+      <p>La comunicazione DAC7 contiene solo i dati che la legge richiede: nome, indirizzo, codice fiscale o partita IVA, gli importi ricevuti tramite la Piattaforma e le commissioni trattenute. Prima dell'invio, ogni iscritto vede nella sua area esattamente cosa verrà comunicato. Chi non fornisce questi dati non riceve i versamenti. [Da completare con il commercialista.]</p>
+      <h2 id="art-17"><span class="art-n">17</span> Durata e recesso</h2>
+      <p>Le condizioni valgono a tempo indeterminato. Ciascuno può recedere in ogni momento, chiudendo il conto dalla propria area; le quote già maturate restano dovute, e i dati che la legge impone di conservare restano per il tempo previsto dall'informativa privacy. La Piattaforma può sospendere chi viola queste condizioni.</p>
+      <p>La Piattaforma può modificare queste condizioni avvisando gli iscritti almeno [30] giorni prima; chi non le accetta può recedere.</p>
+      <h2 id="art-18"><span class="art-n">18</span> Legge e foro</h2>
+      <p>Legge italiana. [Foro competente.]</p>
+    </article>
+  </div>
+</main>
+<footer class="piede"></footer>
+<script type="module" src="/testata.js"></script>
+</body>
+</html>

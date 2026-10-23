@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entra · {{NOME}}</title>
+<meta name="description" content="Entra o iscriviti: con GitHub, con una passkey, con email e password o con un link via email."><meta property="og:type" content="website"><meta property="og:site_name" content="{{NOME}}"><meta property="og:title" content="Entra · {{NOME}}"><meta property="og:description" content="Entra o iscriviti: con GitHub, con una passkey, con email e password o con un link via email."><meta property="og:image" content="{{URL}}/img/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="/stile.css"><link rel="stylesheet" href="/stile-accesso.css"><link rel="icon" href="/icona.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header class="barra"></header>
+<main id="contenuto" class="contenitore">
+<div class="accesso">
+<div class="colonna-modulo">
+  <div id="avviso-pagina" class="avviso nascosto" role="status"></div>
+
+  <!-- entra: email e password, passkey, GitHub -->
+  <div class="vista" id="v-entra" data-titolo="Entra">
+    <h1 class="piccolo">Entra</h1>
+    <p class="sotto">Con GitHub, con una passkey o con email e password.</p>
+    <div class="carta" data-modulo="RB-ACC-01" data-timbro="RB">
+      <div class="modulo">
+        <a class="bottone secondario pieno github" href="/auth/github"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Continua con GitHub</a>
+        <button type="button" class="bottone secondario pieno passkey nascosto" id="b-passkey"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="4"/><path d="M2 21v-1a6 6 0 0 1 9.5-4.9"/><circle cx="17.5" cy="13.5" r="2.5"/><path d="M17.5 16v5.5M17.5 19h2"/></svg>Entra con una passkey</button>
+        <div class="messaggio" id="m-passkey" role="alert"></div>
+        <div class="separatore">oppure con l'email</div>
+      </div>
+      <form class="modulo" id="f-entra" novalidate>
+        <label>Email <input type="email" name="email" autocomplete="username webauthn" inputmode="email" autocapitalize="none" spellcheck="false" required><span class="errore-campo"></span></label>
+        <div class="campo">
+          <div class="riga-etichetta"><label for="entra-parola">Password</label><a href="/accedi?modo=dimenticata" data-modo="dimenticata">Password dimenticata?</a></div>
+          <span class="parola"><input id="entra-parola" type="password" name="parola" autocomplete="current-password" required><button type="button" class="occhio" aria-label="Mostra la password" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></span>
+          <span class="maiuscole nascosto">Maiuscole attive</span>
+          <span class="errore-campo"></span>
+        </div>
+        <div class="messaggio" role="alert"></div>
+        <button class="bottone pieno">Entra</button>
+      </form>
+      <p class="piede-carta"><a href="/accedi?modo=link" data-modo="link">Entra con un link via email, senza password</a></p>
+    </div>
+    <p class="cambia">Non hai un conto? <a href="/accedi?iscriviti=1" data-modo="iscriviti">Iscriviti</a></p>
+  </div>
+
+  <!-- iscriviti -->
+  <div class="vista nascosto" id="v-iscriviti" data-titolo="Iscriviti">
+    <h1 class="piccolo">Crea il tuo conto</h1>
+    <p class="sotto">È gratis. Chi sviluppa entra con GitHub, chi installa può usare anche l'email.</p>
+    <div class="carta" data-modulo="RB-ACC-02" data-timbro="RB">
+      <div class="modulo">
+        <a class="bottone secondario pieno github" id="gh-iscriviti" href="/auth/github?contratto=1"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Continua con GitHub</a>
+        <div class="separatore">oppure con l'email</div>
+      </div>
+      <form class="modulo" id="f-iscriviti" novalidate>
+        <label>Nome e cognome <input type="text" name="nome" autocomplete="name" maxlength="80" required><span class="errore-campo"></span></label>
+        <label>Email <input type="email" name="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" required><span class="errore-campo"></span></label>
+        <div class="campo">
+          <label for="nuova-parola">Password</label>
+          <span class="parola"><input id="nuova-parola" type="password" name="parola" autocomplete="new-password" maxlength="200" required><button type="button" class="occhio" aria-label="Mostra la password" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></span>
+          <div class="forza" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          <span class="aiuto forza-testo" aria-live="polite">Almeno 10 caratteri. Una frase che ricordi va benissimo.</span>
+          <span class="maiuscole nascosto">Maiuscole attive</span>
+          <span class="errore-campo"></span>
+        </div>
+        <label>Dove installi <input type="text" name="zona" autocomplete="address-level2" maxlength="60" placeholder="Es. Bergamo e provincia, o da remoto"><span class="aiuto">Facoltativo. Solo per chi installa: compare sul tuo profilo.</span></label>
+        <label class="trappola" aria-hidden="true">Sito web <input type="text" name="sito_web" tabindex="-1" autocomplete="off"></label>
+        <div class="campo">
+          <label class="spunta"><input type="checkbox" name="contratto" required> <span>Accetto le condizioni d'uso e ho letto l'informativa privacy</span></label>
+          <span class="legali"><a href="/contratto" target="_blank" rel="noopener">Leggi le condizioni</a><a href="/privacy" target="_blank" rel="noopener">Leggi l'informativa privacy</a></span>
+          <span class="errore-campo"></span>
+        </div>
+        <div class="messaggio" role="alert"></div>
+        <button class="bottone pieno">Crea il conto</button>
+      </form>
+    </div>
+    <p class="cambia">Hai già un conto? <a href="/accedi" data-modo="entra">Entra</a></p>
+  </div>
+
+  <!-- link d'accesso via email -->
+  <div class="vista nascosto" id="v-link" data-titolo="Entra con un link">
+    <h1 class="piccolo">Entra con un link</h1>
+    <p class="sotto">Ti mandiamo per email un link che vale 15 minuti. Niente password da ricordare.</p>
+    <div class="carta" data-modulo="RB-ACC-03" data-timbro="RB">
+      <form class="modulo" id="f-link" novalidate>
+        <label>Email <input type="email" name="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" required><span class="errore-campo"></span></label>
+        <div class="messaggio" role="alert"></div>
+        <button class="bottone pieno">Mandami il link</button>
+      </form>
+      <div class="esito nascosto" role="status">
+        <div class="avviso ok">Se l'email è iscritta ti abbiamo scritto. Apri il link entro 15 minuti, anche da un altro dispositivo.</div>
+        <p class="tenue piccolo">Non arriva? Guarda nello spam, oppure <button type="button" class="collegamento" data-rifai>riprova con un'altra email</button>.</p>
+      </div>
+    </div>
+    <p class="cambia"><a href="/accedi" data-modo="entra">Torna all'accesso</a></p>
+  </div>
+
+  <!-- password dimenticata -->
+  <div class="vista nascosto" id="v-dimenticata" data-titolo="Password dimenticata">
+    <h1 class="piccolo">Password dimenticata</h1>
+    <p class="sotto">Scrivi l'email del tuo conto: ti mandiamo un link per sceglierne una nuova.</p>
+    <div class="carta" data-modulo="RB-ACC-04" data-timbro="RB">
+      <form class="modulo" id="f-dimenticata" novalidate>
+        <label>Email <input type="email" name="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" required><span class="errore-campo"></span></label>
+        <div class="messaggio" role="alert"></div>
+        <button class="bottone pieno">Mandami il link</button>
+      </form>
+      <div class="esito nascosto" role="status">
+        <div class="avviso ok">Se l'email è iscritta ti abbiamo scritto. Il link per la nuova password vale un'ora.</div>
+        <p class="tenue piccolo">Non arriva? Guarda nello spam, oppure <button type="button" class="collegamento" data-rifai>riprova con un'altra email</button>.</p>
+      </div>
+    </div>
+    <p class="cambia"><a href="/accedi" data-modo="entra">Torna all'accesso</a></p>
+  </div>
+
+  <!-- ?reimposta=T: la nuova password -->
+  <div class="vista nascosto" id="v-reimposta" data-titolo="Nuova password">
+    <h1 class="piccolo">Scegli una nuova password</h1>
+    <p class="sotto">Dopo il cambio chiudiamo le sessioni aperte, per sicurezza.</p>
+    <div class="carta" data-modulo="RB-ACC-05" data-timbro="RB">
+      <form class="modulo" id="f-reimposta" novalidate>
+        <div class="campo">
+          <label for="reimposta-parola">Nuova password</label>
+          <span class="parola"><input id="reimposta-parola" type="password" name="parola" autocomplete="new-password" maxlength="200" required><button type="button" class="occhio" aria-label="Mostra la password" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></span>
+          <div class="forza" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          <span class="aiuto forza-testo" aria-live="polite">Almeno 10 caratteri. Una frase che ricordi va benissimo.</span>
+          <span class="maiuscole nascosto">Maiuscole attive</span>
+          <span class="errore-campo"></span>
+        </div>
+        <div class="campo">
+          <label for="reimposta-parola2">Ripeti la password</label>
+          <span class="parola"><input id="reimposta-parola2" type="password" name="parola2" autocomplete="new-password" maxlength="200" required><button type="button" class="occhio" aria-label="Mostra la password" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></span>
+          <span class="maiuscole nascosto">Maiuscole attive</span>
+          <span class="errore-campo"></span>
+        </div>
+        <div class="messaggio" role="alert"></div>
+        <button class="bottone pieno">Salva la nuova password</button>
+      </form>
+      <div class="esito nascosto" id="reimposta-scaduto">
+        <a class="bottone secondario pieno" href="/accedi?modo=dimenticata" data-modo="dimenticata">Chiedi un nuovo link</a>
+      </div>
+    </div>
+    <p class="cambia"><a href="/accedi" data-modo="entra">Torna all'accesso</a></p>
+  </div>
+
+  <!-- ?link=T: il bottone che consuma il link (gli antivirus aprono il link, ma non premono) -->
+  <div class="vista nascosto" id="v-usa-link" data-titolo="Entra">
+    <h1 class="piccolo">Il tuo link d'accesso</h1>
+    <p class="sotto">Premi Continua per entrare. Il link vale una volta sola.</p>
+    <div class="carta modulo" data-modulo="RB-ACC-06" data-timbro="RB">
+      <button type="button" class="bottone grande pieno" id="b-continua">Continua</button>
+      <div class="messaggio" id="m-continua" role="alert"></div>
+      <a class="bottone secondario pieno nascosto" id="b-nuovo-link" href="/accedi?modo=link" data-modo="link">Chiedi un nuovo link</a>
+    </div>
+  </div>
+
+  <!-- il secondo passo della verifica in due passaggi -->
+  <div class="vista nascosto" id="v-codice" data-titolo="Verifica in due passaggi">
+    <h1 class="piccolo">Verifica in due passaggi</h1>
+    <p class="sotto codice-app">Apri l'app di autenticazione e scrivi il codice di 6 cifre.</p>
+    <p class="sotto codice-recupero nascosto">Scrivi uno dei codici di recupero che hai salvato quando hai attivato la verifica.</p>
+    <div class="carta" data-modulo="RB-ACC-07" data-timbro="2FA">
+      <form class="modulo" id="f-codice" novalidate>
+        <label class="codice-app">Codice dell'app <input type="text" name="codice" class="codice-otp" inputmode="numeric" autocomplete="one-time-code" placeholder="000000"><span class="aiuto">Puoi anche incollarlo: parte da solo.</span><span class="errore-campo"></span></label>
+        <label class="codice-recupero nascosto">Codice di recupero <input type="text" name="recupero" class="recupero" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="12" placeholder="XXXX-XXXX"><span class="aiuto">Ognuno vale una volta sola.</span><span class="errore-campo"></span></label>
+        <div class="messaggio" role="alert"></div>
+        <button class="bottone pieno">Verifica</button>
+      </form>
+      <p class="piede-carta"><button type="button" class="collegamento" id="b-recupero">Usa un codice di recupero</button></p>
+    </div>
+    <p class="cambia"><a href="/accedi" data-modo="entra">Annulla e torna all'accesso</a></p>
+  </div>
+
+  <!-- dopo l'iscrizione -->
+  <div class="vista nascosto" id="v-posta" data-titolo="Controlla la tua email">
+    <span class="icona-esito ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+    <h1 class="piccolo">Controlla la tua email</h1>
+    <p class="sotto" id="posta-testo">Ti abbiamo mandato un link per confermare l'indirizzo. Vale 48 ore.</p>
+    <div class="carta modulo" data-modulo="RB-ACC-08" data-timbro="RB">
+      <a class="bottone pieno" id="b-area" href="/area">Vai alla tua area</a>
+      <button type="button" class="bottone secondario pieno" id="b-rinvia">Rimanda l'email</button>
+      <div class="messaggio" id="m-rinvia" role="status"></div>
+      <p class="aiuto">Non la trovi? Guarda nello spam. Intanto puoi già usare la tua area.</p>
+    </div>
+  </div>
+
+  <!-- dopo un codice di recupero -->
+  <div class="vista nascosto" id="v-rimasti" data-titolo="Sei dentro">
+    <span class="icona-esito ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+    <h1 class="piccolo">Sei dentro</h1>
+    <p class="sotto" id="rimasti-testo"></p>
+    <div class="carta modulo" data-modulo="RB-ACC-09" data-timbro="OK">
+      <a class="bottone pieno" href="/area#sicurezza">Genera nuovi codici</a>
+      <a class="bottone secondario pieno" id="b-continua-dopo" href="/area">Continua</a>
+    </div>
+  </div>
+</div>
+
+<aside class="pannello-ruoli" aria-labelledby="titolo-ruoli">
+  <figure class="figura figura-ruoli">
+    <img src="/img/sobrio/passo-negozio.svg" alt="Il programma al lavoro nell'attività, con l'assistenza ogni mese" width="600" height="420" loading="eager">
+    <span class="nota ruolo-builder n1" aria-hidden="true">1</span><span class="nota ruolo-installatore n2" aria-hidden="true">2</span><span class="nota ruolo-business n3" aria-hidden="true">3</span>
+    <span class="codice-tavola" aria-hidden="true">RB-01</span>
+  </figure>
+  <span class="etichetta">Come funziona</span>
+  <h2 id="titolo-ruoli">Tre ruoli, un pagamento che si divide da solo.</h2>
+  <ol>
+    <li class="ruolo-builder"><span class="numero-ruolo">1</span><div><span class="adesivo-ruolo">Chi sviluppa</span><p>Mette in vendita il suo progetto open source, entrando con GitHub.</p></div></li>
+    <li class="ruolo-installatore"><span class="numero-ruolo">2</span><div><span class="adesivo-ruolo">Chi installa</span><p>Lo porta nelle attività della sua zona e tiene una parte di ogni pagamento.</p></div></li>
+    <li class="ruolo-business"><span class="numero-ruolo">3</span><div><span class="adesivo-ruolo">Chi compra</span><p>Paga installazione e assistenza mensile, con carta o in crypto.</p></div></li>
+  </ol>
+  <p class="fondo">Hai comprato per la tua attività? Non serve un conto: <a href="/cliente">vai all'area clienti</a>.</p>
+</aside>
+</div>
+</main>
+<footer class="piede"></footer>
+<script type="module" src="/testata.js"></script>
+<script type="module" src="/accedi.js"></script>
+</body>
+</html>

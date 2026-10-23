@@ -1,0 +1,13 @@
+# Il contratto escrow (contratti/src), le sue prove (contratti/test). Serve Foundry: https://getfoundry.sh
+# Da questa cartella:  forge build · forge test -vv · forge test --fuzz-runs 5000
+[profile.default]
+src = "src"
+test = "test"
+out = "out"
+libs = []
+solc_version = "0.8.26"
+evm_version = "cancun"
+optimizer = true
+optimizer_runs = 1000
+via_ir = false
+fuzz = { runs = 1000 }

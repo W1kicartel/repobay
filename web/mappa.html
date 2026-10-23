@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mappa delle installazioni · {{NOME}}</title>
+<meta property="og:type" content="website"><meta property="og:site_name" content="{{NOME}}"><meta property="og:title" content="Mappa delle installazioni · {{NOME}}"><meta property="og:description" content="In quante aziende gira un programma comprato su {{NOME}}, provincia per provincia. Si riempie da sola a ogni vendita chiusa."><meta property="og:image" content="{{URL}}/img/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#0D0B11">
+<meta name="description" content="In quante aziende gira un programma comprato su {{NOME}}, provincia per provincia. Si riempie da sola a ogni vendita chiusa.">
+<link rel="stylesheet" href="/stile.css"><link rel="stylesheet" href="/stile-pubblico.css"><link rel="stylesheet" href="/stile-mappa.css"><link rel="icon" href="/icona.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header class="barra"></header>
+<main id="contenuto" class="contenitore">
+  <header class="testa-pagina">
+    <p class="codice-tavola"><span data-no-t>RB—M1</span><span>Mappa delle installazioni</span></p>
+    <h1>Dove gira <span class="evidenzia">davvero</span>.</h1>
+    <p class="sotto">Le aziende che usano un programma comprato su {{NOME}}, provincia per provincia. Si riempie da sola, a ogni vendita chiusa.</p>
+  </header>
+
+  <section class="mappa-griglia">
+    <figure class="mappa-tavola" id="tavola" aria-busy="true">
+      <div class="mappa-disegno" id="disegno"></div>
+      <div class="mappa-conta" aria-live="polite">
+        <strong class="mappa-numero" id="totale">0</strong>
+        <span class="mappa-unita" id="unita">aziende</span>
+        <span class="mappa-dettaglio tenue" id="dettaglio"></span>
+      </div>
+    </figure>
+
+    <aside class="mappa-elenco" aria-labelledby="titolo-elenco">
+      <h2 id="titolo-elenco">Per provincia</h2>
+      <ol class="mappa-province" id="elenco"></ol>
+      <p class="mappa-vuota nascosto" id="vuota">
+        <strong>Le prime installazioni arrivano qui.</strong>
+        <span>A ogni vendita chiusa, la provincia dell'azienda si accende sulla mappa: da sola, senza ricaricare la pagina.</span>
+      </p>
+      <p class="mappa-senza tenue piccolo nascosto" id="senza"></p>
+      <div class="mappa-azioni" id="azioni">
+        <a class="bottone" href="/esplora">Trova un programma</a>
+        <a class="bottone secondario" href="/installatori">Diventa installatore</a>
+      </div>
+      <p class="mappa-ora tenue piccolo" id="ora"></p>
+    </aside>
+  </section>
+
+  <section class="mappa-note" aria-labelledby="titolo-note">
+    <h2 id="titolo-note">Come contiamo</h2>
+    <ul>
+      <li id="regola">Un'azienda conta quando la vendita è chiusa: chi ha comprato ha confermato l'installazione, il programma ha risposto online alla fine dell'installazione, oppure sono passati 14 giorni dal pagamento senza contestazioni, come per i soldi di chi installa.</li>
+      <li>Non contano le vendite rimborsate, i pagamenti non arrivati e i rinnovi di un abbonamento già contato. Due programmi nella stessa azienda fanno un'azienda sola.</li>
+      <li>La provincia è quella in cui lavora chi ha fatto l'installazione. Chi lavora in tutta una regione o da remoto non dà una provincia: quelle aziende sono nel totale, non sulla mappa.</li>
+      <li>Niente nomi, indirizzi o programmi: solo quante aziende per provincia. La mappa si aggiorna da sola: una vendita chiusa compare entro un minuto, senza ricaricare la pagina.</li>
+    </ul>
+    <p class="tenue piccolo">Confini semplificati: <a href="https://www.istat.it/" rel="noopener">ISTAT</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener" data-no-t>CC BY 4.0</a> · <a href="https://github.com/openpolis/geojson-italy" rel="noopener" data-no-t>openpolis/geojson-italy</a></p>
+  </section>
+</main>
+<footer class="piede"></footer>
+<script type="module" src="/testata.js"></script>
+<script type="module" src="/mappa.js"></script>
+</body>
+</html>

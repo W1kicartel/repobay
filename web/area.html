@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La mia area · {{NOME}}</title>
+<meta name="description" content="La tua area personale: prodotti, installazioni, vendite, soldi, integrazioni e sicurezza del conto."><meta property="og:type" content="website"><meta property="og:site_name" content="{{NOME}}"><meta property="og:title" content="La mia area · {{NOME}}"><meta property="og:description" content="La tua area personale: prodotti, installazioni, vendite, soldi, integrazioni e sicurezza del conto."><meta property="og:image" content="{{URL}}/img/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/stile.css"><link rel="stylesheet" href="/stile-area.css"><link rel="icon" href="/icona.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header class="barra"></header>
+<main id="contenuto" class="contenitore area">
+  <div class="lati">
+    <nav id="menu-area" aria-label="Sezioni della tua area">
+      <a href="#panoramica" data-s="panoramica">Panoramica</a>
+      <div class="gruppo">Lavoro</div>
+      <a href="#prodotti" data-s="prodotti">I miei prodotti</a>
+      <a href="#installo" data-s="installo">Installo</a>
+      <a href="#vendite" data-s="vendite">Vendite</a>
+      <a href="#installazioni" data-s="installazioni">Installazioni</a>
+      <a href="#richieste" data-s="richieste">Richieste e recensioni</a>
+      <a href="#assistenza" data-s="assistenza">Assistenza</a>
+      <div class="gruppo">Soldi</div>
+      <a href="#soldi" data-s="soldi">Soldi</a>
+      <a href="#integrazioni" data-s="integrazioni">Integrazioni</a>
+      <a href="#sviluppatori" data-s="sviluppatori">Sviluppatori</a>
+      <div class="gruppo">Conto</div>
+      <a href="#notifiche" data-s="notifiche">Notifiche</a>
+      <a href="#sicurezza" data-s="sicurezza">Sicurezza</a>
+      <a href="#profilo" data-s="profilo">Profilo</a>
+      <a href="#dati" data-s="dati">I tuoi dati</a>
+    </nav>
+    <div class="pannello">
+      <div id="avvisi-area" class="avvisi-area"></div>
+      <div id="sezione" tabindex="-1">
+        <div class="scheletri" aria-busy="true"><div class="scheletro alto"></div><div class="scheletro"></div><div class="scheletro corto"></div></div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="piede"></footer>
+<script type="module" src="/testata.js"></script>
+<script type="module" src="/area.js"></script>
+</body>
+</html>

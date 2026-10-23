@@ -1,0 +1,228 @@
+/* La cassa (/compra) e la pagina d'installazione (/installa): passi numerati come le tavole di un progetto, la ricevuta appuntata
+   accanto, il terminale nero che mostra cosa succede dopo. Carta lilla, inchiostro nero, viola per le azioni (docs/MARCHIO.md). */
+
+.cs { padding-top: 28px; padding-bottom: 96px; }
+.cs-indietro { display: inline-block; font: 600 13.5px var(--titoli);   text-decoration: none; color: var(--inchiostro-2); margin-bottom: 18px; font-variant-numeric: tabular-nums; }
+.cs-indietro:hover { color: var(--segnale-scuro); }
+.cs-testa { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 40px; align-items: end; margin-bottom: 28px; }
+.cs-testa h1 { font: 700 clamp(34px, 5vw, 58px)/1.02 var(--titoli); font-stretch: 85%; letter-spacing: -.025em; margin: 0 0 12px; max-width: 18ch; }
+.cs-testa .evidenza, .cs-testa .evidenzia { background: linear-gradient(transparent 58%, var(--sole) 58%, var(--sole) 92%, transparent 92%); padding: 0 .06em; }
+.cs-sotto { margin: 0; color: var(--inchiostro-2); max-width: 56ch; font-size: 17px; }
+
+/* la mappa dei passi: quattro tacche numerate */
+.cs-mappa { list-style: none; display: flex; gap: 6px; margin: 0; padding: 0; }
+.cs-mappa button { display: grid; gap: 2px; text-align: left; background: var(--carta); border: 1px solid var(--bordo); border-radius: var(--raggio); padding: 8px 12px; font: 500 12.5px Geist; color: var(--inchiostro-2); cursor: pointer; min-width: 92px; transition: transform .2s var(--vel), box-shadow .2s var(--vel), background .2s; }
+.cs-mappa button:disabled { cursor: default; opacity: .55; border-style: solid; }
+.cs-mappa-n { font: 700 11px var(--titoli);  color: var(--inchiostro); font-variant-numeric: tabular-nums; }
+.cs-mappa [data-stato=aperto] button { background: var(--segnale); color: var(--bianco); box-shadow: var(--ombra); transform: translate(-1px, -1px); }
+.cs-mappa [data-stato=aperto] .cs-mappa-n { color: var(--bianco); }
+.cs-mappa [data-stato=fatto] button { background: var(--menta); color: var(--nero); }
+.cs-mappa [data-stato=fatto] .cs-mappa-n::after { content: ' ✓'; }
+.cs-mappa [data-stato=fatto] button:hover { transform: translateY(-1px); box-shadow: var(--ombra); }
+
+.cs-griglia { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(320px, 1fr); gap: 36px; align-items: start; }
+
+/* ---------------- i passi ---------------- */
+.cs-passi { display: grid; gap: 14px; }
+.cs-passo, .ins-sezione { margin: 0; }   /* le section del sito pubblico hanno 88px sopra e sotto: qui no */
+.cs-passo { background: var(--carta); border: 1px solid var(--bordo); border-radius: var(--raggio); transition: box-shadow .25s var(--vel), transform .25s var(--vel), opacity .25s; }
+.cs-passo[data-stato=aperto] { box-shadow: var(--ombra-grande); transform: translate(-3px, -3px); }
+.cs-passo[data-stato=chiuso] { background: transparent; border-style: solid; border-color: var(--inchiostro-3); opacity: .7; }
+.cs-passo-testa { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 18px 22px; }
+.cs-passo-titoli h2 { font: 700 22px/1.15 var(--titoli); font-stretch: 88%; letter-spacing: -.01em; margin: 0; outline: none; }
+.cs-passo[data-stato=aperto] .cs-passo-titoli h2 { font-size: 26px; }
+.cs-riassunto { margin: 4px 0 0; font-size: 14.5px; color: var(--inchiostro-2); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.cs-riassunto:empty { display: none; }
+.cs-riassunto strong { color: var(--inchiostro); }
+.cs-cambia { visibility: hidden; }
+.cs-passo[data-stato=fatto] .cs-cambia { visibility: visible; }
+.cs-num { position: relative; width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid var(--bordo); border-radius: 50%; font: 700 13px var(--titoli); background: var(--carta); font-variant-numeric: tabular-nums; }
+.cs-num-ok { position: absolute; inset: -1.5px; border-radius: 50%; display: grid; place-items: center; background: var(--ok); color: var(--bianco); border: 1px solid var(--bordo); font: 700 17px Geist; transform: scale(0); transition: transform .35s var(--molla); }
+.cs-passo[data-stato=fatto] .cs-num-ok { transform: scale(1); }
+.cs-passo[data-stato=aperto] .cs-num { background: var(--segnale); color: var(--bianco); }
+.cs-passo-corpo:empty { display: none; }
+.cs-passo-corpo { padding: 0 22px 24px 78px; animation: cs-entra .45s var(--molla) both; }
+@keyframes cs-entra { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.cs-corpo { display: grid; gap: 18px; }
+.cs-corpo.modulo { gap: 18px; }
+.cs-guida { margin: 0; color: var(--inchiostro-2); font-size: 15px; max-width: 62ch; }
+.cs-avanti { display: flex; justify-content: flex-start; padding-top: 4px; }
+
+/* 01 — le schede di chi installa */
+.cs-insts { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+.cs-inst { position: relative; display: grid; gap: 12px; padding: 16px; background: var(--carta); border: 1px solid var(--bordo); border-radius: var(--raggio); cursor: pointer; font-weight: 400; transition: transform .2s var(--vel), box-shadow .2s var(--vel), background .2s; }
+.cs-inst:hover { transform: translateY(-1px); box-shadow: var(--ombra); }
+.cs-inst:has(input:checked) { background: #EEECFD; box-shadow: var(--ombra-grande); transform: translate(-2px, -2px); border-color: var(--segnale); }
+.cs-inst:has(input:checked)::after { content: '✓'; position: absolute; top: -10px; right: -10px; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--segnale); color: var(--bianco); border: 1px solid var(--bordo); font: 700 14px Geist; animation: cs-pop .35s var(--molla); }
+.cs-inst:has(input:focus-visible) { outline: 2.5px solid var(--cobalto); outline-offset: 3px; }
+@keyframes cs-pop { from { transform: scale(0) rotate(-30deg); } }
+.cs-inst-testa { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+.cs-inst-nome { display: grid; gap: 1px; min-width: 0; }
+.cs-inst-nome strong { font: 700 17px/1.2 var(--titoli); font-stretch: 92%; overflow-wrap: anywhere; }
+.cs-inst-nome .tenue { font-size: 13px; color: var(--inchiostro-2); }
+.cs-inst-prezzo { display: grid; justify-items: end; }
+.cs-inst-prezzo strong { font: 600 18px var(--titoli); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.cs-inst-prezzo span { font: 500 13px var(--titoli);  color: var(--inchiostro-2); font-variant-numeric: tabular-nums; }
+.cs-inst-fatti { display: grid; gap: 2px; font-size: 13.5px; color: var(--inchiostro-2); }
+.cs-inst-nota { color: var(--attesa); }
+.cs-inst-piede { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.cs-inst-metodi { margin-left: auto; font: 500 13px var(--titoli);  color: var(--inchiostro-3); font-variant-numeric: tabular-nums; }
+.avatar.grande { width: 46px; height: 46px; font-size: 15px; }
+.avatar.mini { width: 22px; height: 22px; font-size: 9.5px; }
+.cs-tag { display: inline-flex; align-items: center; border: 1px solid var(--bordo); border-radius: 999px; padding: 1px 9px; font: 600 13px var(--titoli);  background: var(--carta-2); color: var(--nero); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cs-tag.segnale { background: var(--segnale); color: var(--bianco); }
+.cs-tag.sole { background: var(--sole); }
+.cs-tag.menta { background: var(--menta); }
+
+/* 02 — la tua attività */
+.cs-gruppo { border: 0; padding: 0; margin: 0; display: grid; gap: 10px; }
+.cs-gruppo legend { font-weight: 600; font-size: 14px; margin-bottom: 10px; padding: 0; }
+.cs-dove { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.cs-dove-voce { display: grid; align-content: start; gap: 6px; padding: 14px; border: 1px solid var(--bordo); border-radius: var(--raggio); background: var(--carta); cursor: pointer; font-weight: 400; transition: transform .2s var(--vel), box-shadow .2s var(--vel), background .2s; }
+.cs-dove-voce:hover { transform: translateY(-1px); box-shadow: var(--ombra); }
+.cs-dove-voce strong { font: 700 15.5px/1.2 var(--titoli); font-stretch: 92%; }
+.cs-dove-voce > span:last-child { font-size: 13px; color: var(--inchiostro-2); line-height: 1.45; }
+.cs-dove-icona { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid var(--bordo); border-radius: var(--raggio); background: var(--sfondo-2); color: var(--inchiostro); transition: background .2s, color .2s, transform .35s var(--molla); }
+.cs-dove-icona svg { width: 26px; height: 26px; }
+.cs-dove-voce:has(input:checked) { background: #EEECFD; border-color: var(--segnale); box-shadow: var(--ombra-grande); transform: translate(-2px, -2px); }
+.cs-dove-voce:has(input:checked) .cs-dove-icona { background: var(--segnale); color: var(--bianco); transform: rotate(0deg); }
+.cs-dove-voce:has(input:focus-visible) { outline: 2.5px solid var(--cobalto); outline-offset: 3px; }
+.cs-dominio { display: grid; gap: 8px; }
+.cs-dom-anteprima { margin: 0; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 10px 12px; background: var(--inchiostro); color: var(--carta); border-radius: var(--raggio); font-size: 13.5px; }
+.cs-dom-et { color: #C0C6D4; }
+.cs-dom-vista { font: 600 14px var(--titoli); color: var(--menta); overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+
+/* 03 — l'assistenza */
+.cs-periodo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cs-periodo-voce { display: grid; gap: 4px; padding: 16px; border: 1px solid var(--bordo); border-radius: var(--raggio); background: var(--carta); cursor: pointer; font-weight: 400; transition: transform .2s var(--vel), box-shadow .2s var(--vel), background .2s; }
+.cs-periodo-voce:hover { transform: translateY(-1px); box-shadow: var(--ombra); }
+.cs-periodo-voce:has(input:checked) { background: #EEECFD; border-color: var(--segnale); box-shadow: var(--ombra-grande); transform: translate(-2px, -2px); }
+.cs-periodo-voce:has(input:focus-visible) { outline: 2.5px solid var(--cobalto); outline-offset: 3px; }
+.cs-periodo-titolo { display: flex; gap: 8px; align-items: center; font-weight: 600; }
+.cs-periodo-prezzo { font: 600 20px var(--titoli); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.cs-periodo-voce .tenue { font-size: 13px; color: var(--inchiostro-2); }
+.cs-compreso { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.cs-compreso li { position: relative; padding-left: 28px; font-size: 14.5px; }
+.cs-compreso li::before { content: ''; position: absolute; left: 0; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--menta) center / 10px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.5l2.5 2.5L10 3.5' fill='none' stroke='%230D0B11' stroke-width='2'/%3E%3C/svg%3E"); border: 1px solid var(--bordo); }
+.cs-agg { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: start; padding: 14px 16px; border: 1px solid var(--bordo); border-radius: var(--raggio); background: var(--carta-2); font-weight: 400; cursor: pointer; }
+.cs-agg:has(input:checked) { border-style: solid; background: #EEECFD; }
+.cs-agg strong { font-weight: 600; }
+.cs-agg-prezzo { font: 600 13.5px var(--titoli); color: var(--segnale-scuro); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cs-agg .aiuto { display: block; margin-top: 2px; }
+
+/* 04 — il pagamento */
+.cs-consenso { font-size: 14.5px; }
+.cs-schede { display: flex; gap: 0; border: 1px solid var(--bordo); border-radius: var(--raggio); overflow: hidden; width: fit-content; max-width: 100%; }
+.cs-scheda { border: 0; border-right: 1px solid var(--bordo); background: var(--carta); padding: 10px 16px; font: 600 14px Geist; color: var(--inchiostro); cursor: pointer; transition: background .2s; }
+.cs-scheda:last-child { border-right: 0; }
+.cs-scheda:hover { background: var(--sfondo-2); }
+.cs-scheda[aria-selected=true] { background: var(--inchiostro); color: var(--carta); }
+.cs-metodo { display: grid; gap: 14px; }
+.cs-paga { font-size: 17.5px; padding: 18px 26px; }
+.cs-lucchetto { font-size: 15px; filter: grayscale(1) brightness(10); }
+.cs-stripe { display: none; border: 1px solid var(--bordo); border-radius: var(--raggio); background: #FFFFFF; padding: 6px; min-height: 120px; }
+.cs-stripe.aperto { display: block; animation: cs-entra .45s var(--molla) both; }
+.cs-fiducia { list-style: none; margin: 6px 0 0; padding: 16px 0 0; border-top: 1px solid var(--bordo); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.cs-fiducia li { display: grid; gap: 4px; font-size: 13px; color: var(--inchiostro-2); line-height: 1.45; }
+.cs-fiducia strong { color: var(--inchiostro); font-size: 14px; }
+.cs-fiducia li::before { content: ''; width: 24px; height: 24px; border: 1px solid var(--bordo); border-radius: var(--raggio); background: var(--sole); margin-bottom: 4px; }
+.cs-fiducia li:nth-child(2)::before { background: var(--segnale); }
+.cs-fiducia li:nth-child(3)::before { background: var(--menta); }
+/* i pannelli di bonifico e crypto della pagina prodotto, qui dentro la cassa */
+.cs-metodo .pp-crypto, .cs-metodo .pp-bonifico { margin: 0; }
+
+/* ---------------- la ricevuta ---------------- */
+.cs-lato { position: sticky; top: 92px; }
+.cs-ricevuta { position: relative; background: var(--carta); border: 1px solid var(--bordo); border-radius: var(--raggio); padding: 22px 22px 0; box-shadow: var(--ombra-grande);
+  --dente: 10px; -webkit-mask: radial-gradient(circle at 50% 100%, transparent 6px, #000 6.5px) bottom / 16px 10px repeat-x, linear-gradient(#000, #000) top / 100% calc(100% - 9px) no-repeat;
+  mask: radial-gradient(circle at 50% 100%, transparent 6px, #000 6.5px) bottom / 16px 10px repeat-x, linear-gradient(#000, #000) top / 100% calc(100% - 9px) no-repeat; padding-bottom: 22px; }
+.cs-r-testa { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.cs-r-codice { font: 600 11px var(--codice); letter-spacing: .1em; text-transform: uppercase; color: var(--inchiostro-3); }
+.cs-r-prodotto { font: 700 28px/1.05 var(--titoli); font-stretch: 85%; letter-spacing: -.02em; margin: 0 0 8px; overflow-wrap: anywhere; }
+.cs-r-chi { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; font-size: 14px; color: var(--inchiostro-2); }
+.cs-r-righe { list-style: none; margin: 0; padding: 14px 0; border-top: 1px solid var(--bordo); border-bottom: 1px solid var(--bordo); display: grid; gap: 10px; }
+.cs-r-righe li { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; font-size: 14.5px; animation: cs-entra .35s var(--vel) both; }
+.cs-r-righe small { display: block; font-size: 12px; color: var(--inchiostro-3); }
+.cs-r-euro { font: 500 14.5px var(--titoli); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cs-r-totale { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 16px 0 6px; }
+.cs-r-totale span { font: 600 13.5px var(--titoli);  font-variant-numeric: tabular-nums; }
+.cs-r-totale-n { font: 700 32px var(--titoli); letter-spacing: -.04em; white-space: nowrap; transition: color .2s; font-variant-numeric: tabular-nums; }
+.cs-r-totale-n.cambia { color: var(--segnale); }
+.cs-r-poi { margin: 0 0 4px; font-size: 13px; color: var(--inchiostro-2); }
+.cs-r-et { margin: 0 0 8px; font: 600 13px var(--titoli);  color: var(--inchiostro-2); font-variant-numeric: tabular-nums; }
+.cs-r-quote { margin-top: 18px; }
+.cs-r-barra { display: flex; height: 14px; border: 1px solid var(--bordo); border-radius: 999px; overflow: hidden; }
+.cs-r-barra span { flex-basis: 0; transition: flex-grow .6s var(--vel); border-right: 1px solid var(--bordo); }
+.cs-r-barra span:last-child { border-right: 0; }
+.q-installatore { background: var(--sole); }
+.q-builder { background: var(--cobalto); }
+.q-piattaforma { background: var(--segnale); }
+.q-costo { background: var(--inchiostro-3); }
+.cs-r-legenda { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 4px; }
+.cs-r-legenda li { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: 13px; color: var(--inchiostro-2); }
+.cs-r-legenda i { width: 12px; height: 12px; border-radius: 50%; border: 1px solid var(--bordo); }
+.cs-r-legenda li span:last-child { font: 500 12.5px var(--titoli); color: var(--inchiostro); font-variant-numeric: tabular-nums; }
+
+/* il terminale: cosa succede dopo il pagamento */
+.cs-term { margin-top: 20px; background: var(--nero); color: #F2F4F7; border-radius: var(--raggio); padding: 14px 14px 12px; border: 1px solid var(--bordo); }
+.cs-term .cs-r-et { color: #C0C6D4; }
+.cs-term pre { background: transparent; border: 0; box-shadow: none; padding: 0; margin: 0 0 10px; font: 500 12px/1.5 var(--codice); white-space: pre-wrap; overflow-wrap: anywhere; color: #F2F4F7; }
+.cs-term-pr { color: var(--sole); }
+.cs-term-k { color: var(--menta); }
+.cs-term ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; font: 500 12px var(--codice); color: #C0C6D4; }
+.cs-term li { opacity: 0; animation: cs-riga .4s var(--vel) forwards; animation-delay: calc(.6s + var(--j) * .55s); }
+.cs-term li:last-child { color: var(--menta); font-weight: 700; }
+.cs-term-ok { color: #32D583; }
+.cs-term-nota { margin: 10px 0 0; font-size: 12.5px; color: #C0C6D4; }
+@keyframes cs-riga { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+
+/* il telefono: la ricevuta va sotto, il totale resta in una barra in basso */
+.cs-barra-mobile { display: none; }
+@media (max-width: 960px) {
+  .cs-griglia { grid-template-columns: 1fr; }
+  .cs-lato { position: static; }
+  .cs-testa { grid-template-columns: 1fr; }
+  .cs-mappa { overflow-x: auto; padding-bottom: 6px; }
+  .cs-mappa button { min-width: 0; white-space: nowrap; }
+  .cs-barra-mobile { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex; align-items: center; gap: 10px; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: var(--nero); color: #F2F4F7; border-top: 1.5px solid var(--segnale); }
+  .cs-barra-mobile span { font: 600 13px var(--titoli);  color: #C0C6D4; font-variant-numeric: tabular-nums; }
+  .cs-barra-mobile strong { font: 700 20px var(--titoli); flex: 1; font-variant-numeric: tabular-nums; }
+  .cs-barra-mobile .bottone { color: #F2F4F7; }
+  .cassa-pagina footer.piede { padding-bottom: 72px; }
+}
+@media (max-width: 640px) {
+  .cs { padding-top: 16px; }
+  .cs-passo-testa { padding: 14px 14px; gap: 12px; }
+  .cs-passo-corpo { padding: 0 14px 20px; }
+  .cs-num { width: 34px; height: 34px; }
+  .cs-dove, .cs-periodo, .cs-fiducia { grid-template-columns: 1fr; }
+  .cs-dove-voce { grid-template-columns: auto minmax(0, 1fr); column-gap: 12px; }
+  .cs-dove-icona { grid-row: span 2; }
+  .cs-insts { grid-template-columns: 1fr; }
+  .cs-avanti .bottone { width: 100%; }
+}
+
+/* la prenotazione fatta, e le pagine ferme (nessun installatore, prodotto che non c'è) */
+.cs-stop { max-width: 640px; margin: 48px auto; display: grid; gap: 8px; padding: 32px; }
+.cs-stop h1 { font: 700 40px/1.05 var(--titoli); font-stretch: 85%; letter-spacing: -.02em; margin: 0; }
+.cs-stop p { color: var(--inchiostro-2); }
+.cs-fatto { position: relative; padding: 32px; display: grid; gap: 12px; }
+.cs-fatto h2 { font: 700 36px/1.05 var(--titoli); font-stretch: 85%; letter-spacing: -.02em; margin: 0; }
+.cs-timbro { position: absolute; top: 22px; right: 22px; margin: 0; padding: 6px 14px; border: 3px solid var(--segnale); color: var(--segnale); font: 700 18px var(--titoli);  transform: rotate(0deg); border-radius: var(--raggio); animation: cs-timbro .5s var(--molla) .15s both; font-variant-numeric: tabular-nums; }
+@keyframes cs-timbro { from { opacity: 0; transform: rotate(0deg) scale(2.2); } to { opacity: 1; transform: rotate(0deg) scale(1); } }
+.cs-dopo { margin: 8px 0; padding: 0; list-style: none; counter-reset: dopo; display: grid; gap: 10px; }
+.cs-dopo li { counter-increment: dopo; display: grid; grid-template-columns: 34px minmax(0, 1fr); column-gap: 12px; }
+.cs-dopo li::before { content: counter(dopo, decimal-leading-zero); grid-row: span 2; width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--bordo); border-radius: 50%; font: 700 12px var(--titoli); background: var(--menta); font-variant-numeric: tabular-nums; }
+.cs-dopo span { color: var(--inchiostro-2); font-size: 14px; }
+
+/* gli scheletri mentre carica */
+.cs-carico { display: grid; gap: 24px; }
+.cs-sch-titolo { height: 120px; max-width: 640px; }
+.cs-sch-passi { height: 520px; }
+.cs-sch-ricevuta { height: 440px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-passo-corpo, .cs-r-righe li, .cs-stripe.aperto, .cs-timbro, .cs-inst:has(input:checked)::after { animation: none; }
+  .cs-term li { animation: none; opacity: 1; }
+  .cs-passo, .cs-inst, .cs-dove-voce, .cs-periodo-voce, .cs-num-ok, .cs-r-barra span { transition: none; }
+}

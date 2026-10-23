@@ -1,0 +1,97 @@
+/* La pagina di assistenza di un'installazione: le richieste a sinistra, il filo a destra (sul telefono una cosa alla volta).
+   Stessa officina del resto del sito: carta lilla, bordi netti, ombre piene; i messaggi coi colori dei ruoli. */
+.as-pagina { padding-bottom: 64px; }
+.as-pagina section:not(.as-testa) { margin: 0; }   /* niente margini delle sezioni del sito: qui la pagina è un'app */
+.as-caricamento { padding: 80px 0; text-align: center; color: var(--tenue); font: 600 13px var(--titoli);  font-variant-numeric: tabular-nums; }
+#as-errore { margin: 56px auto; max-width: 560px; }
+
+.as-testa { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 24px 40px; align-items: end; margin: 8px 0 28px; }
+.as-testa h1 { margin: 6px 0 10px; overflow-wrap: anywhere; }
+.as-chi { display: flex; align-items: center; gap: 10px; margin: 0; color: var(--inchiostro-2); font-weight: 500; }
+.as-chi .avatar { width: 34px; height: 34px; font-size: 13px; }
+.as-stato { box-shadow: var(--ombra); }
+.as-stato p { margin: 0; line-height: 1.5; }
+.as-azioni { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; align-items: center; }
+
+.as-griglia { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 28px; align-items: start; }
+.as-h2 { font-size: 22px; margin: 0; line-height: 1.15; overflow-wrap: anywhere; }
+.as-lista-testa { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.as-lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.as-nessuna { color: var(--tenue); border: 1px solid var(--inchiostro-3); padding: 18px; text-align: center; font-size: 14px; background: var(--carta-2); }
+.as-voce { width: 100%; text-align: left; display: grid; gap: 6px; padding: 12px 14px; background: var(--carta); color: var(--inchiostro); border: 1px solid var(--bordo);
+  border-radius: var(--raggio); font: inherit; cursor: pointer; transition: transform .15s var(--vel), box-shadow .15s var(--vel); }
+.as-voce:hover { transform: translateY(-1px); box-shadow: var(--ombra); }
+.as-voce.scelta { box-shadow: var(--ombra); border-color: var(--segnale); }
+.as-voce-titolo { font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+.as-voce-dati { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font: 600 13px/1.4 var(--titoli);  color: var(--inchiostro-2); font-variant-numeric: tabular-nums; }
+.as-pallino { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--bordo); background: var(--carta-2); flex: none; }
+.as-pallino.attesa { background: #FFC94A; } .as-pallino.ok { background: #32D583; } .as-pallino.spenta { background: var(--sfondo-2); }
+.as-urgente { background: var(--errore); color: var(--bianco); padding: 1px 7px; border-radius: 999px; }
+
+.as-installa { margin-top: 22px; padding: 14px; border: 1px solid var(--inchiostro-3); background: var(--carta-2); display: grid; gap: 6px; }
+.as-installa p { margin: 0; }
+.as-installa .bottone { justify-self: start; }
+
+.as-benvenuto { display: grid; gap: 14px; }
+.as-benvenuto p { margin: 0; }
+.as-benvenuto .bottone { justify-self: start; }
+.as-passi { margin: 0; padding-left: 20px; display: grid; gap: 4px; color: var(--inchiostro-2); }
+
+.as-modulo { display: grid; gap: 14px; }
+.as-modulo-testa { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.as-due { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.as-spunta { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; }
+.as-spunta input { width: auto; margin-top: 4px; accent-color: var(--errore); }
+
+.as-richiesta { display: grid; gap: 16px; }
+.as-indietro { display: none; justify-self: start; }
+.as-richiesta-testa { display: grid; gap: 8px; }
+.as-fili { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; max-height: min(62vh, 640px); overflow-y: auto; padding-right: 4px; overscroll-behavior: contain; }
+.as-msg { --colore-msg: var(--carta-2); max-width: 86%; border: 1px solid var(--bordo); border-radius: var(--raggio); padding: 10px 12px; background: var(--colore-msg); }
+.as-msg.cliente { justify-self: end; --colore-msg: #E4E1FB; }
+.as-msg.installatore { justify-self: start; --colore-msg: #EEECFD; box-shadow: var(--ombra); }
+.as-msg.builder { justify-self: start; --colore-msg: #E4E1FB; box-shadow: var(--ombra); }
+.as-msg.piattaforma { justify-self: start; --colore-msg: var(--nero); color: #F2F4F7; }
+.as-msg.piattaforma .tenue { color: #C0C6D4; }
+.as-msg-testa { font-size: 12.5px; margin-bottom: 4px; overflow-wrap: anywhere; }
+.as-msg-testo { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.5; }
+.as-risposta { display: grid; gap: 10px; border-top: 1px solid var(--bordo); padding-top: 14px; }
+.as-risposta .as-azioni { margin-top: 0; }
+.as-preventivo { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; }
+.as-preventivo p { margin: 0; }
+
+/* il programma controllato da fuori e il mese scorso: due carte sopra le richieste */
+.as-salute { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 18px; margin: 0 0 28px !important; }
+.as-sano { display: grid; gap: 10px; align-content: start; }
+.as-sano p { margin: 0; }
+.as-sano-stato { display: flex; align-items: center; gap: 10px; font-size: 17px; }
+.as-sano-stato .as-pallino { width: 12px; height: 12px; }
+.as-pallino.errore { background: var(--errore); animation: as-batte 1.2s var(--vel) infinite; }
+@keyframes as-batte { 50% { transform: scale(1.35); } }
+@media (prefers-reduced-motion: reduce) { .as-pallino.errore { animation: none; } }
+.as-sano-sito { font: 500 13px var(--titoli); color: var(--inchiostro-2); overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.as-sano-dati { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 14px; color: var(--tenue); }
+.as-sano-cambia summary { cursor: pointer; font-size: 14px; font-weight: 600; color: var(--segnale); width: max-content; }
+.as-sano-cambia[open] summary { margin-bottom: 10px; }
+.as-sito { display: grid; gap: 8px; justify-items: start; }
+.as-sito-riga { display: flex; gap: 8px; width: 100%; }
+.as-sito-riga input { flex: 1; min-width: 0; padding: 9px 12px; font-size: 15px; }
+.as-numeri { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
+.as-numeri li { display: grid; gap: 2px; border: 1px solid var(--bordo); border-radius: var(--raggio); padding: 10px 12px; background: var(--carta-2); font-size: 13px; color: var(--tenue); }
+.as-numero { font: 700 26px/1.1 var(--titoli); font-stretch: 90%; color: var(--inchiostro); }
+
+@media (max-width: 860px) {
+  .as-testa { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .as-griglia { grid-template-columns: minmax(0, 1fr); }
+  /* sul telefono una cosa alla volta: aperta una richiesta, la lista sparisce e torna con «Tutte le richieste» */
+  .as-griglia:has(.as-dettaglio.aperto) .as-colonna { display: none; }
+  .as-dettaglio:not(.aperto) { order: 1; }   /* prima le richieste (con «Nuova richiesta»), poi la spiegazione */
+  .as-indietro { display: inline-flex; }
+  .as-due { grid-template-columns: minmax(0, 1fr); }
+  .as-msg { max-width: 94%; }
+  .as-fili { max-height: none; overflow: visible; }
+}
+@media (max-width: 480px) {
+  .as-pagina { padding-left: 16px; padding-right: 16px; }
+  .as-testa h1 { font-size: 34px; }
+}

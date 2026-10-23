@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Il corso per installatori · {{NOME}}</title>
+<meta name="description" content="Otto lezioni brevi e un test: il metodo per installare quasi tutti i programmi del catalogo, dal server ai backup, e le regole di Repobay."><meta property="og:type" content="website"><meta property="og:site_name" content="{{NOME}}"><meta property="og:title" content="Il corso per installatori · {{NOME}}"><meta property="og:description" content="Otto lezioni brevi e un test: il metodo per installare quasi tutti i programmi del catalogo, dal server ai backup, e le regole di Repobay."><meta property="og:image" content="{{URL}}/img/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="/stile.css"><link rel="stylesheet" href="/stile-legale.css"><link rel="stylesheet" href="/stile-corso.css"><link rel="icon" href="/icona.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header class="barra"></header>
+<main id="contenuto" class="contenitore documento corso ruolo-installatore">
+  <div class="testa-documento" data-codice="RB-C01">
+    <h1>Il corso per installatori</h1>
+    <p class="aggiornato" id="corso-misure">Otto lezioni brevi e un test</p>
+    <div class="corso-stato" id="corso-stato" aria-live="polite"></div>
+  </div>
+  <div class="foglio">
+    <nav class="indice" aria-labelledby="indice-corso">
+      <p class="etichetta" id="indice-corso">Le lezioni</p>
+      <ol id="corso-indice"></ol>
+    </nav>
+    <article class="testo-legale">
+      <div class="in-breve">
+        <p class="etichetta">In breve:</p>
+        <ul id="corso-breve">
+          <li>il corso insegna il metodo che sta sotto tutte le guide del catalogo: server, Docker, dominio e HTTPS, backup, aggiornamenti, dati del cliente, assistenza;</li>
+          <li>alla fine c'è un test: superarlo serve per offrire i programmi del catalogo;</li>
+          <li>i programmi impegnativi si sbloccano con l'esperienza, dopo alcune installazioni confermate dai clienti.</li>
+        </ul>
+      </div>
+      <div id="corso-lezioni"><p class="tenue">Carico le lezioni…</p></div>
+      <section id="test" class="corso-test" aria-labelledby="t-test">
+        <h2 id="t-test"><span class="art-n" data-no-t>09</span> Il test</h2>
+        <div id="corso-test"></div>
+      </section>
+    </article>
+  </div>
+</main>
+<footer class="piede"></footer>
+<script type="module" src="/testata.js"></script>
+<script type="module" src="/corso.js"></script>
+</body>
+</html>

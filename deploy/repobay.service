@@ -1,0 +1,87 @@
+# Repobay come servizio di sistema (systemd), su Ubuntu 24.04.
+# Lo installa deploy/installa.sh in /etc/systemd/system/repobay.service. A mano:
+#   systemctl daemon-reload && systemctl enable --now repobay
+#   journalctl -u repobay -f          (i messaggi del server)
+#   systemctl restart repobay         (dopo aver cambiato /etc/repobay/env)
+# Il codice sta in /opt/repobay (di root, in sola lettura per il servizio); il database, le copie giornaliere e la chiave
+# di cifratura in /var/lib/repobay (l'unica cartella in cui il servizio può scrivere).
+
+[Unit]
+Description=Repobay (builder, installatori e pagamenti divisi con Stripe Connect)
+Documentation=file:///opt/repobay/deploy/LEGGIMI.md
+After=network-online.target
+Wants=network-online.target
+# se si spegne più di 10 volte in 5 minuti c'è un problema vero: systemd smette di riaccenderlo (vedi journalctl)
+StartLimitIntervalSec=300
+StartLimitBurst=10
+
+[Service]
+Type=simple
+User=repobay
+Group=repobay
+WorkingDirectory=/opt/repobay
+# le impostazioni (chiavi di Stripe, GitHub, posta…): file di root, leggibile solo da root (lo legge systemd, non il servizio)
+EnvironmentFile=/etc/repobay/env
+# i valori qui sotto valgono se il file sopra non li cambia (EnvironmentFile vince su Environment)
+Environment=NODE_ENV=production
+Environment=APP_DATI=/var/lib/repobay
+Environment=APP_PORTA=4600
+# V8 sta sotto il limite di memoria del servizio, così fa pulizia prima che systemd lo fermi
+Environment=NODE_OPTIONS=--max-old-space-size=640
+ExecStart=/usr/bin/node server/avvia.js
+
+# riavvio automatico: sempre, anche dopo un'uscita «pulita» che non doveva esserci
+Restart=always
+RestartSec=5
+# il server finisce le richieste in corso e chiude il database (al più 8 secondi, vedi server/avvia.js)
+KillSignal=SIGTERM
+TimeoutStopSec=15
+
+# ---- dove può scrivere ----
+# /var/lib/repobay: creata da systemd con il proprietario giusto; tutto il resto del disco è in sola lettura
+StateDirectory=repobay
+StateDirectoryMode=0750
+ReadWritePaths=/var/lib/repobay
+UMask=0027
+
+# ---- protezioni ----
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+PrivateUsers=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+ProtectProc=invisible
+# ProcSubset=pid NON si mette: libuv legge /proc/meminfo e /proc/stat (memoria e CPU per V8 e os.cpus)
+# AF_NETLINK: getaddrinfo (DNS con ADDRCONFIG) lo usa per sapere se la macchina ha IPv4/IPv6
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX AF_NETLINK
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RemoveIPC=yes
+KeyringMode=private
+CapabilityBoundingSet=
+AmbientCapabilities=
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
+# MemoryDenyWriteExecute NON si mette: il compilatore JIT di V8 (Node) ha bisogno di memoria scrivibile ed eseguibile
+
+# ---- limiti ----
+# un CX22 ha 2 vCPU e 4 GB: il servizio ne usa al più 1 GB e 1,5 CPU, il resto resta a Caddy e al sistema
+MemoryHigh=768M
+MemoryMax=1G
+CPUQuota=150%
+TasksMax=256
+LimitNOFILE=16384
+LimitCORE=0
+
+[Install]
+WantedBy=multi-user.target

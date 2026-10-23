@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catalogo · {{NOME}}</title>
+<meta property="og:type" content="website"><meta property="og:site_name" content="{{NOME}}"><meta property="og:title" content="Catalogo · {{NOME}}"><meta property="og:description" content="Software open source pronto per la tua attività: gestionali, casse, prenotazioni, siti. Ogni prodotto ha chi lo installa da te, al suo prezzo; l'assistenza dei mesi dopo la dà chi installa, con noi dietro."><meta property="og:image" content="{{URL}}/img/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#0D0B11">
+<meta name="description" content="Software open source pronto per la tua attività: gestionali, casse, prenotazioni, siti. Ogni prodotto ha chi lo installa da te, al suo prezzo; l'assistenza dei mesi dopo la dà chi installa, con noi dietro.">
+<link rel="stylesheet" href="/stile.css"><link rel="stylesheet" href="/stile-pubblico.css"><link rel="icon" href="/icona.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header class="barra"></header>
+<main id="contenuto" class="contenitore">
+  <header class="testa-pagina">
+    <p class="codice-tavola"><span data-no-t>RB—C1</span><span>Catalogo</span></p>
+    <h1>Programmi open source, <span class="evidenzia">pronti da installare</span></h1>
+    <p class="sotto">Ogni programma è un progetto pubblico su GitHub. Il prezzo dell'installazione lo fissa l'installatore; l'assistenza mensile la fa lui, con Repobay dietro.</p>
+  </header>
+
+  <form class="cerca-riga pannello" id="filtri" role="search">
+    <label class="campo-cerca"><span class="sr">Cerca nel catalogo</span><input type="search" id="q" name="q" placeholder="Cerca: gestionale, prenotazioni, cassa…" autocomplete="off" maxlength="80"></label>
+    <label class="campo-cerca"><span class="sr">Zona</span><input type="text" id="zona" name="zona" placeholder="Città o zona" autocomplete="address-level2" maxlength="60"></label>
+    <label><span class="sr">Ordina per</span><select id="ordine" name="ordine">
+      <option value="">Più installatori</option>
+      <option value="stelle">Più stelle su GitHub</option>
+      <option value="voto">Voto migliore</option>
+      <option value="nuovi">Più recenti</option>
+    </select></label>
+  </form>
+  <div class="categorie" id="categorie" role="group" aria-label="Categoria"></div>
+
+  <div class="stato-risultati"><span id="conteggio" aria-live="polite"></span><button type="button" class="bottone fantasma piccolo nascosto" id="azzera">Azzera i filtri</button></div>
+  <div class="catalogo" id="lista" aria-busy="true"></div>
+  <nav class="pagine nascosto" id="pagine" aria-label="Pagine"></nav>
+</main>
+<footer class="piede"></footer>
+<script type="module" src="/testata.js"></script>
+<script type="module" src="/esplora.js"></script>
+</body>
+</html>

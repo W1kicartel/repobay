@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Il software open source, nelle attività vere · {{NOME}}</title>
+<meta property="og:type" content="website"><meta property="og:site_name" content="{{NOME}}"><meta property="og:title" content="Il software open source, nelle attività vere · {{NOME}}"><meta property="og:description" content="Chiunque può vendere software open source alle attività della sua zona, anche senza saperlo scrivere: il prezzo dell'installazione lo decide chi vende, chi sviluppa sceglie la sua percentuale, l'assistenza dei mesi dopo la dà chi installa, con noi dietro."><meta property="og:image" content="{{URL}}/img/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#0D1117">
+<meta name="description" content="Chiunque può vendere software open source alle attività della sua zona, anche senza saperlo scrivere: il prezzo dell'installazione lo decide chi vende, chi sviluppa sceglie la sua percentuale, l'assistenza dei mesi dopo la dà chi installa, con noi dietro.">
+<link rel="stylesheet" href="/stile.css"><link rel="stylesheet" href="/stile-pubblico.css"><link rel="stylesheet" href="/stile-casa.css"><link rel="icon" href="/icona.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header class="barra"></header>
+<main id="contenuto" class="casa k">
+
+  <!-- ============ eroe: chi sei, il titolo, lo scontrino che esce dalla cassa ============ -->
+  <section class="k-eroe notte">
+    <canvas class="muro" data-muro aria-hidden="true"></canvas>
+    <div class="contenitore k-eroe-griglia">
+      <div class="k-eroe-testo">
+        <div class="k-chi" role="tablist" aria-label="Chi sei">
+          <button type="button" role="tab" id="chi-attivita" data-chi="attivita" aria-selected="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5 4.6 4h14.8L21 9.5M3 9.5h18M3 9.5c0 1.4 1.1 2.5 2.5 2.5S8 10.9 8 9.5m-5 0V20h18V9.5M8 9.5c0 1.4 1.1 2.5 2.5 2.5S13 10.9 13 9.5m0 0c0 1.4 1.1 2.5 2.5 2.5S18 10.9 18 9.5m0 0c0 1.4 1.1 2.5 2.5 2.5M9.5 20v-5h5v5"/></svg><span>Ho un'attività</span></button>
+          <button type="button" role="tab" id="chi-vende" data-chi="vende" aria-selected="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg><span>Voglio guadagnare</span></button>
+          <button type="button" role="tab" id="chi-sviluppa" data-chi="sviluppa" aria-selected="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 7-5 5 5 5m8-10 5 5-5 5M14 4l-4 16"/></svg><span>Sviluppo software</span></button>
+        </div>
+        <h1>Software open source per negozi e aziende, installato da <span class="k-sotto">chi lavora vicino a te.</span></h1>
+        <div class="k-per" data-per="attivita" hidden>
+          <p class="k-sottotitolo">Gestionale, cassa, prenotazioni, sito web. Scegli il programma nel catalogo, confronta gli installatori della tua zona e paghi solo il lavoro. Il programma resta tuo per sempre.</p>
+          <div class="azioni"><a class="bottone grande" href="/esplora">Vedi il catalogo <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="bottone grande secondario" href="/garanzia">Come funziona la garanzia</a></div>
+        </div>
+        <div class="k-per" data-per="vende">
+          <p class="k-sottotitolo">Non devi saper programmare. Fai il corso gratuito, scegli i programmi da proporre e fissa il tuo prezzo. Ti pagano a ogni installazione e ogni mese per l'assistenza.</p>
+          <div class="azioni"><a class="bottone grande" href="/installatori">Diventa installatore <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="bottone grande secondario" href="#guadagni">Calcola quanto guadagni</a></div>
+        </div>
+        <div class="k-per" data-per="sviluppa" hidden>
+          <p class="k-sottotitolo">Pubblica il tuo progetto open source e scegli la percentuale che vuoi. Gli installatori lo portano nelle attività della loro zona e tu ricevi la tua parte a ogni installazione.</p>
+          <div class="azioni"><a class="bottone grande" href="/builder">Pubblica il tuo progetto <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="bottone grande secondario" href="/sviluppatori">Leggi la documentazione API</a></div>
+        </div>
+        <dl class="k-cifre">
+          <div><dt>di commissione con carta, 1% in crypto</dt><dd data-no-t>5%</dd></div>
+          <div><dt>allo sviluppatore del programma</dt><dd>fino all'80%</dd></div>
+          <div><dt>per iscriversi, nessun canone</dt><dd data-cent="0">0 €</dd></div>
+        </dl>
+      </div>
+
+      <div class="k-scena-box appare">
+        <div class="scena giorno" id="scena" data-passo="1" aria-hidden="true">
+          <div class="sc-carta sc-repo">
+            <div class="sc-repo-testa"><span class="sc-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M6 3v12M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 9a9 9 0 0 1-9 9"/></svg></span><b data-no-t>frappe/erpnext</b><span class="sc-pop sc-catalogo">In catalogo</span></div>
+            <p>Gestionale completo per piccole e medie imprese: vendite, magazzino, contabilità.</p>
+            <div class="sc-meta" data-no-t><span>GPL-3.0</span><span>★ 40.446</span><span class="sc-chip">80% allo sviluppatore</span></div>
+          </div>
+          <div class="sc-carta sc-inst">
+            <span class="sc-avatar" data-no-t>GC</span><div class="sc-inst-testo"><b data-no-t>Giulia Colombo</b><small>Installatrice · Bergamo · ★ 4,9</small></div><span class="sc-prezzo" data-no-t>1.490 €</span>
+          </div>
+          <div class="sc-carta sc-term">
+            <div class="sc-term-barra"><i></i><i></i><i></i><span>server della ferramenta</span></div>
+            <div class="sc-term-corpo" data-no-t><span class="sc-riga">$ curl -fsSL repobay.net/i/colombo | sh</span><span class="sc-riga sc-ok">✓ Docker pronto</span><span class="sc-riga sc-ok">✓ ERPNext scaricato e configurato</span><span class="sc-riga sc-ok">✓ Dominio e HTTPS attivi</span><span class="sc-riga sc-ok">✓ Online su https://gestionale.ferramentacolombo.it</span></div>
+          </div>
+          <div class="sc-carta sc-app">
+            <div class="sc-app-barra"><b data-no-t>Ferramenta Colombo · ERPNext</b><span class="sc-online">online</span></div>
+            <div class="sc-app-corpo">
+              <div class="sc-dato"><small>Ultima vendita</small><b data-no-t>48,90 €</b></div>
+              <div class="sc-dato"><small>Articoli a magazzino</small><b data-no-t>1.284</b></div>
+              <div class="sc-grafico" data-no-t><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+          </div>
+          <div class="sc-carta sc-paga">
+            <div class="sc-paga-testa"><span>Pagato con carta</span><b data-no-t>1.490,00 €</b></div>
+            <div class="sc-barre" data-no-t><i class="sv"></i><i class="ve"></i><i class="pi"></i><i class="st"></i></div>
+            <div class="sc-righe"><span><i class="sv"></i>Sviluppatore<b data-no-t>1.115,23 €</b></span><span><i class="ve"></i>Installatrice<b data-no-t>278,80 €</b></span><span><i class="pi"></i>Repobay<b data-no-t>73,37 €</b></span></div>
+          </div>
+          <svg class="sc-linee" viewBox="0 0 480 520" preserveAspectRatio="none" aria-hidden="true"><path class="sc-l1" d="M160 165 C 160 225, 165 252, 205 256"/></svg>
+        </div>
+        <ol class="sc-punti" aria-label="I passaggi">
+          <li><button type="button" data-scena="1" aria-pressed="true"><span>Lo sviluppatore pubblica</span></button></li>
+          <li><button type="button" data-scena="2" aria-pressed="false"><span>L'installatrice lo propone</span></button></li>
+          <li><button type="button" data-scena="3" aria-pressed="false"><span>Si installa da solo</span></button></li>
+          <li><button type="button" data-scena="4" aria-pressed="false"><span>Il negozio lavora, i soldi si dividono</span></button></li>
+        </ol>
+      </div>
+    </div>
+    <div class="contenitore">
+      <dl class="k-numeri-vivi" id="k-numeri" aria-label="I numeri di Repobay">
+        <div><dd id="n-programmi" data-no-t>—</dd><dt>programmi in catalogo</dt></div>
+        <div><dd id="n-stelle" data-no-t>—</dd><dt>stelle su GitHub, in tutto</dt></div>
+        <div><dd id="n-categorie" data-no-t>—</dd><dt>categorie, dal gestionale al sito web</dt></div>
+        <div><dd>14 giorni</dd><dt>di garanzia su ogni installazione</dt></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ le tre porte, una per colore ============ -->
+  <section class="k-sezione k-porte-sezione">
+    <div class="contenitore">
+      <header class="k-testa appare"><p class="k-occhiello">Per chi è Repobay</p><h2>Tre modi di usare Repobay</h2></header>
+      <div class="k-porte">
+        <a class="k-porta k-ambra appare" href="/esplora">
+          <span class="k-icona"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5 4.6 4h14.8L21 9.5M3 9.5h18M3 9.5c0 1.4 1.1 2.5 2.5 2.5S8 10.9 8 9.5m-5 0V20h18V9.5M8 9.5c0 1.4 1.1 2.5 2.5 2.5S13 10.9 13 9.5m0 0c0 1.4 1.1 2.5 2.5 2.5S18 10.9 18 9.5m0 0c0 1.4 1.1 2.5 2.5 2.5M9.5 20v-5h5v5"/></svg></span>
+          <span class="k-porta-chi">Per negozi e aziende</span>
+          <h3>Il programma giusto, installato nella tua attività</h3>
+          <p>Scegli nel catalogo, confronta prezzi e recensioni degli installatori della tua zona e paghi solo il lavoro. Il programma è open source: resta tuo anche se smetti di pagare l'assistenza.</p>
+          <span class="k-porta-cifra">14 giorni</span><span class="k-porta-nota">di garanzia: con la carta, i soldi restano fermi finché non confermi</span>
+          <span class="k-porta-vai">Vedi il catalogo <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a class="k-porta k-verde-porta appare" href="/installatori">
+          <span class="k-icona"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg></span>
+          <span class="k-porta-chi">Per chi vuole guadagnare</span>
+          <h3>Vendi e installa software nella tua zona</h3>
+          <p>Fai il corso gratuito, scegli i programmi da proporre e fissa il tuo prezzo. Guadagni a ogni installazione e ogni mese per l'assistenza ai tuoi clienti.</p>
+          <span class="k-porta-cifra" data-no-t>60%</span><span class="k-porta-nota">dell'assistenza mensile di ogni cliente è tuo</span>
+          <span class="k-porta-vai">Diventa installatore <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a class="k-porta k-viola appare" href="/builder">
+          <span class="k-icona"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 7-5 5 5 5m8-10 5 5-5 5M14 4l-4 16"/></svg></span>
+          <span class="k-porta-chi">Per sviluppatori</span>
+          <h3>Il tuo progetto open source, venduto da altri</h3>
+          <p>Pubblica il repository da GitHub e scegli la tua percentuale. Gli installatori lo portano nelle attività e tu ricevi la tua parte a ogni installazione.</p>
+          <span class="k-porta-cifra">fino all'80%</span><span class="k-porta-nota">di ogni installazione, tolte commissione e carta</span>
+          <span class="k-porta-vai">Pubblica il tuo progetto <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ come funziona: tre passi, ognuno con la sua schermata ============ -->
+  <section id="come-funziona" class="k-sezione k-bianca">
+    <div class="contenitore">
+      <header class="k-testa appare"><p class="k-occhiello">In tre passaggi</p><h2>Come funziona</h2></header>
+      <div class="k-passi-griglia">
+        <div class="k-passi" role="tablist" aria-label="I tre passi">
+          <button type="button" role="tab" id="passo-0" data-passo="0" aria-selected="true" class="k-passo k-viola"><span class="k-passo-n" data-no-t>1</span><span class="k-passo-testo"><span class="k-passo-chi">Lo sviluppatore</span><span class="k-passo-titolo">Pubblica il progetto</span><span class="k-passo-desc">Entra con GitHub, sceglie un repository pubblico con licenza open source e indica la sua percentuale, da 0 a 80%.</span></span><i class="k-avanza"></i></button>
+          <button type="button" role="tab" id="passo-1" data-passo="1" aria-selected="false" class="k-passo k-verde-porta"><span class="k-passo-n" data-no-t>2</span><span class="k-passo-testo"><span class="k-passo-chi">L'installatore</span><span class="k-passo-titolo">Lo propone nella sua zona</span><span class="k-passo-desc">Sceglie i programmi che sa installare, fissa il prezzo e manda il suo link ai clienti. Poi installa, configura e spiega come si usa.</span></span><i class="k-avanza"></i></button>
+          <button type="button" role="tab" id="passo-2" data-passo="2" aria-selected="false" class="k-passo k-ambra"><span class="k-passo-n" data-no-t>3</span><span class="k-passo-testo"><span class="k-passo-chi">Il cliente</span><span class="k-passo-titolo">Paga una volta, poi ogni mese</span><span class="k-passo-desc">Con carta o in crypto. Repobay divide il pagamento tra le tre parti; l'assistenza mensile la fa l'installatore, con Repobay dietro.</span></span><i class="k-avanza"></i></button>
+        </div>
+        <div class="k-schermi" aria-live="polite">
+          <div class="k-finestra" data-schermo="0">
+            <div class="k-fin-barra"><i></i><i></i><i></i><span>repobay.net/area · I miei prodotti</span></div>
+            <div class="k-fin-corpo">
+              <div class="k-repo"><span class="k-repo-ic"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3v12M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 9a9 9 0 0 1-9 9"/></svg></span><span><b data-no-t>frappe/erpnext</b><small>GPL-3.0 · pubblico</small></span><span class="k-pillola-ok">In catalogo</span></div>
+              <label class="k-cursore k-riquadro"><span class="k-cur-eti"><span>La tua percentuale</span><b id="sc-perc-val" data-no-t>80%</b></span><input type="range" id="sc-perc" min="0" max="80" step="1" value="80"><small>Con un'installazione da 1.490 € pagata con carta ricevi <b id="sc-perc-euro" data-no-t>1.115,22 €</b>. Una percentuale più bassa attira più installatori.</small></label>
+            </div>
+          </div>
+          <div class="k-finestra" data-schermo="1" hidden>
+            <div class="k-fin-barra"><i></i><i></i><i></i><span>repobay.net/area · Installo</span></div>
+            <div class="k-fin-corpo">
+              <b class="k-fin-titolo" data-no-t>ERPNext</b>
+              <div class="k-due"><div><small>Il tuo prezzo</small><b data-no-t>1.490 €</b></div><div><small>La tua parte</small><b class="k-verde" id="sc-link-parte" data-no-t>278,80 €</b></div></div>
+              <small class="k-fin-eti">Il tuo link personale</small>
+              <div class="k-link"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span id="sc-link" data-no-t>repobay.net/p/erpnext?ref=giulia-bg</span><button type="button" id="sc-copia" class="k-copia">Copia</button></div>
+              <small>Chi compra da questo link ti sceglie come installatore. Vale 30 giorni.</small>
+            </div>
+          </div>
+          <div class="k-finestra" data-schermo="2" hidden>
+            <div class="k-fin-barra"><i></i><i></i><i></i><span>repobay.net/compra/erpnext</span></div>
+            <div class="k-fin-corpo">
+              <small>Installato da un professionista di Bergamo</small>
+              <div class="k-conto"><span>Installazione</span><b data-no-t>1.490,00 €</b></div>
+              <div class="k-conto"><span>Assistenza, il primo mese</span><b id="sc-mese-primo" data-no-t>37,50 €</b></div>
+              <hr class="k-strappo">
+              <div class="k-conto k-conto-tot"><span>Oggi paghi</span><b id="sc-oggi" data-no-t>1.527,50 €</b></div>
+              <span class="k-finto-bottone"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v10H3zM3 10.5h18M7 14.5h3"/></svg>Paga con carta</span>
+              <small class="k-con-icona"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6zm-3.2 9 2.3 2.3 4.2-4.6"/></svg>Per 14 giorni i soldi restano fermi: se qualcosa non va, lo segnali e Repobay decide.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ un pagamento, tre parti: lo scontrino da muovere ============ -->
+  <section id="divisione" class="k-sezione">
+    <div class="contenitore k-due-col k-divisione">
+      <header class="k-testa appare">
+        <p class="k-occhiello">Un pagamento, tre parti</p>
+        <h2>Dove vanno i soldi, prima di pagare</h2>
+        <p class="k-testa-sotto">Muovi il prezzo, cambia il metodo di pagamento e le vendite dell'installatore: è lo stesso calcolo che fa Repobay a ogni vendita.</p>
+        <ul class="k-punti">
+          <li>Il prezzo dell'installazione lo fissa l'installatore; lo sviluppatore sceglie solo la sua percentuale.</li>
+          <li>Con la carta si toglie prima il costo reale di Stripe, poi Repobay tiene il 5% del resto. In crypto l'1%.</li>
+          <li>Dopo 10 vendite confermate dello stesso programma l'installatore tiene il 35%, dopo 25 il 50%.</li>
+        </ul>
+      </header>
+      <div class="k-scontrino-box appare">
+        <div class="k-cassa" aria-hidden="true"></div>
+        <div class="k-taglio">
+          <div class="k-stampa">
+            <figure class="k-scontrino giorno" aria-label="Esempio: come si divide una vendita" data-chi="vende">
+              <div class="k-sc-testa"><span>Repobay · esempio</span><span>Bergamo</span></div>
+              <p class="k-sc-cosa"><b>Gestionale installato in una ferramenta</b><span>prezzo fissato dall'installatore</span></p>
+              <hr class="k-strappo">
+              <div class="k-sc-riga k-sc-totale" data-riga="totale"><span>Pagato dal negozio</span><b id="sc-totale" data-no-t>390,00 €</b></div>
+              <div class="k-barra" aria-hidden="true"><span class="sv" id="sc-b-sv"></span><span class="ve" id="sc-b-ve"></span><span class="pi" id="sc-b-pi"></span><span class="st" id="sc-b-st"></span></div>
+              <ul class="k-sc-parti">
+                <li class="k-sc-riga" data-riga="sviluppa"><span><i class="k-q sv"></i>Allo sviluppatore</span><b id="sc-sv" data-no-t>291,76 €</b></li>
+                <li class="k-sc-riga" data-riga="vende"><span><i class="k-q ve"></i>All'installatore</span><b id="sc-ve" class="k-verde" data-no-t>72,94 €</b></li>
+                <li class="k-sc-riga" data-riga="piattaforma"><span><i class="k-q pi"></i><span id="sc-pi-eti">A Repobay, 5%</span></span><b id="sc-pi" data-no-t>19,20 €</b></li>
+                <li class="k-sc-riga" data-riga="stripe" id="sc-riga-st"><span><i class="k-q st"></i>Commissione della carta (Stripe, stima)</span><b id="sc-st" data-no-t>6,10 €</b></li>
+              </ul>
+              <hr class="k-strappo">
+              <div class="k-sc-riga" data-riga="mese"><span>Ogni mese, dall'assistenza di 37,50 €: all'installatore</span><b id="sc-mese" class="k-verde" data-no-t>22,01 €</b></div>
+              <div class="k-sc-riga k-sc-garanzia" data-riga="garanzia"><span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6zm-3.2 9 2.3 2.3 4.2-4.6"/></svg>Garanzia di 14 giorni per chi compra</span></div>
+              <div class="k-sc-comandi">
+                <label class="k-cursore"><span class="k-cur-eti"><span>Prezzo dell'installazione</span><b id="sc-prezzo-val" data-no-t>390 €</b></span><input type="range" id="sc-prezzo" min="90" max="1500" step="10" value="390"></label>
+                <div class="k-scelta"><span>Paga con</span><div class="k-seg" role="group" aria-label="Paga con"><button type="button" data-modo="carta" aria-pressed="true">Carta</button><button type="button" data-modo="crypto" aria-pressed="false">Crypto</button></div></div>
+                <div class="k-scelta"><span>Vendite dell'installatore</span><div class="k-seg" role="group" aria-label="Vendite dell'installatore"><button type="button" data-livello="0" aria-pressed="true">Prime 10</button><button type="button" data-livello="1" aria-pressed="false">Dopo 10</button><button type="button" data-livello="2" aria-pressed="false">Dopo 25</button></div></div>
+              </div>
+              <figcaption>Ogni parte arriva sul conto di chi la riceve 14 giorni dopo il pagamento. È lo stesso calcolo che fa il sito, con la percentuale standard dell'80% allo sviluppatore.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ quanto guadagna chi vende in un anno ============ -->
+  <section id="guadagni" class="k-sezione k-notte notte">
+    <div class="contenitore">
+      <header class="k-testa appare"><p class="k-occhiello">Per gli installatori</p><h2>Quanto puoi guadagnare in un anno</h2></header>
+      <div class="k-guadagni">
+        <div class="k-gu-comandi">
+          <label class="k-cursore"><span class="k-cur-eti"><span>Installazioni al mese</span><b id="gu-n-val" data-no-t>2</b></span><input type="range" id="gu-n" min="1" max="10" step="1" value="2"></label>
+          <label class="k-cursore"><span class="k-cur-eti"><span>Prezzo medio di un'installazione</span><b id="gu-prezzo-val" data-no-t>390 €</b></span><input type="range" id="gu-prezzo" min="150" max="1500" step="10" value="390"></label>
+          <p class="k-gu-fisso"><span>Assistenza:</span> <b id="gu-mese-val" data-no-t>37,50 €</b> <span>al mese per cliente, uguale per tutti i programmi. Tolta la carta, il 60% è tuo.</span></p>
+          <div class="k-gu-totali">
+            <div><small>Dalle installazioni</small><b id="gu-inst" class="k-verde-luce" data-no-t>–</b></div>
+            <div><small>Dall'assistenza</small><b id="gu-ass" class="k-viola-luce" data-no-t>–</b></div>
+            <div class="k-gu-anno"><small>Totale nel primo anno</small><b id="gu-tot" data-no-t>–</b><p>Dal secondo anno, solo di assistenza: <b id="gu-dopo" data-no-t>–</b> al mese, se i clienti restano.</p></div>
+          </div>
+        </div>
+        <div class="k-gu-grafico">
+          <div class="k-legenda"><span><i class="k-verde-luce-bg"></i>Installazioni</span><span><i class="k-viola-luce-bg"></i>Assistenza ogni mese</span><span id="gu-top" hidden>★ <span>Top seller dal mese</span> <b id="gu-top-mese" data-no-t></b></span></div>
+          <div class="k-grafico-scorre"><svg id="gu-svg" viewBox="0 0 640 280" role="img" aria-label="Guadagno di chi vende, mese per mese, per dodici mesi"></svg></div>
+          <p class="k-gu-aiuto">Mesi dall'inizio. Tocca una colonna per vedere il dettaglio.</p>
+          <p class="k-gu-dettaglio" id="gu-dettaglio">Stima lorda, prima delle tasse. Ipotesi: pagamenti con carta, sviluppatore all'80%, sempre lo stesso programma, clienti che restano. I soldi arrivano 14 giorni dopo ogni pagamento.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ il catalogo ============ -->
+  <section id="prodotti" class="k-sezione">
+    <div class="contenitore">
+      <header class="k-testa k-testa-riga appare">
+        <div><p class="k-occhiello">Catalogo</p><h2>Programmi pronti per la tua attività</h2></div>
+        <a class="bottone secondario" href="/esplora"><span id="k-tutti">Vedi tutto il catalogo</span> <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </header>
+      <div class="k-filtri" id="k-filtri" role="group" aria-label="Filtra per tipo"></div>
+      <div class="catalogo banco" id="evidenza" aria-busy="true"></div>
+      <p class="k-nota">Prezzi di partenza: ogni installatore fissa il suo. Le stelle sono quelle del progetto su GitHub.</p>
+    </div>
+  </section>
+
+  <!-- ============ regole chiare ============ -->
+  <section id="fiducia" class="k-sezione k-bianca">
+    <div class="contenitore k-due-col">
+      <header class="k-testa appare"><p class="k-occhiello">Regole chiare</p><h2>Pagamenti e regole, senza sorprese</h2><p class="k-testa-sotto">Repobay divide ogni pagamento in automatico, con regole scritte prima. Chi compra paga il prezzo che vede, niente in più.</p></header>
+      <div class="k-regole">
+        <div class="k-regola appare"><span class="k-icona k-viola"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v10H3zM3 10.5h18M7 14.5h3"/></svg></span><h3>Pagamenti con carta</h3><p>Le quote arrivano sui conti di sviluppatore e installatore 14 giorni dopo il pagamento, tramite Stripe.</p></div>
+        <div class="k-regola appare"><span class="k-icona k-verde-porta"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h14a2 2 0 0 1 2 2v3h-4a2 2 0 0 0 0 4h4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5"/></svg></span><h3>Pagamenti in crypto</h3><p>Ogni quota va dal wallet del cliente a quello di chi la riceve. Repobay non tocca le chiavi.</p><p class="k-reti" data-no-t><span>EVM</span><span>Solana</span><span>Bitcoin</span><span>Tron</span></p></div>
+        <div class="k-regola appare"><span class="k-icona k-ambra"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3M5 10h14v11H5zm7 4v3"/></svg></span><h3>Codice aperto</h3><p>Solo repository pubblici: il programma resta al cliente anche se smette di pagare l'assistenza.</p></div>
+        <div class="k-regola appare"><span class="k-icona k-viola"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h5"/></svg></span><h3>Licenze approvate dall'OSI</h3><p class="licenze" data-no-t>MIT · Apache-2.0 · BSD · ISC · MPL-2.0 · EUPL-1.2 · GPL · LGPL · AGPL</p></div>
+        <div class="k-regola appare"><span class="k-icona k-verde-porta"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="15.5" r="4.5"/><path d="m10.7 12.3 9.3-9.3M17 6l3 3M14 9l2 2"/></svg></span><h3>Dati protetti</h3><p>Chiavi e collegamenti cifrati, accesso con passkey o codice a due fattori.</p></div>
+        <div class="k-regola appare"><span class="k-icona k-ambra"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2zM9 8h6M9 12h6"/></svg></span><h3>Fisco in regola</h3><p>Ognuno dichiara la sua parte. Repobay trasmette solo i dati richiesti dalla direttiva europea DAC7.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ domande ============ -->
+  <section id="domande" class="k-sezione">
+    <div class="contenitore k-due-col">
+      <header class="k-testa appare"><p class="k-occhiello">Domande</p><h2>Domande frequenti</h2><p class="k-testa-sotto">Non trovi la risposta? Scrivi a un installatore dal suo profilo.</p></header>
+      <div class="elenco-domande appare">
+        <details class="domanda" open><summary>Se il software è open source, cosa si paga?</summary><p>Il lavoro: l'installazione e la configurazione nella tua attività, fatte da chi te lo vende, e l'assistenza dei mesi dopo, che dà chi installa, con noi dietro. Il codice resta libero e la licenza non cambia.</p></details>
+        <details class="domanda"><summary>Chi decide i prezzi?</summary><p>Il prezzo dell'installazione lo decide chi vende: lo stesso programma può costare diverso da una persona all'altra, e tu confronti prezzo, recensioni e installazioni confermate. Il canone dell'assistenza lo fissa la piattaforma, e per il 60% va a chi ha installato. Chi sviluppa sceglie solo la sua percentuale sull'installazione, dallo 0 all'80%. L'attività vede il prezzo intero prima di pagare.</p></details>
+        <details class="domanda"><summary>Devo saper programmare per vendere software?</summary><p>No. Chi vende installa e configura programmi già scritti: il corso insegna il metodo e ogni programma ha la sua guida a passi. Il codice lo scrive chi sviluppa.</p></details>
+        <details class="domanda"><summary>Cosa succede se smetto di pagare l'assistenza?</summary><p>Il software resta installato e resta tuo: la licenza open source lo garantisce. Finiscono solo l'assistenza e, se li avevi presi, gli aggiornamenti garantiti.</p></details>
+        <details class="domanda"><summary>Posso sviluppare e vendere insieme?</summary><p>Sì, con lo stesso conto. Puoi vendere i tuoi progetti e anche quelli degli altri.</p></details>
+        <details class="domanda"><summary>Il mio progetto è già in vetrina, ma non l'ho messo io.</summary><p>Alcuni progetti sono in vetrina prima che il loro maintainer si iscriva. Entra con GitHub e rivendicalo dalla sua pagina: il progetto diventa tuo, e anche le eventuali quote in attesa.</p></details>
+        <details class="domanda"><summary>Quanto tiene la piattaforma?</summary><p>Con carta, prima si toglie il costo vero di Stripe per quel pagamento, senza ricarichi (con le carte europee standard circa 1,5% + 0,25 €), poi la piattaforma tiene il 5% di quello che resta. In crypto l'1%, perché non ci sono intermediari da pagare. È tutto dentro la divisione: l'attività paga il prezzo che vede, niente in più. Il canone mensile dell'assistenza va per il 60% a chi ha installato, che risponde all'attività, e per il 40% alla piattaforma. La parte della piattaforma copre i pagamenti e i rinnovi automatici, la garanzia di 14 giorni, la squadra che vede le richieste dei clienti e interviene se serve, i controlli di sicurezza e i clienti che arrivano dal catalogo. Per chi vende e chi sviluppa non ci sono canoni fissi né costi per iscriversi.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ chiusura ============ -->
+  <section class="k-sezione k-ultima">
+    <div class="contenitore">
+      <div class="k-invito appare">
+        <canvas class="muro muro-invito" data-muro aria-hidden="true"></canvas>
+        <div class="k-invito-testo"><h2>Iscriviti gratis, <em>in due minuti</em></h2><p>Pubblica il tuo progetto, oppure scegli i programmi da installare nella tua zona.</p></div>
+        <div class="azioni"><a class="bottone grande chiaro" href="/installatori">Diventa installatore <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="bottone grande trasparente" href="/builder">Pubblica il tuo progetto</a></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+<footer class="piede"></footer>
+<script type="module" src="/testata.js"></script>
+<script type="module" src="/index.js"></script>
+</body>
+</html>

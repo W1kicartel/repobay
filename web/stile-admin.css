@@ -1,0 +1,164 @@
+/* Il pannello di chi gestisce, la sala controllo: lo stesso linguaggio dell'area ma più denso. Il quadro degli strumenti è
+   una banda d'inchiostro con le spie; le code e le tabelle sono fitte, con le righe tratteggiate e le cifre in mono. */
+@media (min-width: 901px) { #pannello { grid-template-columns: 200px minmax(0, 1fr); gap: 30px; } }
+.testa-pannello { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; margin: 30px 0 22px; padding-bottom: 14px; border-bottom: 1px solid var(--bordo); }
+.testa-pannello h1 { margin: 0; }
+.testa-pannello .numero-sezione { margin: 0; order: 2; margin-left: auto; }
+#stato-pannello { font: 500 13px var(--titoli); font-variant-numeric: tabular-nums; }
+
+/* le segnalazioni: la nota e l'importo stanno in fila con i bottoni */
+.contestazione .azioni-contestazione { align-items: center; }
+.contestazione .campo-nota { flex: 1 1 220px; min-width: 0; }
+.contestazione .campo-importo { width: 110px; }
+.contestazione .testo-utente { white-space: pre-wrap; }
+/* il menu: voci numerate, il conteggio come un adesivo viola */
+#pannello > nav { top: 92px; counter-reset: voce; }
+#pannello > nav a { counter-increment: voce; justify-content: flex-start; gap: 10px; padding-top: 6px; padding-bottom: 6px; font-size: 14px; }
+#pannello > nav a::before { content: counter(voce, decimal-leading-zero); font: 600 10.5px var(--titoli); color: var(--inchiostro-3); width: 18px; flex: none; font-variant-numeric: tabular-nums; }
+#pannello > nav a > span:first-child { flex: 1; }
+#pannello > nav a[aria-current=page] { border: 1px solid var(--bordo); border-left: 5px solid var(--segnale); margin-left: -4.5px; padding-left: 12px; box-shadow: var(--ombra); }
+#pannello > nav a[aria-current=page]::before { color: var(--segnale-scuro); }
+.conto-menu { min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: var(--segnale); color: var(--bianco); border: 1px solid var(--bordo); font: 700 11px/17px var(--titoli); text-align: center; transform: rotate(0deg); font-variant-numeric: tabular-nums; }
+
+.sezioni { min-width: 0; }
+.sezioni > section { margin: 0 0 40px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; align-content: start; }
+.sezioni > section > .numero-sezione { margin: 0 0 -8px; }
+.sezioni > section > h2 { margin: 0; font-size: clamp(28px, 3vw, 38px); padding-bottom: 12px; border-bottom: 1px solid var(--bordo); }
+.sezioni > section > p.tenue { margin: 0; max-width: 680px; font-size: 15px; }
+.sotto-titolo { margin: 10px 0 0; font: 600 13.5px var(--titoli);  color: var(--inchiostro); font-variant-numeric: tabular-nums; }
+.sotto-titolo::before { content: '■ '; color: var(--segnale); }
+
+/* ---------------- il quadro: una banda d'inchiostro, strumenti con le spie ---------------- */
+.quadro { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: var(--inchiostro); border: 1px solid var(--bordo); border-radius: var(--raggio); box-shadow: var(--ombra-grande);
+  background-image: linear-gradient(rgba(242, 244, 247, .045) 1px, transparent 1px), linear-gradient(90deg, rgba(242, 244, 247, .045) 1px, transparent 1px); background-size: 12px 12px; overflow: hidden; }
+#numeri::after { content: 'RB-P01'; align-self: end; justify-self: end; padding: 12px 14px; font: 600 10px var(--titoli);  color: #667085; font-variant-numeric: tabular-nums; }
+.quadro.corto { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.strumento { position: relative; display: grid; gap: 8px; align-content: start; padding: 14px 16px 16px; color: var(--carta); text-decoration: none; min-width: 0;
+  border-right: 1px solid rgba(242, 244, 247, .14); border-bottom: 1px solid rgba(242, 244, 247, .14); transition: background .15s; }
+a.strumento:hover { background: rgba(242, 244, 247, .07); color: var(--carta); }
+a.strumento:hover .etichetta { color: var(--sole); }
+.strumento .etichetta { color: #ABA2BD; font-size: 10.5px; padding-right: 18px; }
+.strumento .numero { font: 700 28px/1 var(--titoli); font-variant-numeric: tabular-nums; color: var(--carta); letter-spacing: -.02em; overflow-wrap: anywhere; }
+.strumento.soldi .numero { color: var(--menta); }
+.strumento .spia { position: absolute; top: 15px; right: 14px; width: 9px; height: 9px; border-radius: 50%; background: #332D3D; border: 1.5px solid #667085; }
+.strumento.da-fare .spia { background: var(--sole); border-color: var(--sole); box-shadow: 0 0 0 3px rgba(75, 52, 214, .25); animation: lampeggia 1.6s steps(2, jump-none) infinite; }
+.strumento.da-fare .numero { color: var(--sole); }
+.strumento.guaio .spia { background: var(--segnale); border-color: var(--segnale); box-shadow: 0 0 0 3px rgba(75, 52, 214, .3); animation: lampeggia 1s steps(2, jump-none) infinite; }
+.strumento.guaio .numero { color: var(--segnale); }
+@keyframes lampeggia { 50% { opacity: .35; } }
+
+/* ---------------- prelancio e azioni ---------------- */
+.riga-titolo { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
+.riga-titolo > div:first-child { min-width: 0; }
+.riga-titolo h3 { margin: 0 0 4px; }
+.carta.prelancio { display: grid; gap: 4px; padding-top: 30px; }
+.carta.prelancio::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 10px; border-bottom: 1px solid var(--bordo); background: var(--carta-2); }
+.carta.prelancio:has(#prelancio:checked)::before { background: repeating-linear-gradient(135deg, var(--sole) 0 12px, var(--inchiostro) 12px 24px); }   /* acceso: il nastro di cantiere */
+.carta.prelancio > p:not(.messaggio):not(.piccolo) { font-size: 15px; max-width: 720px; }
+.carta.prelancio input.interruttore { width: 52px; height: 28px; margin: 2px 0 0; flex: none; }
+.carta.prelancio input.interruttore::after { width: 20px; height: 20px; }
+.carta.prelancio input.interruttore:checked { background: var(--sole); }
+.carta.prelancio input.interruttore:checked::after { transform: translateX(24px); }
+#prelancio-stato { font: 600 13.5px var(--titoli);  font-variant-numeric: tabular-nums; }
+.stato-ok { color: var(--ok); }
+.stato-attesa { color: #8A5A00; }
+.carta > .azioni { margin-top: 6px; }
+.carta > .messaggio { margin: 10px 0 0; color: var(--errore); }
+.carta > .messaggio.bene { color: var(--ok); }
+.sezioni .carta { padding: 20px 22px; }
+.sezioni .carta > p { font-size: 15px; }
+
+/* ---------------- la coda di revisione ---------------- */
+.coda { display: grid; gap: 12px; }
+.prodotto-admin { display: grid; gap: 10px; padding-left: 30px !important; }
+.prodotto-admin::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 8px; background: var(--cobalto); border-right: 1px solid var(--bordo); }
+.prodotto-admin.da-fare { box-shadow: var(--ombra); }
+.prodotto-admin.da-fare::before { background: repeating-linear-gradient(180deg, var(--sole) 0 10px, var(--inchiostro) 10px 20px); }
+.prodotto-admin > p { margin: 0; }
+.prodotto-admin h3 { font-size: 21px; }
+.prodotto-admin .repo { margin: 0; color: var(--inchiostro-2); font-size: 12.5px; overflow-wrap: anywhere; }
+.pillole { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.anteprima { display: grid; gap: 18px; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); padding: 12px 0; border-top: 1px solid var(--bordo); border-bottom: 1px solid var(--bordo); }
+.anteprima .etichetta { display: block; margin-bottom: 6px; }
+.anteprima p { margin: 0; }
+.anteprima dl.dati { font-size: 13.5px; gap: 6px 14px; align-content: start; }
+.testo-utente { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--inchiostro); font-size: 14.5px; }
+.guida-admin summary { cursor: pointer; color: var(--inchiostro-2); font: 600 13px var(--titoli);  list-style: none; display: flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
+.guida-admin summary::-webkit-details-marker { display: none; }
+.guida-admin summary::before { content: '+'; display: inline-grid; place-items: center; width: 16px; height: 16px; border: 1px solid var(--bordo); font: 600 12px/1 var(--titoli); color: var(--inchiostro); transition: transform .25s var(--molla); font-variant-numeric: tabular-nums; }
+.guida-admin[open] summary::before { transform: rotate(45deg); background: var(--sole); }
+.guida-admin summary:hover { color: var(--inchiostro); }
+.guida-admin p { margin: 10px 0 0; }
+.tenue-chip { font: 600 11px var(--titoli); padding: 0 6px; border-radius: 999px; background: var(--sfondo-2); border: 1px solid var(--bordo); font-variant-numeric: tabular-nums; }
+.chip.attivo .tenue-chip { background: var(--segnale); color: var(--bianco); border-color: var(--segnale); }
+.filtri .chip { padding: 5px 12px; font-size: 13px; }
+@media (max-width: 720px) {
+  .anteprima { grid-template-columns: 1fr; }
+  .prodotto-admin .riga-titolo { flex-wrap: wrap; }
+  .pillole { justify-content: flex-start; }
+}
+
+/* ---------------- tabelle fitte ---------------- */
+.sezioni .tabella { box-shadow: var(--ombra); }
+.sezioni th, .sezioni td { padding: 8px 10px; }
+.sezioni td { border-bottom: 1px solid var(--bordo); font-size: 13.5px; vertical-align: top; }
+.sezioni tbody tr:nth-child(even) td { background: rgba(231, 225, 241, .45); }
+.sezioni tbody tr:hover td { background: #EEECFD; }
+.sezioni .tabella .pillola { font-size: 10px; padding: 1px 8px; }
+.nome-utente { display: grid; gap: 4px; justify-items: start; }
+.errore-versamento { white-space: normal; display: block; min-width: 240px; max-width: 420px; color: var(--errore); font-size: 12.5px; }
+
+/* ---------------- recensioni ---------------- */
+.recensioni-admin { background: var(--carta); border: 1px solid var(--bordo); padding: 0 16px; }
+.recensioni-admin > div { align-items: flex-start; padding: 12px 0; }
+.recensione-testo { display: grid; gap: 6px; min-width: 0; }
+.recensione-testo p { margin: 0; }
+.riga-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.nascosta-r .recensione-testo { opacity: .55; }
+.recensioni-admin .bottone { flex: none; }
+
+/* ---------------- vetrina e DAC7 ---------------- */
+.azioni.scarica { align-items: flex-end; margin-top: 4px; }
+.azioni.scarica label { min-width: 180px; }
+#lista-vetrina .lista-righe { background: var(--carta); border: 1px solid var(--bordo); padding: 0 16px; }
+#lista-vetrina .lista-righe > div { flex-wrap: wrap; }
+#modulo-vetrina { max-width: 640px; }
+#modulo-vetrina input:disabled { opacity: .5; cursor: not-allowed; }
+#vietato, #guasto { display: grid; justify-items: start; text-align: left; max-width: 560px; margin-top: 24px; }
+
+/* stato vuoto: la scatola vuota, piccola, a sinistra */
+.vuoto.vuoto-sala { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 16px; align-items: center; text-align: left; padding: 12px 18px 12px 10px; }
+.vuoto-sala h3 { margin: 0 0 2px; font-size: 17px; }
+.vuoto-sala p { margin: 0; font-size: 14px; }
+.vuoto-img { aspect-ratio: 1; position: relative; }
+.vuoto-img::before { content: ''; position: absolute; inset: 16% 10% 8%; border: 1px solid var(--inchiostro-3); border-radius: 50%; background: var(--sfondo-2); }
+.vuoto-img img { -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent 99%); mask-image: linear-gradient(90deg, #000 85%, transparent 99%); position: relative; display: block; width: 100%; height: 100%; object-fit: contain; color: transparent; font-size: 0; transform: rotate(0deg); }
+img.mancante { visibility: hidden; }
+.vuoto-img:has(img.caricata)::before { display: none; }
+
+@media (max-width: 1100px) { .quadro { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 900px) {
+  #pannello > nav a[aria-current=page] { border: 1px solid var(--bordo); margin: 0; padding-left: 14px; box-shadow: var(--ombra); }
+  #pannello > nav a::before { width: auto; }
+  #pannello > nav { margin: 0 -24px; padding: 2px 24px 8px; scrollbar-width: none; }
+}
+@media (max-width: 560px) {
+  .quadro, .quadro.corto { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .strumento { padding: 12px 12px 14px; }
+  .strumento .numero { font-size: 21px; }
+  .testa-pannello .numero-sezione { margin-left: 0; order: 0; width: 100%; }
+  .sezioni .carta { padding: 16px; }
+}
+.contestazione .campo-carico { max-width: 280px; }
+.pila-stretta { display: inline-flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+
+/* il canone dell'assistenza nel pannello: un campo corto in linea con il suo bottone */
+.riga-in-linea { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.campo-corto { width: 90px; }
+
+/* il canone dell'assistenza, uno per tutti */
+.carta.canone { display: grid; gap: 8px; }
+.carta.canone > p:not(.messaggio) { font-size: 15px; max-width: 720px; margin: 0; }
+.riga-canone { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 6px; }
+.riga-canone label { font-weight: 600; }
+.riga-canone .campo-corto { width: 110px; }

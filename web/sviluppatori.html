@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API e webhook · {{NOME}}</title>
+<meta property="og:type" content="website"><meta property="og:site_name" content="{{NOME}}"><meta property="og:title" content="API e webhook · {{NOME}}"><meta property="og:description" content="La documentazione per gli sviluppatori: API v1 con chiave Bearer, OpenAPI, webhook firmati con HMAC-SHA256, badge per il README e Solana Pay."><meta property="og:image" content="{{URL}}/img/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#0D0B11">
+<meta name="description" content="La documentazione per gli sviluppatori: API v1 con chiave Bearer, OpenAPI, webhook firmati con HMAC-SHA256, badge per il README e Solana Pay.">
+<link rel="stylesheet" href="/stile.css"><link rel="stylesheet" href="/stile-pubblico.css"><link rel="icon" href="/icona.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header class="barra"></header>
+<main id="contenuto" class="contenitore documentazione">
+  <header class="testa-pagina">
+    <p class="codice-tavola"><span data-no-t>RB—API</span><span>Documentazione</span><span class="versione" data-no-t>v1</span></p>
+    <h1>API e <span class="evidenzia">webhook</span>.</h1>
+    <p class="sotto">Leggi il catalogo, i tuoi prodotti, le vendite e le quote. Ricevi un webhook firmato a ogni evento che ti riguarda.</p>
+  </header>
+
+  <div class="lati">
+    <nav aria-label="Indice della documentazione" id="indice">
+      <span class="gruppo">API v1</span>
+      <a href="#panoramica">Panoramica</a>
+      <a href="#autenticazione">Autenticazione</a>
+      <a href="#catalogo">Catalogo pubblico</a>
+      <a href="#conto">Il tuo conto</a>
+      <a href="#paginazione">Paginazione</a>
+      <a href="#limiti">Limiti, errori e CORS</a>
+      <span class="gruppo">Webhook</span>
+      <a href="#webhook">Come funzionano</a>
+      <a href="#eventi">Eventi</a>
+      <a href="#firma">Verificare la firma</a>
+      <a href="#tentativi">Tentativi ripetuti</a>
+      <span class="gruppo">Altro</span>
+      <a href="#badge">Badge per il README</a>
+      <a href="#link">Link di pagamento</a>
+      <a href="#solana">Solana Pay</a>
+    </nav>
+
+    <div>
+      <section id="panoramica">
+        <h2>Panoramica</h2>
+        <p>Un'API REST in JSON, in sola lettura. Il catalogo è pubblico; i dati del tuo conto chiedono una chiave.</p>
+        <div class="blocco-codice"><div class="titolo-codice"><span>URL di base</span></div><pre><code><span class="base">https://example.com</span>/api/v1</code></pre></div>
+        <ul>
+          <li>Gli importi sono in centesimi di euro: 39000 vuol dire 390,00 €.</li>
+          <li>Le quote e le percentuali sono frazioni: 0.15 vuol dire 15%.</li>
+          <li>Le date sono in UTC.</li>
+          <li>I messaggi d'errore arrivano nella lingua dell'intestazione Accept-Language (italiano o inglese).</li>
+        </ul>
+        <div class="riquadro"><strong>OpenAPI 3.1.</strong> <span>La descrizione completa, per Postman, i generatori di client e gli agenti AI:</span> <a href="/api/v1/openapi.json">/api/v1/openapi.json</a></div>
+      </section>
+
+      <section id="autenticazione">
+        <h2>Autenticazione</h2>
+        <p>Crea una chiave nella tua area, sezione Sviluppatori. La chiave comincia con ak_ e si vede una volta sola: conservala come una password.</p>
+        <p>Mandala in ogni richiesta privata, nell'intestazione Authorization:</p>
+        <pre><code>curl <span class="base">https://example.com</span>/api/v1/io \
+  -H "Authorization: Bearer ak_la_tua_chiave"</code></pre>
+        <pre><code>{
+  "dati": {
+    "nome": "Leo Ferri",
+    "codice": "leo-ferri-ywni",
+    "github": null,
+    "zona": "Bergamo e provincia",
+    "email": "leo@example.com"
+  },
+  "pagina": 1
+}</code></pre>
+        <p>Puoi avere fino a 10 chiavi attive e revocarle quando vuoi. Una chiave revocata smette di funzionare subito.</p>
+      </section>
+
+      <section id="catalogo">
+        <h2>Catalogo pubblico</h2>
+        <p>Non serve la chiave. Sono gli stessi dati della pagina del catalogo.</p>
+
+        <div class="endpoint"><span class="metodo">GET</span><code>/api/v1/catalogo</code><span class="chiave">pubblico</span></div>
+        <div class="tabella"><table>
+          <thead><tr><th>Parametro</th><th>Descrizione</th></tr></thead>
+          <tbody>
+            <tr><td><code>q</code></td><td>Ricerca libera nel nome, nella descrizione e nel repository.</td></tr>
+            <tr><td><code>categoria</code></td><td>gestionale, cassa, prenotazioni, sito, ecommerce, magazzino, contabilità, crm, comunicazione, sanità, ristorazione, scuola, altro.</td></tr>
+            <tr><td><code>zona</code></td><td>Solo i prodotti con un installatore in quella zona (o che lavora da remoto).</td></tr>
+            <tr><td><code>ordine</code></td><td>Vuoto per numero di installatori; stelle, voto o nuovi.</td></tr>
+            <tr><td><code>pagina</code></td><td>Da 1 in su. 24 prodotti per pagina.</td></tr>
+          </tbody>
+        </table></div>
+        <pre><code>curl "<span class="base">https://example.com</span>/api/v1/catalogo?q=cassa&amp;zona=bergamo"</code></pre>
+        <pre><code>{
+  "totale": 1,
+  "pagina": 1,
+  "pagine": 1,
+  "categorie": ["gestionale", "cassa", "prenotazioni", "…"],
+  "prodotti": [
+    {
+      "slug": "pannello-di-controllo",
+      "nome": "Pannello di Controllo",
+      "descrizione": "Il gestionale per i negozi di quartiere…",
+      "categoria": "gestionale",
+      "repo": "marta-dev/pannello-di-controllo",
+      "licenza": "MIT",
+      "stelle": 1240,
+      "versione": "v2.3.0",
+      "prezzo_avvio": 39000,
+      "da_avvio": 34000,
+      "prezzo_mese": 2900,
+      "percentuale": 0.8,
+      "installatori": 2,
+      "voto": 5,
+      "recensioni": 1,
+      "rivendicato": true
+    }
+  ]
+}</code></pre>
+
+        <p>Il prezzo dell'installazione lo decide chi vende: prezzo_avvio è il prezzo di riferimento del catalogo, da_avvio il più basso fra chi vende il prodotto. prezzo_mese è il canone dell'assistenza: tolto, con carta, il costo di Stripe, il 60% va a chi ha installato e il 40% alla piattaforma; a chi sviluppa niente; percentuale è la parte di chi sviluppa su quello che resta dell'installazione dopo la piattaforma e, con carta, il costo di Stripe.</p>
+
+        <div class="endpoint"><span class="metodo">GET</span><code>/api/v1/catalogo/{slug}</code><span class="chiave">pubblico</span></div>
+        <p>Un prodotto con il README, chi lo vende con la zona, il prezzo e il livello, le recensioni, le ultime release, i collaboratori e la divisione. La divisione d'esempio è sul prezzo più basso; ogni persona che vende ha anche la sua.</p>
+        <pre><code>curl <span class="base">https://example.com</span>/api/v1/catalogo/pannello-di-controllo</code></pre>
+        <pre><code>{
+  "slug": "pannello-di-controllo",
+  "nome": "Pannello di Controllo",
+  "percentuale": 0.8,
+  "prezzi": { "da": 34000, "a": 39000 },
+  "installatori": [
+    { "nome": "Sami Haddad", "codice": "sami-haddad-k2pd", "zona": "Torino", "prezzo_avvio": 34000, "vendite": 2, "livello": 0, "quota": 0.2, "voto": null, "recensioni": 0 },
+    { "nome": "Leo Ferri", "codice": "leo-ferri-ywni", "zona": "Bergamo e provincia", "prezzo_avvio": 39000, "vendite": 12, "livello": 1, "quota": 0.35, "voto": 4.5, "recensioni": 2 }
+  ],
+  "divisione": {
+    "avvio": { "builder": 25434, "installatore": 6358, "piattaforma": 2208, "costo": 535 },
+    "mese": { "builder": 0, "installatore": 1699, "piattaforma": 1201, "costo": 69 }
+  },
+  "versioni": [{ "tag": "v2.3.0", "nome": "Pannello di Controllo 2.3", "url": "https://github.com/…", "pubblicata": "…" }],
+  "badge": { "svg": "…/badge/pannello-di-controllo.svg", "markdown": "[![…](…)](…)" }
+}</code></pre>
+      </section>
+
+      <section id="conto">
+        <h2>Il tuo conto</h2>
+        <p>Tutti con la chiave. Rispondono sempre con un oggetto che ha i dati e il numero di pagina.</p>
+        <div class="tabella"><table>
+          <thead><tr><th>Endpoint</th><th>Cosa restituisce</th></tr></thead>
+          <tbody>
+            <tr><td><span class="metodo">GET</span> <code>/io</code></td><td>Il tuo profilo: nome, codice, GitHub, zona, email.</td></tr>
+            <tr><td><span class="metodo">GET</span> <code>/prodotti</code></td><td>I prodotti che hai pubblicato come builder, con la tua percentuale, il canone dell'assistenza, chi li vende e i clienti attivi.</td></tr>
+            <tr><td><span class="metodo">GET</span> <code>/adozioni</code></td><td>I prodotti che vendi, con la zona, il tuo prezzo, la tua parte, il tuo livello e il tuo link personale.</td></tr>
+            <tr><td><span class="metodo">GET</span> <code>/vendite</code></td><td>Le vendite che ti riguardano, come builder o come installatore.</td></tr>
+            <tr><td><span class="metodo">GET</span> <code>/quote</code></td><td>Le tue quote: importo, stato (in attesa, versata, annullata) e data in cui diventano disponibili.</td></tr>
+            <tr><td><span class="metodo">GET</span> <code>/notifiche</code></td><td>Le tue notifiche, le più nuove prima.</td></tr>
+          </tbody>
+        </table></div>
+        <pre><code>curl <span class="base">https://example.com</span>/api/v1/prodotti \
+  -H "Authorization: Bearer ak_la_tua_chiave"</code></pre>
+        <pre><code>{
+  "dati": [
+    {
+      "slug": "pannello-di-controllo",
+      "repo": "marta-dev/pannello-di-controllo",
+      "nome": "Pannello di Controllo",
+      "stato": "pubblicato",
+      "percentuale": 0.8,
+      "prezzo_mese": 2900,
+      "versione": "v2.3.0",
+      "stelle": 1240,
+      "installatori": 2,
+      "clienti": 7
+    }
+  ],
+  "pagina": 1
+}</code></pre>
+        <pre><code>curl <span class="base">https://example.com</span>/api/v1/quote \
+  -H "Authorization: Bearer ak_la_tua_chiave"</code></pre>
+        <pre><code>{
+  "dati": [
+    {
+      "id": 9,
+      "prodotto": "pannello-di-controllo",
+      "ruolo": "installatore",
+      "tipo": "avvio",
+      "importo": 7294,
+      "stornato": 0,
+      "stato": "in_attesa",
+      "disponibile": "2026-10-15 12:07:17",
+      "creato": "2026-10-01 12:07:17"
+    }
+  ],
+  "pagina": 1
+}</code></pre>
+        <pre><code>curl <span class="base">https://example.com</span>/api/v1/adozioni \
+  -H "Authorization: Bearer ak_la_tua_chiave"</code></pre>
+        <pre><code>{
+  "dati": [
+    {
+      "slug": "pannello-di-controllo",
+      "nome": "Pannello di Controllo",
+      "zona": "Bergamo e provincia",
+      "prezzo_avvio": 39000,
+      "quota": 0.2,
+      "livello": 1,
+      "creato": "2026-09-21 12:07:17",
+      "link": "<span class="base">https://example.com</span>/p/pannello-di-controllo?ref=leo-ferri-ywni"
+    }
+  ],
+  "pagina": 1
+}</code></pre>
+      </section>
+
+      <section id="paginazione">
+        <h2>Paginazione</h2>
+        <p>Le liste del conto (vendite, quote, notifiche) danno 100 elementi per pagina. Chiedi la pagina successiva con il parametro pagina, finché ne ricevi meno di 100.</p>
+        <pre><code>curl "<span class="base">https://example.com</span>/api/v1/vendite?pagina=2" \
+  -H "Authorization: Bearer ak_la_tua_chiave"</code></pre>
+        <p>Il catalogo dà 24 prodotti per pagina e dice quante pagine ci sono in tutto, nei campi totale e pagine.</p>
+      </section>
+
+      <section id="limiti">
+        <h2>Limiti, errori e CORS</h2>
+        <ul>
+          <li>Al massimo 120 richieste al minuto per chiave. Oltre, la risposta è 429: aspetta un minuto e riprova.</li>
+          <li>Gli errori hanno un codice HTTP e un corpo JSON con il campo errore.</li>
+          <li>L'API accetta richieste da qualunque origine (CORS aperto, solo GET): puoi chiamarla anche dal browser. Non mettere mai la chiave in una pagina pubblica.</li>
+        </ul>
+        <div class="tabella"><table>
+          <thead><tr><th>Codice</th><th>Quando</th></tr></thead>
+          <tbody>
+            <tr><td><code>401</code></td><td>La chiave manca, non è valida o è stata revocata.</td></tr>
+            <tr><td><code>403</code></td><td>Il conto è sospeso.</td></tr>
+            <tr><td><code>404</code></td><td>La risorsa o il prodotto non esistono.</td></tr>
+            <tr><td><code>429</code></td><td>Più di 120 richieste in un minuto.</td></tr>
+          </tbody>
+        </table></div>
+        <pre><code>{ "errore": "Chiave non valida o revocata" }</code></pre>
+      </section>
+
+      <section id="webhook">
+        <h2>Webhook</h2>
+        <p>Aggiungi un indirizzo https nella tua area, sezione Integrazioni, e scegli gli eventi (o tutti). Ti mostriamo il segreto una volta sola: comincia con whsec_ e serve a verificare la firma.</p>
+        <p>A ogni evento mandiamo una richiesta POST con queste intestazioni:</p>
+        <pre><code>POST /il-tuo-webhook HTTP/1.1
+Content-Type: application/json
+User-Agent: {{NOME}}-Webhook/1
+X-Evento: vendita.nuova
+X-Firma: t=1760174691,v1=5f2b…c9e1</code></pre>
+        <p>Il corpo è sempre lo stesso involucro: un id unico, il tipo, la data e i dati dell'evento.</p>
+        <pre><code>{
+  "id": "evt_3kQ9xV2mT0aLr8pB",
+  "tipo": "vendita.nuova",
+  "creato": "2026-10-11T09:24:51.112Z",
+  "dati": {
+    "prodotto": "Pannello di Controllo",
+    "importo": 7294,
+    "ruolo": "installatore",
+    "cliente": "Panificio Gatti"
+  }
+}</code></pre>
+        <p>Un tentativo ripetuto ha lo stesso id: usalo per non elaborare due volte lo stesso evento. Dalla tua area puoi mandare un evento di prova quando vuoi.</p>
+      </section>
+
+      <section id="eventi">
+        <h2>Eventi</h2>
+        <div class="tabella"><table>
+          <thead><tr><th>Evento</th><th>Quando</th><th>Dati</th></tr></thead>
+          <tbody>
+            <tr><td><code>vendita.nuova</code></td><td>Un'attività paga con la carta un prodotto che ti riguarda.</td><td><code>prodotto, importo, ruolo, cliente</code></td></tr>
+            <tr><td><code>crypto.pagato</code></td><td>Un pagamento in crypto è confermato sulla blockchain.</td><td><code>prodotto, importo, simbolo, ruolo, cliente, rete</code></td></tr>
+            <tr><td><code>abbonamento.cessato</code></td><td>Un cliente chiude l'abbonamento mensile.</td><td><code>prodotto, cliente</code></td></tr>
+            <tr><td><code>rimborso</code></td><td>Un pagamento viene rimborsato e le quote stornate.</td><td><code>prodotto, importo</code></td></tr>
+            <tr><td><code>quota.versata</code></td><td>Una quota parte verso il tuo conto Stripe.</td><td><code>importo</code></td></tr>
+            <tr><td><code>prodotto.pubblicato</code></td><td>Il tuo prodotto ha passato la revisione.</td><td><code>prodotto, slug, nota</code></td></tr>
+            <tr><td><code>prodotto.respinto</code></td><td>Il tuo prodotto non è stato approvato.</td><td><code>prodotto, slug, nota</code></td></tr>
+            <tr><td><code>prodotto.sospeso</code></td><td>Il tuo prodotto è sospeso (per esempio, la licenza è cambiata).</td><td><code>prodotto, slug, nota</code></td></tr>
+            <tr><td><code>installatore.nuovo</code></td><td>Qualcuno comincia a installare il tuo prodotto.</td><td><code>prodotto, installatore, zona</code></td></tr>
+            <tr><td><code>collaborazione.invito</code></td><td>Un builder ti invita a mantenere un suo progetto.</td><td><code>prodotto, da, quota</code></td></tr>
+            <tr><td><code>accordo.proposto</code></td><td>Chi installa o chi sviluppa un prodotto ti propone un'altra divisione fra voi due.</td><td><code>prodotto, da, quota, resto, nota</code></td></tr>
+            <tr><td><code>accordo.accettato</code></td><td>L'altra parte accetta la divisione che hai proposto: vale per le vendite da adesso.</td><td><code>prodotto, da, quota, resto</code></td></tr>
+            <tr><td><code>accordo.rifiutato</code></td><td>L'altra parte non accetta la divisione che hai proposto.</td><td><code>prodotto, da, quota, resto</code></td></tr>
+            <tr><td><code>percentuale.cambiata</code></td><td>Chi sviluppa un prodotto che vendi cambia la sua percentuale: vale per le vendite nuove.</td><td><code>prodotto, slug, da, prima, dopo</code></td></tr>
+            <tr><td><code>livello.nuovo</code></td><td>Diventi Top seller di un prodotto: sulle tue vendite la parte di chi sviluppa scende.</td><td><code>prodotto, slug, vendite, livello, prima, percentuale</code></td></tr>
+            <tr><td><code>mancia.ricevuta</code></td><td>Chi sviluppa un prodotto che vendi ti manda una mancia.</td><td><code>da, prodotto, importo, nota</code></td></tr>
+            <tr><td><code>release.nuova</code></td><td>Esce una versione nuova di un prodotto che installi.</td><td><code>prodotto, versione, link, slug</code></td></tr>
+            <tr><td><code>contatto.nuovo</code></td><td>Un'attività ti scrive dal tuo profilo.</td><td><code>da, email, messaggio, prodotto</code></td></tr>
+            <tr><td><code>recensione.nuova</code></td><td>Un cliente lascia una recensione.</td><td><code>prodotto, slug, voto</code></td></tr>
+            <tr><td><code>progetto.rivendicato</code></td><td>Hai rivendicato un progetto che era in vetrina.</td><td><code>prodotto, importo</code></td></tr>
+            <tr><td><code>prova</code></td><td>Lo mandi tu dalla tua area, per provare il webhook.</td><td><code>messaggio</code></td></tr>
+          </tbody>
+        </table></div>
+        <p>Negli eventi sugli accordi, quota è la parte di chi vende e resto quella di chi sviluppa, in percentuale intera: 20 e 80 vogliono dire 20% e 80%. In percentuale.cambiata e livello.nuovo, prima, dopo e percentuale sono la parte di chi sviluppa, in percentuale: 32.5 vuol dire 32,5%. Gli importi sono in centesimi.</p>
+      </section>
+
+      <section id="firma">
+        <h2>Verificare la firma</h2>
+        <p>L'intestazione X-Firma contiene il momento della firma (t, in secondi) e la firma (v1): un HMAC-SHA256 in esadecimale del testo t, un punto e il corpo così come arriva, calcolato con il tuo segreto.</p>
+        <p>Calcola la stessa firma, confrontala in tempo costante e scarta le richieste più vecchie di cinque minuti.</p>
+        <h3>Node.js</h3>
+        <div class="blocco-codice"><div class="titolo-codice"><span>verifica.mjs</span></div><pre><code>import { createHmac, timingSafeEqual } from 'node:crypto';
+import { createServer } from 'node:http';
+
+export function verifica(corpo, intestazione, segreto, tolleranza = 300) {
+  const parti = Object.fromEntries(intestazione.split(',').map(x =&gt; x.split('=')));
+  const t = Number(parti.t);
+  if (!t || Math.abs(Date.now() / 1000 - t) &gt; tolleranza) return false;
+  const attesa = createHmac('sha256', segreto).update(`${t}.${corpo}`).digest('hex');
+  const a = Buffer.from(attesa), b = Buffer.from(parti.v1 || '');
+  return a.length === b.length &amp;&amp; timingSafeEqual(a, b);
+}
+
+createServer(async (req, res) =&gt; {
+  let corpo = '';
+  for await (const pezzo of req) corpo += pezzo;
+  if (!verifica(corpo, req.headers['x-firma'] || '', process.env.SEGRETO_WEBHOOK)) {
+    res.writeHead(400);
+    return res.end();
+  }
+  const evento = JSON.parse(corpo);
+  console.log(evento.tipo, evento.dati);
+  res.writeHead(200);
+  res.end('ok');
+}).listen(3000);</code></pre></div>
+        <h3>Python</h3>
+        <div class="blocco-codice"><div class="titolo-codice"><span>verifica.py</span></div><pre><code>import hashlib
+import hmac
+import time
+
+
+def verifica(corpo: bytes, intestazione: str, segreto: str, tolleranza: int = 300) -&gt; bool:
+    parti = dict(x.split("=", 1) for x in intestazione.split(",") if "=" in x)
+    t = int(parti.get("t", "0") or 0)
+    if not t or abs(time.time() - t) &gt; tolleranza:
+        return False
+    attesa = hmac.new(segreto.encode(), f"{t}.".encode() + corpo, hashlib.sha256).hexdigest()
+    return hmac.compare_digest(attesa, parti.get("v1", ""))
+
+
+# Flask
+# @app.post("/il-tuo-webhook")
+# def webhook():
+#     if not verifica(request.get_data(), request.headers.get("X-Firma", ""), SEGRETO):
+#         abort(400)
+#     evento = request.get_json()
+#     return "ok"</code></pre></div>
+        <div class="riquadro"><strong>Il corpo esatto.</strong> <span>Calcola la firma sui byte che ricevi, prima di leggere il JSON: anche uno spazio in più cambia la firma.</span></div>
+      </section>
+
+      <section id="tentativi">
+        <h2>Tentativi ripetuti</h2>
+        <p>Una consegna riesce quando il tuo server risponde con un codice 2xx entro 10 secondi. I redirect non si seguono.</p>
+        <p>Se non riesce, riproviamo con attese sempre più lunghe: dopo 1 minuto, 5 minuti, 30 minuti, 2 ore, 6 ore, 12 ore e 24 ore. Dopo l'ultimo tentativo la consegna è segnata come fallita.</p>
+        <p>Dopo 20 consegne fallite di fila spegniamo il webhook e ti avvisiamo. Lo riaccendi dalla tua area, dove vedi anche le ultime consegne con la risposta del tuo server.</p>
+      </section>
+
+      <section id="badge">
+        <h2>Badge per il README</h2>
+        <p>Ogni prodotto pubblicato ha un badge SVG che mostra quanti installatori lo portano nelle attività. Si aggiorna da solo e parla la lingua di chi lo guarda.</p>
+        <div class="badge-anteprima"><img src="/badge/pannello-di-controllo.svg" alt="Badge d'esempio"></div>
+        <pre><code>[![{{NOME}}](<span class="base">https://example.com</span>/badge/il-tuo-progetto.svg)](<span class="base">https://example.com</span>/p/il-tuo-progetto)</code></pre>
+        <p>Lo trovi già pronto, con lo slug giusto, nella pagina del tuo prodotto e nella tua area.</p>
+      </section>
+
+      <section id="link">
+        <h2>Link di pagamento</h2>
+        <p>Ogni installatore ha un link personale per ogni prodotto che installa. Chi lo apre trova l'installatore già scelto e può pagare con la carta o in crypto. La scelta resta ricordata per 30 giorni.</p>
+        <pre><code><span class="base">https://example.com</span>/p/pannello-di-controllo?ref=leo-ferri-ywni</code></pre>
+        <p>I tuoi link sono anche nella risposta di /api/v1/adozioni.</p>
+      </section>
+
+      <section id="solana">
+        <h2>Solana Pay</h2>
+        <p>Quando un'attività paga in crypto sulla rete Solana, l'ordine ha anche un link Solana Pay e il suo QR: si paga dal telefono, con qualunque wallet compatibile. Il link segue la specifica «transaction request».</p>
+        <pre><code>solana:https%3A%2F%2Fexample.com%2Fapi%2Fsolana%2Fpay%3Fordine%3D&lt;codice&gt;</code></pre>
+        <div class="endpoint"><span class="metodo">GET</span><code>/api/solana/pay</code></div>
+        <p>Il wallet chiede nome e icona da mostrare.</p>
+        <pre><code>{ "label": "{{NOME}}", "icon": "<span class="base">https://example.com</span>/icona.svg" }</code></pre>
+        <div class="endpoint"><span class="metodo post">POST</span><code>/api/solana/pay?ordine=&lt;codice&gt;</code></div>
+        <p>Il wallet manda il suo indirizzo e riceve la transazione da firmare, già divisa fra builder, installatore e piattaforma.</p>
+        <pre><code>curl -X POST "<span class="base">https://example.com</span>/api/solana/pay?ordine=&lt;codice&gt;" \
+  -H "Content-Type: application/json" \
+  -d '{ "account": "&lt;indirizzo del wallet&gt;" }'</code></pre>
+        <pre><code>{ "transaction": "&lt;transazione in base64&gt;", "message": "{{NOME}}: Pannello di Controllo" }</code></pre>
+        <p>Solana Pay è attivo solo quando la piattaforma è raggiungibile in https.</p>
+      </section>
+    </div>
+  </div>
+</main>
+<footer class="piede"></footer>
+<script type="module" src="/testata.js"></script>
+<script type="module" src="/sviluppatori.js"></script>
+</body>
+</html>

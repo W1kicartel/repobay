@@ -1,0 +1,19 @@
+dati/
+# sul server la cartella dei dati può stare anche dentro il codice, con il file delle impostazioni: mai nel repository
+repobay-dati/
+node_modules/
+.env
+.env.*
+*.db
+*.db-wal
+*.db-shm
+segreto.key
+contratti/out/
+contratti/cache/
+# lo scrive chi pubblica (strumenti/versione.mjs): il commit che gira sul server
+versione.json
+.DS_Store
+# quello che rifanno gli script 3D (strumenti/3d): le scene di Blender, le prove e i registri, la cache di Python
+strumenti/3d/blend/
+strumenti/3d/controllo/
+__pycache__/

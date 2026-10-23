@@ -1,0 +1,40 @@
+name: Una proposta · Feature request
+description: Un miglioramento per chi sviluppa, chi installa o le attività. / An improvement for developers, installers or businesses.
+labels: [proposta]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Per le modifiche grandi parliamone qui prima del codice: vedi [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md).
+        For larger changes, let's talk here before the code: see [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md).
+  - type: dropdown
+    id: per-chi
+    attributes:
+      label: Per chi / For whom
+      multiple: true
+      options:
+        - Chi sviluppa / Developers
+        - Chi installa / Installers
+        - Le attività / Businesses
+        - Chi gestisce la piattaforma / Platform operators
+        - Chi contribuisce al codice / Contributors
+    validations:
+      required: true
+  - type: textarea
+    id: problema
+    attributes:
+      label: Il problema / The problem
+      description: Cosa manca o cosa è scomodo oggi, con un caso vero se c'è. / What is missing or awkward today, with a real case if you have one.
+    validations:
+      required: true
+  - type: textarea
+    id: proposta
+    attributes:
+      label: La proposta / The proposal
+      description: Come lo risolveresti. Se tocca i pagamenti o la divisione dei soldi, dillo. / How you would solve it. Say so if it touches payments or the money split.
+    validations:
+      required: true
+  - type: textarea
+    id: alternative
+    attributes:
+      label: Alternative / Alternatives

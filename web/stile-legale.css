@@ -1,0 +1,56 @@
+/* Condizioni e privacy: impaginate come un documento tecnico ben fatto. Indice laterale numerato, articoli numerati in mono,
+   gli avvisi «[da decidere…]» come adesivi gialli attaccati al foglio. I testi non cambiano: cambia solo la tavola. */
+main.documento { padding-top: 8px; }
+.testa-documento { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 380px); gap: 12px 40px; align-items: end;
+  margin: 40px 0 36px; padding-bottom: 22px; border-bottom: 1px solid var(--bordo); }
+.testa-documento::after { content: attr(data-codice); position: absolute; right: 0; top: -22px; font: 600 10.5px var(--titoli);  color: var(--inchiostro-3); font-variant-numeric: tabular-nums; }
+.testa-documento h1 { margin: 0; grid-column: 1; }
+.testa-documento .aggiornato { grid-column: 1; margin: 0; font: 500 13.5px var(--titoli);  color: var(--inchiostro-2); font-variant-numeric: tabular-nums; }
+/* la bozza: un adesivo grande, storto, con il nastro */
+.testa-documento .bozza { grid-column: 2; grid-row: 1 / span 2; align-self: center; position: relative; display: block; margin: 0; padding: 18px 18px 16px; font-size: 14.5px; font-weight: 500; line-height: 1.5;
+  background: var(--sole); color: var(--inchiostro); border: 1px solid var(--bordo); box-shadow: var(--ombra); transform: rotate(0deg); }
+.testa-documento .bozza::before, .da-decidere::before { content: ''; position: absolute; top: -10px; left: 50%; width: 72px; height: 18px; margin-left: -36px; background: rgba(242, 244, 247, .6); border: 1px solid rgba(16, 24, 40, .15); transform: rotate(0deg); }
+
+.foglio { display: grid; grid-template-columns: 250px minmax(0, 780px); gap: 56px; align-items: start; }
+/* l'indice: numeri in mono, righe tratteggiate, resta in vista mentre si legge */
+.indice { position: sticky; top: 92px; max-height: calc(100vh - 110px); overflow-y: auto; scrollbar-width: thin; border-top: 1px solid var(--bordo); padding-top: 12px; }
+.indice .etichetta { margin: 0 0 8px; }
+.indice ol { list-style: none; margin: 0; padding: 0; }
+.indice li { border-bottom: 1px solid var(--bordo); }
+.indice a { display: flex; gap: 10px; align-items: baseline; padding: 7px 4px; font-size: 14px; line-height: 1.35; color: var(--inchiostro-2); text-decoration: none; transition: background .15s, color .15s; }
+.indice a:hover { color: var(--inchiostro); background: var(--sole); }
+.indice .art-n { font: 600 11px var(--titoli); color: var(--segnale-scuro); flex: none; width: 20px; font-variant-numeric: tabular-nums; }
+
+/* il testo: articoli numerati, il numero grande nel margine */
+.documento .testo-legale { max-width: 780px; color: #1A2338; font-size: 16px; line-height: 1.7; }
+.documento .testo-legale h2 { position: relative; scroll-margin-top: 92px; display: flex; gap: 14px; align-items: baseline; margin: 48px 0 14px; padding-top: 14px; border-top: 1px solid var(--bordo); font-size: 27px; line-height: 1.1; }
+.documento .testo-legale h2 .art-n { font: 700 13px var(--titoli); color: var(--carta); background: var(--inchiostro); padding: 4px 7px;  flex: none; transform: translateY(-3px); font-variant-numeric: tabular-nums; }
+.documento .testo-legale h2:target .art-n { background: var(--segnale); color: var(--inchiostro); }
+.documento .testo-legale ul { padding-left: 22px; }
+.documento .testo-legale li::marker { color: var(--segnale-scuro); }
+.documento .testo-legale ul ul li::marker { color: var(--inchiostro-3); }
+.documento .testo-legale a { color: var(--segnale-scuro); }
+.in-breve { position: relative; padding: 18px 22px 12px; margin-bottom: 8px; background: var(--carta); border: 1px solid var(--bordo); border-radius: 14px; }
+.in-breve .etichetta { margin: 0 0 4px; }
+.in-breve ul { margin: 0; }
+/* gli avvisi da decidere: adesivi gialli attaccati al foglio */
+.documento .da-decidere { position: relative; display: block; width: fit-content; max-width: calc(100% - 8px); margin: 22px 8px 22px 0; padding: 16px 18px 14px; background: #FFC9EE; color: var(--inchiostro); border: 1px solid var(--bordo);
+  box-shadow: var(--ombra); transform: rotate(-.8deg); font-weight: 500; font-size: 15px; line-height: 1.55; }
+.documento .da-decidere:nth-of-type(even) { transform: rotate(.7deg); }
+
+@media (max-width: 900px) {
+  .testa-documento { grid-template-columns: 1fr; margin-top: 32px; }
+  .testa-documento .bozza { grid-column: 1; grid-row: auto; margin-top: 10px; transform: rotate(0deg); }
+  .foglio { grid-template-columns: 1fr; gap: 28px; }
+  .indice { position: static; max-height: none; }
+  .indice ol { columns: 2; column-gap: 18px; }
+  .indice li { break-inside: avoid; }
+}
+@media (max-width: 560px) {
+  .indice ol { columns: 1; }
+  .documento .testo-legale h2 { font-size: 23px; margin-top: 38px; }
+  .documento .da-decidere { margin-right: 4px; }
+}
+.testa-documento::after { content: none; }
+.documento .da-decidere, .documento .da-decidere:nth-of-type(even) { transform: none; }
+.in-breve { border: 1px solid rgba(9, 105, 218, .3); background: var(--segnale-tenue); border-radius: var(--raggio); }

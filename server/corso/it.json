@@ -1,0 +1,746 @@
+{
+  "titolo": "Il corso per installatori",
+  "lezioni": [
+    {
+      "id": "metodo",
+      "titolo": "Come va un'installazione",
+      "minuti": 3,
+      "blocchi": [
+        {
+          "p": "Ogni programma del catalogo ha sulla sua pagina una guida a passi: cosa serve, i comandi già pronti con i dati del cliente e una verifica alla fine di ogni passo. Questo corso ti insegna il metodo che sta sotto tutte le guide. Se lo sai, sai installare quasi tutto il catalogo."
+        },
+        {
+          "titolo": "Il lavoro, dall'inizio alla fine"
+        },
+        {
+          "lista": [
+            "Parli con il cliente: cosa deve fare, quante persone lo useranno, dove stanno i dati oggi.",
+            "Scegli il programma e il server, leggendo «Serve» nella guida del programma.",
+            "Installi seguendo la guida, passo per passo, con le verifiche.",
+            "Configuri insieme al cliente: utenti, dati di partenza, logo.",
+            "Attivi i backup e provi a ripristinarne uno.",
+            "Consegni: il cliente riceve i suoi accessi da amministratore. Il programma e i dati sono suoi.",
+            "Metti la bolla di assistenza nel programma: da lì il cliente scrive a te, e Repobay vede la richiesta."
+          ],
+          "numerata": true
+        },
+        {
+          "p": "Il cliente paga su Repobay l'installazione, al prezzo che hai deciso tu, e l'assistenza mensile. L'installazione si divide da sola fra te, chi sviluppa il programma e la piattaforma; del canone dell'assistenza, tolto il costo di Stripe, il 60% è tuo, perché rispondi tu per primo ai clienti, e il 40% va a Repobay, che ti sta dietro; a chi sviluppa non va niente."
+        },
+        {
+          "p": "Un'installazione è finita quando il cliente ha i suoi accessi e hai provato il ripristino di un backup. Una pagina di login che si apre non basta."
+        }
+      ]
+    },
+    {
+      "id": "server",
+      "titolo": "Il server",
+      "minuti": 5,
+      "blocchi": [
+        {
+          "p": "Quasi tutti i programmi del catalogo girano su un server Linux. Ci sono due strade. Un server virtuale (VPS) da un fornitore con i dati in Europa è la più semplice da raggiungere e da proteggere. Un mini PC nell'ufficio del cliente tiene i dati in casa, ma servono una connessione stabile e un modo per raggiungerlo da fuori."
+        },
+        {
+          "p": "Intesta il server al cliente: l'account del fornitore è suo, lo paga lui e a te dà l'accesso. Se un giorno smettete di lavorare insieme, il server resta suo."
+        },
+        {
+          "p": "Usa Ubuntu Server in una versione LTS, quella con il supporto lungo. Guarda la RAM che chiede la guida e tieni un margine."
+        },
+        {
+          "titolo": "Entra con la chiave, non con la password"
+        },
+        {
+          "codice": "# sul tuo computer, una volta sola: crea la tua chiave\nssh-keygen -t ed25519\n# copiala sul server\nssh-copy-id utente@IP_DEL_SERVER"
+        },
+        {
+          "p": "Poi crea un utente tuo con sudo e spegni l'accesso con password: PasswordAuthentication no in /etc/ssh/sshd_config, poi riavvia SSH."
+        },
+        {
+          "attenzione": "Prima di spegnere le password, prova a entrare con la chiave da un'altra finestra, tenendo aperta quella in cui stai lavorando. Se qualcosa non va, resti chiuso fuori dal server."
+        },
+        {
+          "titolo": "Firewall e aggiornamenti di sicurezza"
+        },
+        {
+          "codice": "sudo ufw allow OpenSSH\nsudo ufw allow 80,443/tcp\nsudo ufw enable\nsudo apt install unattended-upgrades"
+        },
+        {
+          "p": "Restano aperte solo SSH, 80 e 443: tutto il resto passa dal reverse proxy (lezione 4). Gli aggiornamenti di sicurezza del sistema si installano da soli."
+        }
+      ]
+    },
+    {
+      "id": "docker",
+      "titolo": "Docker e Docker Compose",
+      "minuti": 6,
+      "blocchi": [
+        {
+          "p": "Quasi tutti i programmi del catalogo si installano con Docker Compose. Un file (compose.yaml, o docker-compose.yml) descrive i pezzi del programma, cioè l'applicazione, il database e a volte una cache, e come si collegano fra loro. Installa Docker seguendo la guida ufficiale per Ubuntu (docs.docker.com/engine/install/ubuntu): porta con sé anche il comando docker compose."
+        },
+        {
+          "titolo": "I comandi che userai sempre, dalla cartella del file compose"
+        },
+        {
+          "codice": "docker compose up -d          # avvia tutto, in background\ndocker compose ps             # cosa gira, e se è sano\ndocker compose logs -f app    # i log di un servizio, in diretta\ndocker compose restart app    # riavvia un servizio\ndocker compose down           # ferma e toglie i container (i dati restano)"
+        },
+        {
+          "p": "Se qualcosa non parte, guarda per prima cosa i log del servizio: quasi sempre dicono cosa manca, per esempio una variabile, una password o una porta occupata."
+        },
+        {
+          "attenzione": "docker compose down -v cancella anche i volumi, cioè i dati del cliente. Su un'installazione vera non si usa mai."
+        },
+        {
+          "titolo": "Dove stanno i dati"
+        },
+        {
+          "p": "I container si buttano e si ricreano, i dati no. Stanno nei volumi o nelle cartelle montate, cioè le righe volumes: del file compose. Sono quelli da salvare nei backup."
+        },
+        {
+          "titolo": "Password e versioni"
+        },
+        {
+          "p": "Le password stanno nel file .env accanto al file compose. Generane di lunghe, una per servizio (openssl rand -base64 32), non lasciare mai quelle d'esempio della guida e non mandarle in chiaro per email o in chat."
+        },
+        {
+          "p": "Fissa la versione delle immagini, per esempio 1.4.2 e non latest. Così l'aggiornamento lo decidi tu, e non arriva per caso al primo riavvio."
+        },
+        {
+          "attenzione": "Le porte pubblicate da Docker (le righe ports:) scavalcano il firewall ufw. Pubblica l'applicazione solo sul server stesso, per esempio \"127.0.0.1:8080:80\", e lascia che sia il reverse proxy a mostrarla fuori, in HTTPS."
+        }
+      ]
+    },
+    {
+      "id": "https",
+      "titolo": "Dominio e HTTPS",
+      "minuti": 5,
+      "blocchi": [
+        {
+          "p": "Il programma deve rispondere a un indirizzo del cliente, per esempio gestionale.nomeazienda.it, e sempre in HTTPS."
+        },
+        {
+          "titolo": "Il DNS"
+        },
+        {
+          "p": "Nel pannello del dominio del cliente crea un record A con il nome (gestionale) e l'IP del server. Controlla con dig +short gestionale.nomeazienda.it: deve rispondere con l'IP del server. A volte servono alcuni minuti."
+        },
+        {
+          "titolo": "Il reverse proxy"
+        },
+        {
+          "p": "Il reverse proxy riceve le visite sulle porte 80 e 443, gestisce il certificato HTTPS e le passa all'applicazione. Su Repobay il metodo di base è Nginx con Certbot: lo usa la maggior parte delle guide, ed è quello su cui funziona il tasto Inietta della bolla di assistenza."
+        },
+        {
+          "codice": "sudo apt install nginx certbot python3-certbot-nginx"
+        },
+        {
+          "p": "Il blocco del sito va in /etc/nginx/sites-available/gestionale, con un collegamento in /etc/nginx/sites-enabled:"
+        },
+        {
+          "codice": "server {\n    listen 80;\n    server_name gestionale.nomeazienda.it;\n    location / {\n        proxy_pass http://127.0.0.1:8080;\n        proxy_set_header Host $host;\n        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n        proxy_set_header X-Forwarded-Proto $scheme;\n    }\n}"
+        },
+        {
+          "codice": "sudo nginx -t && sudo systemctl reload nginx\nsudo certbot --nginx -d gestionale.nomeazienda.it"
+        },
+        {
+          "p": "nginx -t controlla la configurazione prima di ricaricarla: se è sbagliata, Nginx continua con quella di prima. Certbot chiede il certificato a Let's Encrypt, aggiunge HTTPS al blocco e lo rinnova da solo. Se fallisce, quasi sempre il DNS non punta ancora al server oppure la porta 80 è chiusa."
+        },
+        {
+          "p": "Se la guida aggiunge righe al blocco di Nginx, per esempio per i WebSocket o per la dimensione dei file caricati, copiale. Senza quelle righe il programma sembra funzionare, ma alcune parti si rompono."
+        },
+        {
+          "p": "Alcune guide usano Caddy o Traefik, che fanno HTTPS da soli: vanno bene, segui la guida del programma. In quel caso la bolla di assistenza la aggiungi a mano: il codice è nella scheda del cliente."
+        }
+      ]
+    },
+    {
+      "id": "backup",
+      "titolo": "Backup e ripristino",
+      "minuti": 5,
+      "blocchi": [
+        {
+          "p": "Un backup che non hai mai ripristinato non è un backup. Il cliente non vede questa parte del lavoro finché non gli serve, ed è quella che conta di più."
+        },
+        {
+          "titolo": "Cosa salvare"
+        },
+        {
+          "lista": [
+            "Il database, con il suo comando di esportazione: pg_dump per PostgreSQL, mariadb-dump o mysqldump per MariaDB e MySQL. Copiare i file del database mentre gira dà copie che spesso non si riaprono.",
+            "I volumi e le cartelle con i file caricati.",
+            "Il file compose e il file .env. Senza il .env, alcuni programmi non riescono più ad aprire i propri dati cifrati."
+          ]
+        },
+        {
+          "codice": "# il database PostgreSQL di un'installazione con Docker Compose\ndocker compose exec -T db pg_dump -U utente nomedb > backup-$(date +%F).sql"
+        },
+        {
+          "titolo": "La regola 3-2-1"
+        },
+        {
+          "p": "Tre copie, su due supporti diversi, una delle quali fuori dal server. Per esempio: le copie di ogni notte sul server, più una copia cifrata su uno spazio esterno con restic o borg."
+        },
+        {
+          "p": "Automatizza tutto con un cron ogni notte e tieni almeno 14 giorni di copie. Una volta al mese prova un ripristino su un server di prova. Scrivi nelle note del cliente dove stanno le copie e come si ripristinano: il giorno in cui servono, potresti non esserci tu."
+        }
+      ]
+    },
+    {
+      "id": "aggiornamenti",
+      "titolo": "Aggiornamenti e sicurezza",
+      "minuti": 4,
+      "blocchi": [
+        {
+          "p": "Quando esce una nuova versione di un programma che offri, Repobay te lo dice. Prima di annunciarla la controlla: se trova qualcosa di grave la ferma, se trova qualcosa da guardare lo scrive nell'avviso."
+        },
+        {
+          "titolo": "Come aggiorni"
+        },
+        {
+          "lista": [
+            "Leggi le note della versione, cercando le modifiche che rompono qualcosa («breaking changes») e i passi di migrazione.",
+            "Fai un backup subito prima.",
+            "Cambia la versione nel file compose, poi docker compose pull e docker compose up -d.",
+            "Controlla i log e prova le funzioni che il cliente usa di più.",
+            "Se qualcosa non va, torni alla versione di prima con il backup."
+          ],
+          "numerata": true
+        },
+        {
+          "p": "Non saltare più versioni maggiori in un colpo solo: molti programmi vogliono le migrazioni in ordine, dalla 3 alla 4 e poi alla 5. Concorda l'orario con il cliente, fuori dalle ore in cui lavora."
+        },
+        {
+          "titolo": "La sicurezza di base"
+        },
+        {
+          "lista": [
+            "Un utente amministratore per ogni persona, mai account condivisi, e i due fattori dove il programma li offre.",
+            "I pannelli di amministrazione del database, come Adminer o phpMyAdmin, non si mostrano su internet: si usano dal server o con un tunnel SSH.",
+            "Le password d'esempio della guida si cambiano tutte, il primo giorno."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dati",
+      "titolo": "I dati del cliente",
+      "minuti": 4,
+      "blocchi": [
+        {
+          "p": "Quasi ogni programma contiene dati personali: clienti, dipendenti, a volte pazienti. Per il GDPR il cliente è il titolare del trattamento. Tu, se per installare e assistere accedi a quei dati, sei responsabile del trattamento, e serve un accordo scritto con il cliente (art. 28 del GDPR)."
+        },
+        {
+          "lista": [
+            "Tieni il server in Europa, o in un Paese con garanzie adeguate.",
+            "Entra nei dati solo quando serve per il lavoro, e il cliente lo sa.",
+            "Consegna le password in modo sicuro, con un gestore di password o di persona, mai in chiaro per email o in chat.",
+            "Quando il rapporto finisce, consegna tutto al cliente e cancella le tue copie."
+          ]
+        },
+        {
+          "p": "Il programma e i dati sono del cliente. Tu hai gli accessi per lavorare, non per tenerli."
+        }
+      ]
+    },
+    {
+      "id": "regole",
+      "titolo": "Assistenza e regole di Repobay",
+      "minuti": 5,
+      "blocchi": [
+        {
+          "p": "L'assistenza mensile la dai tu, con Repobay dietro: le richieste arrivano prima a te, e la squadra della piattaforma le vede, controlla il programma da fuori e interviene se non rispondi in tempo. Del canone, tolto il costo di Stripe, il 60% è tuo e il 40% della piattaforma; a chi sviluppa niente. Un'installazione fatta bene è quella che segui senza problemi per anni."
+        },
+        {
+          "lista": [
+            "La bolla di assistenza: dalla scheda del cliente prendi la bolla e mettila nel programma, con il tasto Inietta se usi Nginx, oppure a mano. Da lì il cliente scrive a te, e Repobay vede la richiesta.",
+            "Il controllo da fuori: nella scheda del cliente scrivi l'indirizzo pubblico del programma. Repobay lo apre ogni pochi minuti come un visitatore e, se non risponde, avvisa te, la squadra e il cliente; ogni mese il cliente riceve il rapporto con i numeri. Non entra nel server.",
+            "Rispondi tu per primo, entro 24 ore: dopo arriva un sollecito e, se non rispondi, interviene la squadra di Repobay.",
+            "Lascia nelle note del cliente come hai installato il programma e dove stanno le copie: chi segue l'assistenza parte da lì."
+          ]
+        },
+        {
+          "titolo": "Se il cliente non paga"
+        },
+        {
+          "p": "Se un pagamento dell'assistenza non va a buon fine, Repobay avvisa il cliente e te. Dopo i giorni di grazia l'assistenza si sospende finché il cliente non paga, e nemmeno tu sei tenuto a intervenire."
+        },
+        {
+          "attenzione": "Il programma del cliente non si tocca mai: niente blocchi, password cambiate, server spenti o dati trattenuti. È suo, e bloccarlo per farsi pagare è un reato (esercizio arbitrario delle proprie ragioni, art. 392 del codice penale). Per i crediti ci sono le vie normali."
+        },
+        {
+          "titolo": "Licenze e programmi partner"
+        },
+        {
+          "lista": [
+            "Ogni pagina riassume la licenza del programma. Alcune, come quella di n8n, permettono l'installazione sul server del cliente ma non di ospitarlo tu per i tuoi clienti: rispetta quello che dice la pagina.",
+            "Se l'azienda che sviluppa il programma ha un programma partner obbligatorio, aderisci dal loro modulo e conferma le condizioni prima di offrirlo.",
+            "Non togliere mai gli avvisi di copyright e di licenza, e non presentare il marchio del programma come se fosse tuo."
+          ]
+        },
+        {
+          "titolo": "I programmi impegnativi"
+        },
+        {
+          "p": "Con questo corso puoi offrire i programmi facili e medi del catalogo. Quelli impegnativi, come i gestionali completi, i grandi negozi online e i programmi con dati sanitari, si sbloccano dopo 3 installazioni confermate dai clienti. Si impara sui programmi facili. Se fai già questo lavoro da anni, scrivici: li sblocchiamo noi."
+        }
+      ]
+    }
+  ],
+  "domande": [
+    {
+      "id": "m1",
+      "lezione": "metodo",
+      "domanda": "Il cliente smette di lavorare con te. Di chi sono il programma e i dati?",
+      "opzioni": [
+        "Del cliente, sempre",
+        "Tuoi, finché non ti ha saldato tutto",
+        "Di Repobay, che ha fatto la vendita",
+        "Di chi sviluppa il programma"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "m2",
+      "lezione": "metodo",
+      "domanda": "Dove trovi quanta RAM e quali porte servono a un programma del catalogo?",
+      "opzioni": [
+        "In «Serve», nella guida del programma",
+        "Nel contratto che hai firmato con Repobay",
+        "Nella scheda del cliente, nella tua area",
+        "Nel file compose, dopo averlo avviato"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "m3",
+      "lezione": "metodo",
+      "domanda": "Quando un'installazione è finita?",
+      "opzioni": [
+        "Quando il cliente ha i suoi accessi e ho provato a ripristinare un backup",
+        "Quando la pagina di login si apre dal dominio del cliente, già in HTTPS",
+        "Quando il cliente ha pagato l'installazione e il primo mese",
+        "Quando docker compose ps dice che tutti i servizi sono sani"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "s1",
+      "lezione": "server",
+      "domanda": "A chi conviene intestare il server di un cliente?",
+      "opzioni": [
+        "Al cliente: lo paga lui e ti dà l'accesso",
+        "A te, così puoi intervenire senza chiedere",
+        "A Repobay, che garantisce la continuità",
+        "A chi sviluppa il programma installato"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "s2",
+      "lezione": "server",
+      "domanda": "Come si entra via SSH in un server in produzione?",
+      "opzioni": [
+        "Con una chiave, e l'accesso a password spento",
+        "Come root, con una password di almeno 20 caratteri",
+        "Con una password cambiata ogni mese, mai root",
+        "Dalla console web del fornitore, sempre e solo"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "s3",
+      "lezione": "server",
+      "domanda": "Stai per spegnere l'accesso SSH con password. Cosa fai prima?",
+      "opzioni": [
+        "Provo la chiave da un'altra finestra, tenendo aperta quella attuale",
+        "Riavvio subito il server, così la nuova configurazione si carica pulita",
+        "Spengo il firewall, per non restare chiuso fuori per errore",
+        "Niente: se la chiave è copiata, funziona di sicuro"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "s4",
+      "lezione": "server",
+      "domanda": "Quali porte lasci aperte sul firewall di un server con un programma web?",
+      "opzioni": [
+        "SSH, 80 e 443",
+        "Tutte, così il programma funziona di sicuro",
+        "SSH e la porta dell'applicazione, per esempio 8080",
+        "80, 443 e la porta del database, per i backup"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "s5",
+      "lezione": "server",
+      "domanda": "Quale versione di Ubuntu scegli per un server?",
+      "opzioni": [
+        "Una LTS, con il supporto lungo",
+        "L'ultima uscita, che ha i pacchetti più nuovi",
+        "Quella che il fornitore propone per prima",
+        "La desktop, così il cliente la usa più facilmente"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "d1",
+      "lezione": "docker",
+      "domanda": "Quale comando avvia in background un programma descritto in un file compose?",
+      "opzioni": [
+        "docker compose up -d",
+        "docker compose start --all",
+        "docker run compose",
+        "docker compose logs -f"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "d2",
+      "lezione": "docker",
+      "domanda": "Cosa fa docker compose down -v su un'installazione vera?",
+      "opzioni": [
+        "Cancella anche i volumi: i dati del cliente",
+        "Ferma i container e salva i volumi in un backup",
+        "Aggiorna le immagini alla versione più recente",
+        "Mostra i volumi in uso, senza toccare niente"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "d3",
+      "lezione": "docker",
+      "domanda": "Un servizio non parte. Dove guardi per prima cosa?",
+      "opzioni": [
+        "Nei log del servizio (docker compose logs)",
+        "Reinstallo Docker, che spesso è la causa",
+        "Cancello i volumi e riparto con un'installazione pulita",
+        "Riavvio il server: di solito si sistema da solo"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "d4",
+      "lezione": "docker",
+      "domanda": "Dove stanno i dati di un programma che gira con Docker?",
+      "opzioni": [
+        "Nei volumi e nelle cartelle montate del file compose",
+        "Dentro il container, che li conserva fra un riavvio e l'altro",
+        "Nell'immagine Docker, che si aggiorna con i dati nuovi",
+        "Su Docker Hub, insieme all'immagine del programma"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "d5",
+      "lezione": "docker",
+      "domanda": "Perché fissi la versione di un'immagine (per esempio 1.4.2) invece di usare latest?",
+      "opzioni": [
+        "Per scegliere io quando aggiornare",
+        "Perché latest punta sempre a una versione di prova",
+        "Perché le immagini con la versione fissa sono più leggere",
+        "Perché Repobay la usa per calcolare le quote"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "d6",
+      "lezione": "docker",
+      "domanda": "Nel file compose l'applicazione è pubblicata con \"8080:80\" e ufw blocca la porta 8080. Si raggiunge da internet?",
+      "opzioni": [
+        "Sì: Docker scavalca ufw, va pubblicata su 127.0.0.1",
+        "No: ufw blocca la porta e nessuno può raggiungerla",
+        "Solo in HTTPS, perché la 8080 non ha il certificato",
+        "Solo dopo che il record DNS punta al server"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "d7",
+      "lezione": "docker",
+      "domanda": "Dove metti le password del database di un'installazione con Docker Compose?",
+      "opzioni": [
+        "Nel file .env, lunghe e una per servizio",
+        "Nel file compose, così sono tutte in un posto",
+        "In un messaggio al cliente, così non si perdono",
+        "Tengo quelle d'esempio della guida, già provate"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "h1",
+      "lezione": "https",
+      "domanda": "Il cliente vuole il programma su gestionale.azienda.it. Cosa crei nel DNS?",
+      "opzioni": [
+        "Un record A: gestionale → l'IP del server",
+        "Un record MX con il nome gestionale e l'IP",
+        "Un record TXT con il nome del server",
+        "Niente: basta il blocco server di Nginx"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "h2",
+      "lezione": "https",
+      "domanda": "Certbot non riesce a ottenere il certificato. Qual è la causa più probabile?",
+      "opzioni": [
+        "DNS non ancora puntato, o porta 80 chiusa",
+        "Il server ha meno di 4 GB di RAM",
+        "Docker è spento, quindi il sito non risponde",
+        "Il programma non ha ancora un utente admin"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "h3",
+      "lezione": "https",
+      "domanda": "A cosa serve il reverse proxy, per esempio Nginx?",
+      "opzioni": [
+        "Riceve le visite, fa HTTPS e le passa all'app",
+        "Fa i backup del database ogni notte",
+        "Tiene aggiornati i container all'ultima versione",
+        "Blocca i virus prima che arrivino al database"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "h4",
+      "lezione": "https",
+      "domanda": "Hai cambiato la configurazione di Nginx. Cosa fai prima di ricaricarlo?",
+      "opzioni": [
+        "nginx -t, per vedere se è valida",
+        "Riavvio il server, per sicurezza",
+        "Rinnovo i certificati con certbot renew",
+        "Niente: lo ricarico e vedo se il sito risponde"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "h5",
+      "lezione": "https",
+      "domanda": "La guida del programma aggiunge righe al blocco di Nginx, per i WebSocket e la dimensione dei file. Cosa fai?",
+      "opzioni": [
+        "Le copio: senza, parti del programma si rompono",
+        "Le salto: il blocco di base va bene per tutti",
+        "Le metto nel file compose, dove servono davvero",
+        "Le aggiungo solo se il cliente segnala problemi"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "h6",
+      "lezione": "https",
+      "domanda": "La guida usa Caddy al posto di Nginx. Cosa cambia per la bolla di assistenza?",
+      "opzioni": [
+        "Inietta va solo su Nginx: la bolla la metto a mano",
+        "Niente: Inietta funziona con qualsiasi proxy",
+        "La bolla non si può usare con Caddy",
+        "Devo per forza passare a Nginx prima di consegnare"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "b1",
+      "lezione": "backup",
+      "domanda": "Come salvi un database PostgreSQL mentre gira?",
+      "opzioni": [
+        "Con pg_dump",
+        "Copiando la sua cartella dei dati",
+        "Con un'esportazione in CSV di ogni tabella",
+        "Non serve: il volume è già un backup"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "b2",
+      "lezione": "backup",
+      "domanda": "Cosa dice la regola 3-2-1?",
+      "opzioni": [
+        "3 copie, 2 supporti diversi, 1 fuori dal server",
+        "3 backup al giorno per 2 settimane e 1 copia al mese",
+        "3 server, 2 database, 1 backup condiviso",
+        "Un backup ogni 3 giorni, tenuto per 21 giorni"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "b3",
+      "lezione": "backup",
+      "domanda": "Quando sai che un backup funziona?",
+      "opzioni": [
+        "Quando l'ho ripristinato su un server di prova",
+        "Quando il file ha una dimensione ragionevole",
+        "Quando il cron gira ogni notte senza errori",
+        "Quando il programma di backup dice «completato»"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "b4",
+      "lezione": "backup",
+      "domanda": "Oltre a database e volumi, cosa salvi?",
+      "opzioni": [
+        "Il file compose e il file .env",
+        "Le immagini Docker scaricate",
+        "I log degli ultimi trenta giorni",
+        "Tutta la cartella di sistema /var/lib/docker"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "a1",
+      "lezione": "aggiornamenti",
+      "domanda": "Esce una nuova versione maggiore del programma. Qual è l'ordine giusto?",
+      "opzioni": [
+        "Note, backup, aggiornamento, controllo dei log",
+        "Aggiornamento, poi lettura delle note se serve",
+        "Backup, aggiornamento, e le note solo se va male",
+        "Disinstallo tutto e reinstallo la versione nuova"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "a2",
+      "lezione": "aggiornamenti",
+      "domanda": "Il cliente è alla versione 3 e l'ultima è la 6. Cosa fai?",
+      "opzioni": [
+        "Seguo le note: spesso si sale una versione alla volta",
+        "Salto direttamente alla 6, che include tutte le modifiche",
+        "Lascio la 3: se funziona, è meglio non toccarla",
+        "Installo la 6 da zero e reimporto i dati a mano"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "a3",
+      "lezione": "aggiornamenti",
+      "domanda": "Repobay ti avvisa di una nuova versione, e il controllo di sicurezza ha trovato qualcosa da guardare. Cosa fai?",
+      "opzioni": [
+        "Leggo cosa ha trovato, poi decido se aggiornare",
+        "Aggiorno subito: le versioni nuove sono più sicure",
+        "Ignoro l'avviso: se fosse grave, la release sarebbe ferma",
+        "Disinstallo il programma dal server del cliente"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "a4",
+      "lezione": "aggiornamenti",
+      "domanda": "Il pannello di amministrazione del database (per esempio Adminer) si apre da internet. Va bene?",
+      "opzioni": [
+        "No: si usa dal server o con un tunnel SSH",
+        "Sì, se è protetto da una password lunga",
+        "Sì, se è solo il cliente a conoscere l'indirizzo",
+        "Sì, ma solo in HTTPS"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "a5",
+      "lezione": "aggiornamenti",
+      "domanda": "Gli utenti amministratori del programma:",
+      "opzioni": [
+        "Uno per persona, con i due fattori se ci sono",
+        "Uno solo, condiviso fra te e il cliente",
+        "Quello d'esempio della guida, con la sua password",
+        "Nessuno: chi deve amministrare entra dal server"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "g1",
+      "lezione": "dati",
+      "domanda": "Assisti un programma con i dati dei clienti di un'azienda. Che ruolo hai per il GDPR?",
+      "opzioni": [
+        "Responsabile del trattamento, con un accordo scritto",
+        "Titolare del trattamento, insieme all'azienda",
+        "Nessuno: sono un tecnico, non tratto i dati",
+        "Il DPO dell'azienda, per tutta la durata del contratto"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "g2",
+      "lezione": "dati",
+      "domanda": "Come consegni la password di amministratore al cliente?",
+      "opzioni": [
+        "Con un gestore di password, o di persona",
+        "Per email, in un messaggio a parte",
+        "Su WhatsApp, così resta nella chat",
+        "Scritta su un foglio lasciato vicino al server"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "g3",
+      "lezione": "dati",
+      "domanda": "Il rapporto con il cliente finisce. Cosa fai?",
+      "opzioni": [
+        "Consegno tutto e cancello le mie copie",
+        "Tengo i backup per un anno, per sicurezza",
+        "Spengo il server, che non è più seguito",
+        "Tengo gli accessi nel caso il cliente torni"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "r1",
+      "lezione": "regole",
+      "domanda": "Un cliente che hai installato non paga l'assistenza da due mesi. Cosa succede?",
+      "opzioni": [
+        "Si sospende l'assistenza, non il programma",
+        "Blocchi il programma e lo sblocchi quando paga",
+        "Cambi la password di amministratore per un po'",
+        "Spegni il server finché non arriva il pagamento"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "r2",
+      "lezione": "regole",
+      "domanda": "Un cliente scrive dalla bolla di assistenza. Chi gli risponde?",
+      "opzioni": [
+        "Tu per primo, entro 24 ore; Repobay vede la richiesta e interviene se non rispondi",
+        "Solo la squadra di Repobay: tu non c'entri",
+        "Chi sviluppa il programma, per primo",
+        "Nessuno: la bolla manda solo un'email"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "r3",
+      "lezione": "regole",
+      "domanda": "La licenza permette di installare il programma sul server del cliente, ma non di ospitarlo tu. Il cliente ti chiede di tenerlo sul tuo server. Cosa fai?",
+      "opzioni": [
+        "Lo installo su un server intestato al cliente",
+        "Lo tengo sul mio, tanto nessuno controlla",
+        "Lo tengo sul mio e aggiungo il costo al canone",
+        "Rifiuto il lavoro e lo mando a un altro"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "r4",
+      "lezione": "regole",
+      "domanda": "L'azienda che sviluppa un programma ha un programma partner obbligatorio. Cosa fai prima di offrirlo?",
+      "opzioni": [
+        "Aderisco dal loro modulo e confermo le condizioni",
+        "Lo offro subito e aderisco al primo cliente che arriva",
+        "Niente: su Repobay i loro programmi non valgono",
+        "Tolgo il loro marchio, così non serve aderire"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "r5",
+      "lezione": "regole",
+      "domanda": "Puoi togliere gli avvisi di copyright e di licenza dal programma che installi?",
+      "opzioni": [
+        "No, mai",
+        "Sì, se il cliente lo chiede",
+        "Sì, se cambio il logo",
+        "Sì, dopo un anno"
+      ],
+      "giusta": 0
+    }
+  ]
+}

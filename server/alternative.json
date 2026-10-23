@@ -1,0 +1,298 @@
+[
+  {
+    "slug": "fatture-in-cloud",
+    "nome": "Fatture in Cloud",
+    "categoria": "contabilità",
+    "cosa": "un servizio online per fare fatture, preventivi e prima nota, pagato con un abbonamento.",
+    "perche": "Con un programma open source installato sul tuo server le fatture e l'anagrafica dei clienti restano tue, e il costo non cresce con gli utenti.",
+    "attenzione": "La fattura elettronica verso lo SDI non è compresa in tutti: con Dolibarr e Odoo si aggiunge con un modulo, con gli altri serve un intermediario. Chiedilo all'installatore prima di scegliere.",
+    "repo": [
+      "Dolibarr/dolibarr",
+      "odoo/odoo",
+      "InvoiceShelf/InvoiceShelf",
+      "bigcapitalhq/bigcapital"
+    ]
+  },
+  {
+    "slug": "danea-easyfatt",
+    "nome": "Danea Easyfatt",
+    "categoria": "gestionale",
+    "cosa": "un gestionale per piccole imprese: fatture, magazzino, clienti e fornitori.",
+    "perche": "Un gestionale open source fa le stesse cose senza licenza da rinnovare, e si può adattare a come lavora la tua attività.",
+    "attenzione": "Per la fattura elettronica allo SDI e i registri IVA italiani serve un modulo o un intermediario: chiedi all'installatore quale usa.",
+    "repo": [
+      "Dolibarr/dolibarr",
+      "odoo/odoo",
+      "frappe/erpnext"
+    ]
+  },
+  {
+    "slug": "teamsystem",
+    "nome": "TeamSystem",
+    "categoria": "gestionale",
+    "cosa": "una suite di gestionali per imprese e studi professionali, a canone.",
+    "perche": "Odoo ed ERPNext coprono vendite, acquisti, magazzino, produzione e contabilità con moduli che si aggiungono quando servono.",
+    "attenzione": "Il passaggio da un gestionale grande richiede un'analisi dei dati da portare: è un lavoro da installatore esperto, non da un pomeriggio.",
+    "repo": [
+      "odoo/odoo",
+      "frappe/erpnext",
+      "Dolibarr/dolibarr"
+    ]
+  },
+  {
+    "slug": "treatwell",
+    "nome": "Treatwell",
+    "categoria": "prenotazioni",
+    "cosa": "un portale e un'agenda per le prenotazioni di parrucchieri, barbieri e centri estetici.",
+    "perche": "Con un'agenda tua i clienti prenotano dal tuo sito, i loro dati restano tuoi e non c'è una percentuale sulle prenotazioni.",
+    "attenzione": "Un'agenda installata non porta clienti nuovi come un portale: serve a gestire bene quelli che hai.",
+    "repo": [
+      "alextselegidis/easyappointments"
+    ]
+  },
+  {
+    "slug": "calendly",
+    "nome": "Calendly",
+    "categoria": "prenotazioni",
+    "cosa": "un servizio per prendere appuntamenti online da un link.",
+    "perche": "Easy!Appointments fa lo stesso con il tuo dominio e senza un costo per ogni persona del team.",
+    "repo": [
+      "alextselegidis/easyappointments"
+    ]
+  },
+  {
+    "slug": "shopify",
+    "nome": "Shopify",
+    "categoria": "ecommerce",
+    "cosa": "una piattaforma per aprire un negozio online, a canone mensile.",
+    "perche": "Un e-commerce open source sul tuo server non ha il canone della piattaforma: restano solo le commissioni del sistema di pagamento che scegli.",
+    "attenzione": "Aggiornamenti, sicurezza e copie di sicurezza diventano un lavoro da fare: è quello che segue l'installatore con l'assistenza.",
+    "repo": [
+      "PrestaShop/PrestaShop",
+      "bagisto/bagisto",
+      "shopware/shopware",
+      "evershopcommerce/evershop"
+    ]
+  },
+  {
+    "slug": "salesforce",
+    "nome": "Salesforce",
+    "categoria": "crm",
+    "cosa": "un CRM per seguire contatti, aziende e trattative di vendita, pagato per utente.",
+    "perche": "Un CRM open source tiene contatti e trattative sul tuo server, e aggiungere un collega non costa una licenza in più.",
+    "repo": [
+      "twentyhq/twenty",
+      "espocrm/espocrm",
+      "krayin/laravel-crm"
+    ]
+  },
+  {
+    "slug": "hubspot",
+    "nome": "HubSpot",
+    "categoria": "crm",
+    "cosa": "un CRM con strumenti di marketing ed email, a piani mensili.",
+    "perche": "Contatti e campagne si possono gestire con programmi open source, separati o insieme, senza piani che salgono con i contatti.",
+    "repo": [
+      "twentyhq/twenty",
+      "espocrm/espocrm",
+      "mautic/mautic"
+    ]
+  },
+  {
+    "slug": "zendesk",
+    "nome": "Zendesk",
+    "categoria": "comunicazione",
+    "cosa": "un sistema per le richieste di assistenza dei clienti, via email, chat e altri canali.",
+    "perche": "Un helpdesk open source raccoglie le richieste in un posto solo e non ha un costo per ogni operatore.",
+    "repo": [
+      "zammad/zammad",
+      "freescout-help-desk/freescout",
+      "chatwoot/chatwoot"
+    ]
+  },
+  {
+    "slug": "dropbox",
+    "nome": "Dropbox",
+    "categoria": "altro",
+    "cosa": "uno spazio online per salvare e condividere file.",
+    "perche": "Nextcloud fa lo stesso su un server tuo, in ufficio o in Europa, con calendari e contatti insieme.",
+    "repo": [
+      "nextcloud/server"
+    ]
+  },
+  {
+    "slug": "microsoft-365",
+    "nome": "Microsoft 365",
+    "categoria": "altro",
+    "cosa": "documenti, fogli di calcolo, presentazioni e archivio online, a canone per utente.",
+    "perche": "ONLYOFFICE apre e modifica i file di Word, Excel e PowerPoint nel browser e, con Nextcloud, tiene i documenti sul tuo server.",
+    "attenzione": "Posta elettronica e Teams non sono compresi: si tengono a parte o si sostituiscono con altri programmi.",
+    "repo": [
+      "ONLYOFFICE/DocumentServer",
+      "nextcloud/server"
+    ]
+  },
+  {
+    "slug": "zapier",
+    "nome": "Zapier",
+    "categoria": "altro",
+    "cosa": "un servizio che collega fra loro i programmi online e automatizza i passaggi ripetitivi.",
+    "perche": "n8n fa automazioni simili sul tuo server, senza un limite di operazioni al mese.",
+    "attenzione": "La licenza di n8n permette di installarlo per la tua azienda, non di rivenderlo come servizio: leggi la scheda del prodotto.",
+    "repo": [
+      "n8n-io/n8n"
+    ]
+  },
+  {
+    "slug": "mailchimp",
+    "nome": "Mailchimp",
+    "categoria": "comunicazione",
+    "cosa": "un servizio per mandare newsletter e campagne email.",
+    "perche": "Con un programma di newsletter tuo paghi solo l'invio delle email, e la lista dei contatti resta tua.",
+    "attenzione": "Per mandare tante email serve comunque un servizio di invio (SMTP) affidabile: l'installatore ti aiuta a sceglierlo.",
+    "repo": [
+      "knadh/listmonk",
+      "mautic/mautic"
+    ]
+  },
+  {
+    "slug": "google-analytics",
+    "nome": "Google Analytics",
+    "categoria": "sito",
+    "cosa": "uno strumento per contare le visite di un sito.",
+    "perche": "Matomo e Umami contano le visite sul tuo server, e i dati dei visitatori non vanno a terzi.",
+    "repo": [
+      "matomo-org/matomo",
+      "umami-software/umami"
+    ]
+  },
+  {
+    "slug": "trello",
+    "nome": "Trello",
+    "categoria": "altro",
+    "cosa": "bacheche e liste per organizzare il lavoro di un gruppo.",
+    "perche": "OpenProject ha bacheche, liste di attività e diagrammi dei tempi, sul tuo server.",
+    "repo": [
+      "opf/openproject"
+    ]
+  },
+  {
+    "slug": "airtable",
+    "nome": "Airtable",
+    "categoria": "altro",
+    "cosa": "un foglio di calcolo che funziona come un piccolo database.",
+    "perche": "Grist unisce foglio di calcolo e database, con formule e permessi, e si può installare sul tuo server.",
+    "repo": [
+      "gristlabs/grist-core"
+    ]
+  },
+  {
+    "slug": "typeform",
+    "nome": "Typeform",
+    "categoria": "sito",
+    "cosa": "un servizio per creare moduli e sondaggi online.",
+    "perche": "HeyForm crea moduli e sondaggi senza un limite di risposte al mese, e le risposte restano sul tuo server.",
+    "repo": [
+      "heyform/heyform"
+    ]
+  },
+  {
+    "slug": "docusign",
+    "nome": "DocuSign",
+    "categoria": "altro",
+    "cosa": "un servizio per far firmare documenti online.",
+    "perche": "DocuSeal manda i documenti da firmare e li conserva sul tuo server.",
+    "attenzione": "Una firma elettronica semplice non vale come firma digitale qualificata: per alcuni atti serve ancora quella.",
+    "repo": [
+      "docusealco/docuseal"
+    ]
+  },
+  {
+    "slug": "1password",
+    "nome": "1Password",
+    "categoria": "altro",
+    "cosa": "un gestore delle password per persone e aziende.",
+    "perche": "Vaultwarden funziona con le app di Bitwarden e tiene le password del team su un server tuo.",
+    "attenzione": "Un gestore di password installato va seguito con cura: copie di sicurezza e aggiornamenti sono indispensabili.",
+    "repo": [
+      "dani-garcia/vaultwarden"
+    ]
+  },
+  {
+    "slug": "teamviewer",
+    "nome": "TeamViewer",
+    "categoria": "altro",
+    "cosa": "un programma per collegarsi a distanza ai computer.",
+    "perche": "RustDesk fa lo stesso con un server tuo, senza licenza per ogni postazione.",
+    "repo": [
+      "rustdesk/rustdesk"
+    ]
+  },
+  {
+    "slug": "chatgpt",
+    "nome": "ChatGPT",
+    "categoria": "altro",
+    "cosa": "un assistente con l'intelligenza artificiale, usato anche per lavoro.",
+    "perche": "Con un'intelligenza artificiale installata sul tuo server i documenti e le domande dei dipendenti non escono dall'azienda.",
+    "attenzione": "Serve un computer abbastanza potente, e i modelli liberi non sono uguali a quelli più grandi: l'installatore ti dice cosa aspettarti.",
+    "repo": [
+      "open-webui/open-webui",
+      "ollama/ollama",
+      "Mintplex-Labs/anything-llm"
+    ]
+  },
+  {
+    "slug": "zoom",
+    "nome": "Zoom",
+    "categoria": "comunicazione",
+    "cosa": "un servizio per riunioni e videochiamate.",
+    "perche": "Jitsi Meet fa videochiamate dal browser, senza account per chi partecipa, su un server tuo.",
+    "repo": [
+      "jitsi/jitsi-meet"
+    ]
+  },
+  {
+    "slug": "clockify",
+    "nome": "Clockify",
+    "categoria": "altro",
+    "cosa": "un servizio per segnare le ore di lavoro su clienti e progetti.",
+    "perche": "Kimai segna le ore, fa i riepiloghi per cliente e le fatture delle ore, sul tuo server.",
+    "repo": [
+      "kimai/kimai"
+    ]
+  },
+  {
+    "slug": "wix",
+    "nome": "Wix",
+    "categoria": "sito",
+    "cosa": "un servizio per fare siti web, a canone.",
+    "perche": "Un sito open source sul tuo spazio non ha canoni della piattaforma e si porta dove vuoi.",
+    "repo": [
+      "TryGhost/Ghost",
+      "joomla/joomla-cms",
+      "wagtail/wagtail"
+    ]
+  },
+  {
+    "slug": "square",
+    "nome": "Square",
+    "categoria": "cassa",
+    "cosa": "una cassa e un sistema di pagamento per negozi e locali.",
+    "perche": "Un programma di cassa open source gestisce vendite, prodotti e magazzino del negozio, sul tuo computer.",
+    "attenzione": "In Italia lo scontrino fiscale lo emette il registratore telematico: il programma di cassa lo affianca, non lo sostituisce.",
+    "repo": [
+      "Blair2004/NexoPOS",
+      "opensourcepos/opensourcepos"
+    ]
+  },
+  {
+    "slug": "google-foto",
+    "nome": "Google Foto",
+    "categoria": "altro",
+    "cosa": "un archivio online di foto e video.",
+    "perche": "Immich salva foto e video dal telefono su un server tuo, con ricerca e album.",
+    "repo": [
+      "immich-app/immich"
+    ]
+  }
+]

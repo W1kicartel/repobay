@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pannello · {{NOME}}</title>
+<meta name="description" content="Il pannello di chi gestisce la piattaforma: revisione dei prodotti, persone, recensioni, pagamenti e comunicazioni."><meta property="og:type" content="website"><meta property="og:site_name" content="{{NOME}}"><meta property="og:title" content="Pannello · {{NOME}}"><meta property="og:description" content="Il pannello di chi gestisce la piattaforma: revisione dei prodotti, persone, recensioni, pagamenti e comunicazioni."><meta property="og:image" content="{{URL}}/img/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/stile.css"><link rel="stylesheet" href="/stile-admin.css"><link rel="icon" href="/icona.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header class="barra"></header>
+<main id="contenuto" class="contenitore sala">
+  <div class="testa-pannello">
+    <div class="numero-sezione" data-n="RB-P">Sala controllo</div>
+    <h1 class="piccolo">Pannello</h1>
+  </div>
+  <p class="tenue" id="stato-pannello" role="status">Carico i dati della piattaforma…</p>
+
+  <div id="vietato" class="vuoto nascosto">
+    <h3>Solo per chi gestisce la piattaforma</h3>
+    <p>Entra con il conto di chi gestisce per vedere il pannello.</p>
+    <a class="bottone" href="/accedi?dopo=/admin">Accedi</a>
+  </div>
+
+  <div id="guasto" class="vuoto nascosto">
+    <h3>Il pannello non si è caricato</h3>
+    <p id="guasto-testo">Qualcosa non ha funzionato: riprova</p>
+    <button class="bottone secondario" type="button" id="riprova">Riprova</button>
+  </div>
+
+  <div class="lati nascosto" id="pannello">
+    <nav aria-label="Sezioni del pannello" id="menu-pannello">
+      <span class="gruppo">Piattaforma</span>
+      <a href="#panoramica" data-sezione="panoramica">Panoramica</a>
+      <a href="#revisione" data-sezione="revisione"><span>Revisione</span><span class="conto-menu nascosto" id="conto-revisione"></span></a>
+      <a href="#vetrina" data-sezione="vetrina">Non rivendicati</a>
+      <span class="gruppo">Persone</span>
+      <a href="#utenti" data-sezione="utenti">Utenti</a>
+      <a href="#recensioni" data-sezione="recensioni">Recensioni</a>
+      <a href="#contestazioni" data-sezione="contestazioni"><span>Segnalazioni</span><span class="conto-menu nascosto" id="conto-contestazioni"></span></a>
+      <a href="#assistenza" data-sezione="assistenza"><span>Assistenza ferma</span><span class="conto-menu nascosto" id="conto-assistenza"></span></a>
+      <span class="gruppo">Soldi</span>
+      <a href="#versamenti" data-sezione="versamenti"><span>Versamenti</span><span class="conto-menu nascosto" id="conto-errori"></span></a>
+      <a href="#bonifici" data-sezione="bonifici"><span>Bonifici</span><span class="conto-menu nascosto" id="conto-bonifici"></span></a>
+      <a href="#crypto" data-sezione="crypto">Ordini crypto</a>
+      <a href="#dac7" data-sezione="dac7">DAC7</a>
+    </nav>
+
+    <div class="sezioni">
+      <section id="s-panoramica" data-sezione="panoramica" aria-labelledby="t-panoramica">
+        <div class="numero-sezione" data-n="01">Piattaforma</div>
+        <h2 id="t-panoramica">Panoramica</h2>
+        <div class="quadro" id="numeri"></div>
+        <div class="carta prelancio">
+          <div class="riga-titolo">
+            <div>
+              <h3>Modalità prelancio</h3>
+              <p class="piccolo" id="prelancio-stato"></p>
+            </div>
+            <input type="checkbox" class="interruttore" id="prelancio" role="switch" aria-label="Modalità prelancio">
+          </div>
+          <p>Prima di poter incassare, la piattaforma resta in prelancio: il catalogo è aperto, i builder pubblicano e gli installatori si iscrivono, ma nessuno paga. I business non vedono il pagamento con carta o crypto: chiedono un preventivo all'installatore, che li ricontatta.</p>
+          <p>Spegnilo solo quando Stripe è attivo, le condizioni sono state riviste dall'avvocato e il commercialista ha confermato gli incassi per conto di builder e installatori.</p>
+          <p class="messaggio" id="msg-prelancio" role="status"></p>
+        </div>
+        <div class="carta canone">
+          <h3>Canone dell'assistenza</h3>
+          <p>Uno solo, uguale per tutti i prodotti. Il cliente lo paga ogni mese (o un anno in anticipo, con lo sconto); tolto il costo della carta, il 60% va a chi ha installato. Un cambio vale per le vendite nuove: gli abbonamenti già fatti restano al loro prezzo.</p>
+          <form id="f-canone" class="riga-canone"><label for="canone-mese">Al mese</label><input type="number" id="canone-mese" min="0" step="0.5" inputmode="decimal" class="campo-corto" required> € <button type="submit" class="bottone secondario">Salva</button><span class="piccolo tenue" id="canone-anno"></span></form>
+          <p class="messaggio" id="msg-canone" role="status"></p>
+        </div>
+        <div class="carta">
+          <h3>Rileggi tutti i progetti da GitHub</h3>
+          <p>Aggiorna stelle, licenza, README e ultima release di ogni prodotto. Succede da solo ogni giorno; qui lo forzi, per esempio dopo un cambio di licenza segnalato.</p>
+          <div class="azioni"><button class="bottone secondario" type="button" id="sincronizza">Rileggi da GitHub</button></div>
+          <p class="messaggio" id="msg-sincronizza" role="status"></p>
+        </div>
+      </section>
+
+      <section id="s-revisione" data-sezione="revisione" aria-labelledby="t-revisione" class="nascosto">
+        <div class="numero-sezione" data-n="02">Piattaforma</div>
+        <h2 id="t-revisione">Revisione dei prodotti</h2>
+        <p class="tenue">Prima quelli in revisione. Controlla che la descrizione sia onesta, la guida utile e i prezzi sensati; poi pubblica, o respingi con una nota che il builder riceve.</p>
+        <div class="filtri" role="group" aria-label="Filtra i prodotti" id="filtri-prodotti"></div>
+        <div class="coda" id="prodotti"></div>
+      </section>
+
+      <section id="s-vetrina" data-sezione="vetrina" aria-labelledby="t-vetrina" class="nascosto">
+        <div class="numero-sezione" data-n="03">Piattaforma</div>
+        <h2 id="t-vetrina">Metti in vetrina un progetto non rivendicato</h2>
+        <p class="tenue">Un progetto open source va in catalogo prima che il suo maintainer si iscriva. Finché non lo rivendica entrando con GitHub prende solo richieste di preventivo: i pagamenti su questi progetti restano spenti (APP_NON_RIVENDICATI_PAGAMENTI) finché l'avvocato non decide dove vanno i soldi di chi non rivendica.</p>
+        <div class="avviso errore nascosto" id="avviso-legale" role="note">
+          <span>Funzione spenta. Mettere in vendita il lavoro di qualcuno che non ha accettato le condizioni richiede prima il parere dell'avvocato. Per accenderla serve APP_NON_RIVENDICATI=1 nella configurazione del server.</span>
+        </div>
+        <div class="avviso attesa nascosto" id="avviso-acceso" role="note">
+          <span>Funzione accesa. Scegli solo progetti con una licenza open source che permette l'uso commerciale, e presentali come progetti, non come persone. Il termine per rivendicarli e cosa succede alle quote se nessuno li rivendica sono ancora da decidere con l'avvocato.</span>
+        </div>
+        <form class="modulo carta" id="modulo-vetrina" novalidate>
+          <label>Repository su GitHub
+            <input type="text" name="repo" id="repo-vetrina" placeholder="owner/nome" autocomplete="off" autocapitalize="off" spellcheck="false" required aria-describedby="aiuto-vetrina">
+            <span class="aiuto" id="aiuto-vetrina">Il repository deve essere pubblico, non un fork, con una licenza open source riconosciuta.</span>
+          </label>
+          <div class="azioni"><button class="bottone" type="submit" id="vetrina-invia">Metti in vetrina</button></div>
+          <p class="messaggio" id="msg-vetrina" role="status"></p>
+        </form>
+        <div class="carta modulo" id="vetrina-curata">
+          <h3>La vetrina curata</h3>
+          <p class="tenue">Una lista di progetti per attività scelti per Repobay: gestionali, prenotazioni, CRM, siti, negozi online, documenti, assistenza clienti, intelligenza artificiale in locale. Licenze controllate con l'API di GitHub. Entrano pubblicati, con descrizione, guida d'installazione e prezzi di partenza da rivedere; quelli già in catalogo si saltano.</p>
+          <div class="azioni"><button class="bottone secondario" type="button" id="vetrina-importa">Carica la vetrina curata</button></div>
+          <p class="messaggio" id="msg-importa" role="status"></p>
+          <div id="esito-importa"></div>
+        </div>
+        <h3 class="sotto-titolo">In vetrina ora</h3>
+        <div id="lista-vetrina"></div>
+      </section>
+
+      <section id="s-utenti" data-sezione="utenti" aria-labelledby="t-utenti" class="nascosto">
+        <div class="numero-sezione" data-n="04">Persone</div>
+        <h2 id="t-utenti">Utenti</h2>
+        <form class="filtri" id="cerca-utenti" role="search">
+          <input type="search" name="q" id="q" placeholder="Cerca per nome, email o GitHub" aria-label="Cerca fra gli utenti" maxlength="80">
+          <button class="bottone secondario" type="submit" id="cerca">Cerca</button>
+        </form>
+        <p class="tenue piccolo" id="conto-utenti" role="status"></p>
+        <div id="lista-utenti"></div>
+      </section>
+
+      <section id="s-recensioni" data-sezione="recensioni" aria-labelledby="t-recensioni" class="nascosto">
+        <div class="numero-sezione" data-n="05">Persone</div>
+        <h2 id="t-recensioni">Recensioni</h2>
+        <p class="tenue">Nascondi una recensione offensiva, falsa o con dati personali. Resta salvata e puoi mostrarla di nuovo.</p>
+        <div id="lista-recensioni"></div>
+      </section>
+
+      <section id="s-contestazioni" data-sezione="contestazioni" aria-labelledby="t-contestazioni" class="nascosto">
+        <div class="numero-sezione" data-n="06">Persone</div>
+        <h2 id="t-contestazioni">Segnalazioni dei clienti</h2>
+        <p class="tenue">Quando un cliente dice che qualcosa non va, le quote di quell'acquisto si fermano. Senti l'installatore, poi decidi: tutto regolare, rimborso (solo con carta), oppure ritirata.</p>
+        <div id="lista-contestazioni"></div>
+      </section>
+
+      <section id="s-assistenza" data-sezione="assistenza" aria-labelledby="t-assistenza" class="nascosto">
+        <div class="numero-sezione" data-n="07">Persone</div>
+        <h2 id="t-assistenza">Assistenza ferma</h2>
+        <p class="tenue">Le richieste dei clienti senza risposta da più del doppio del tempo promesso, o segnalate dal cliente. Senti chi installa; se serve, rispondi tu dal filo della richiesta.</p>
+        <div id="lista-assistenza"></div>
+      </section>
+
+      <section id="s-versamenti" data-sezione="versamenti" aria-labelledby="t-versamenti" class="nascosto">
+        <div class="numero-sezione" data-n="08">Soldi</div>
+        <h2 id="t-versamenti">Versamenti</h2>
+        <div class="quadro corto" id="numeri-soldi"></div>
+        <div class="carta">
+          <h3>Versa adesso</h3>
+          <p>Le quote maturate si versano da sole ogni pochi minuti sui conti Stripe di builder e installatori. Qui puoi forzare un giro, per esempio dopo aver risolto un errore.</p>
+          <div class="azioni"><button class="bottone" type="button" id="versa">Versa adesso</button></div>
+          <p class="messaggio" id="msg-versa" role="status"></p>
+        </div>
+        <h3 class="sotto-titolo">Errori dei versamenti</h3>
+        <div id="errori"></div>
+      </section>
+
+      <section id="s-bonifici" data-sezione="bonifici" aria-labelledby="t-bonifici" class="nascosto">
+        <div class="numero-sezione" data-n="09">Soldi</div>
+        <h2 id="t-bonifici">Bonifici</h2>
+        <p class="tenue" id="bonifici-conto"></p>
+        <div class="carta">
+          <h3>Estratto conto</h3>
+          <p>Incolla i movimenti copiati dalla pagina della banca, o carica il suo CSV: cerco le causali degli ordini non pagati e controllo l'importo. Prima ti mostro cosa ho trovato, poi confermi tu.</p>
+          <label for="estratto" class="sr">Movimenti del conto</label>
+          <textarea id="estratto" rows="6" spellcheck="false" placeholder="18/10/2026;18/10/2026;703,20;BONIFICO DA PIZZERIA ROSSI RB-7K2Q9M"></textarea>
+          <div class="azioni">
+            <label class="bottone fantasma piccolo">Carica il CSV<input type="file" id="estratto-file" accept=".csv,.txt,text/csv,text/plain" class="sr"></label>
+            <button class="bottone secondario" type="button" id="estratto-cerca">Cerca le causali</button>
+          </div>
+          <div id="estratto-esito"></div>
+          <p class="messaggio" id="msg-estratto" role="status"></p>
+        </div>
+        <h3 class="sotto-titolo">Ordini</h3>
+        <div id="bonifici"></div>
+        <h3 class="sotto-titolo">Da versare a mano</h3>
+        <p class="tenue">La parte di chi sviluppa sugli acquisti pagati con bonifico: il bonifico è arrivato a te, la sua parte la versi tu dalla banca, poi la segni versata.</p>
+        <div id="manuali"></div>
+      </section>
+
+      <section id="s-crypto" data-sezione="crypto" aria-labelledby="t-crypto" class="nascosto">
+        <div class="numero-sezione" data-n="10">Soldi</div>
+        <h2 id="t-crypto">Ordini in crypto</h2>
+        <p class="tenue">Gli ultimi 100 ordini. Sulle reti con il contratto escrow il pagamento resta nel contratto finché il cliente non conferma (o finisce la trattenuta); sulle altre va dritto nei wallet. La piattaforma non custodisce mai i fondi degli altri.</p>
+        <div id="ordini"></div>
+      </section>
+
+      <section id="s-dac7" data-sezione="dac7" aria-labelledby="t-dac7" class="nascosto">
+        <div class="numero-sezione" data-n="11">Soldi</div>
+        <h2 id="t-dac7">Comunicazione annuale DAC7</h2>
+        <div class="carta">
+          <p>Entro il 31 gennaio la piattaforma, come gestore, comunica all'Agenzia delle Entrate i dati di chi ha ricevuto pagamenti l'anno prima: nome, indirizzo, codice fiscale o partita IVA, importi e commissioni per trimestre. È un obbligo della piattaforma, non degli iscritti.</p>
+          <p>Il file è un CSV separato da punto e virgola, da dare al commercialista. La colonna «dati_mancanti» segnala chi non ha ancora compilato i dati fiscali.</p>
+          <div class="azioni scarica">
+            <label>Anno
+              <select id="anno-dac7"></select>
+            </label>
+            <a class="bottone secondario" id="scarica-dac7" href="/api/admin/dac7" download>Scarica il file</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+<footer class="piede"></footer>
+<script type="module" src="/testata.js"></script>
+<script type="module" src="/admin.js"></script>
+</body>
+</html>

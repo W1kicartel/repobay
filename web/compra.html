@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La cassa · {{NOME}}</title>
+<meta name="description" content="Scegli chi lo installa, paga in sicurezza e installalo con un comando.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/stile.css"><link rel="stylesheet" href="/stile-prodotto.css"><link rel="stylesheet" href="/stile-compra.css"><link rel="icon" href="/icona.svg" type="image/svg+xml">
+</head>
+<body class="cassa-pagina">
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header class="barra"></header>
+<main id="contenuto" class="contenitore cs">
+  <div id="carico" class="cs-carico" aria-busy="true" aria-label="Caricamento della cassa">
+    <div class="scheletro cs-sch-titolo"></div>
+    <div class="cs-griglia"><div class="scheletro cs-sch-passi"></div><div class="scheletro cs-sch-ricevuta"></div></div>
+  </div>
+
+  <div id="cassa" class="nascosto">
+    <a id="indietro" class="cs-indietro" href="/esplora">← Torna al prodotto</a>
+    <div class="cs-testa">
+      <div>
+        <p class="numero-sezione" data-n="RB">La cassa</p>
+        <h1 id="titolo">Installalo nella tua attività</h1>
+        <p class="cs-sotto" id="sotto">Quattro passi, poi un comando e il programma gira. Chi installa lo sistema su misura con te.</p>
+      </div>
+      <ol class="cs-mappa" id="mappa" aria-label="I passi"></ol>
+    </div>
+    <div class="cs-griglia">
+      <div class="cs-passi" id="passi"></div>
+      <aside class="cs-lato" id="lato" aria-label="Il tuo ordine"></aside>
+    </div>
+  </div>
+
+  <div id="fermo" class="nascosto"></div>
+</main>
+<div class="cs-barra-mobile" id="barra-mobile" aria-hidden="true"></div>
+<footer class="piede"></footer>
+<script type="module" src="/testata.js"></script>
+<script type="module" src="/compra.js"></script>
+</body>
+</html>

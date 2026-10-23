@@ -1,0 +1,8 @@
+# La configurazione di gitleaks (https://github.com/gitleaks/gitleaks), usata anche dalla GitHub Action: le regole di sempre, più
+# i segnaposto della documentazione che sembrano chiavi ma non lo sono. Un segnaposto nuovo si aggiunge qui, mai una chiave vera.
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "segnaposto della documentazione dell'API (web/sviluppatori.html)"
+regexes = ['''^ak_la_tua_chiave$''']

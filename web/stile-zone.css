@@ -1,0 +1,49 @@
+/* Le pagine locali e le alternative (composte sul server, server/seo.js): testo leggibile, liste di programmi e di installatori. */
+main.zone { padding-block: 24px 64px; display: grid; gap: 34px; max-width: 980px; }
+.z-briciole { display: flex; flex-wrap: wrap; gap: 8px; font: 500 13.5px var(--titoli);  color: var(--inchiostro-3); font-variant-numeric: tabular-nums; }
+.z-briciole a { color: var(--inchiostro-2); text-decoration: none; }
+.z-briciole a:hover { color: var(--segnale-scuro); text-decoration: underline; }
+.z-testa { display: grid; gap: 12px; }
+.z-testa h1 { margin: 0; font-size: clamp(30px, 5vw, 50px); line-height: 1.05; text-wrap: balance; }
+.z-sotto { margin: 0; max-width: 68ch; font-size: 18px; line-height: 1.55; color: var(--inchiostro-2); }
+.z-fatti { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 0; }
+.z-fatti span { padding: 4px 10px; border: 1px solid var(--bordo); background: var(--carta); font: 600 12px var(--titoli); font-variant-numeric: tabular-nums; }
+.z-blocco { display: grid; gap: 14px; }
+.z-blocco h2 { margin: 0; font-size: 24px; line-height: 1.15; }
+.z-blocco h2 a { color: inherit; text-decoration-color: var(--segnale); text-underline-offset: 4px; }
+.z-prodotti, .z-installatori, .z-province, .z-collegamenti, .z-alternative, .z-idee, .z-passi { margin: 0; padding: 0; list-style: none; }
+.z-prodotti { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.z-prod, .z-alt { display: grid; gap: 6px; padding: 16px 18px; background: var(--carta); border: 1px solid var(--bordo); min-width: 0; }
+.z-prod p, .z-alt p { margin: 0; color: var(--inchiostro-2); font-size: 15px; line-height: 1.5; }
+.z-prod-nome, .z-alt h3 a { font: 700 19px var(--titoli); color: var(--inchiostro); text-decoration: none; }
+.z-alt h3 { margin: 0; }
+.z-prod-nome:hover, .z-alt h3 a:hover { color: var(--segnale-scuro); text-decoration: underline; }
+.z-meta { font-size: 13.5px !important; color: var(--inchiostro-3) !important; }
+.z-installatori { display: grid; gap: 10px; }
+.z-inst { display: flex; justify-content: space-between; align-items: center; gap: 12px 18px; flex-wrap: wrap; padding: 14px 16px; background: var(--carta); border: 1px solid var(--bordo); border-left: 6px solid var(--sole); }
+.z-inst-dati { display: grid; gap: 2px; min-width: 0; }
+.z-inst-nome { font: 700 18px var(--titoli); color: var(--inchiostro); }
+.z-zona, .z-fiducia { font-size: 13.5px; color: var(--inchiostro-2); }
+.z-province { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+.z-province li { display: grid; gap: 2px; padding: 10px 12px; border: 1px solid var(--bordo); }
+.z-province a { font-weight: 600; }
+.z-province span { font-size: 13px; color: var(--inchiostro-3); }
+.z-collegamenti { display: flex; flex-wrap: wrap; gap: 8px; }
+.z-collegamenti a { display: inline-block; padding: 6px 12px; border: 1px solid var(--bordo); border-radius: 999px; color: var(--inchiostro); text-decoration: none; font-size: 14px; }
+.z-collegamenti a:hover { border-color: var(--segnale); color: var(--segnale-scuro); }
+.z-alternative { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 24px; }
+.z-alternative li { display: grid; gap: 2px; padding: 10px 0; border-bottom: 1px solid var(--bordo); }
+.z-alternative a { font-weight: 600; }
+.z-alternative span { font-size: 13.5px; color: var(--inchiostro-3); }
+.z-idee { display: grid; gap: 8px; max-width: 72ch; }
+.z-idee li { line-height: 1.55; }
+.z-passi { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; counter-reset: passo; }
+.z-passi li { counter-increment: passo; padding: 14px 16px; border-top: 3px solid var(--inchiostro); background: var(--carta); line-height: 1.5; font-size: 15px; }
+.z-passi li::before { content: counter(passo, decimal-leading-zero); display: block; font: 700 12px var(--titoli); color: var(--segnale-scuro); margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+.z-attenzione { padding: 14px 16px; border: 1px solid var(--bordo); border-left: 6px solid var(--segnale); background: var(--carta); max-width: 72ch; line-height: 1.55; }
+.z-nota { margin: 0; font-size: 14px; color: var(--inchiostro-3); }
+.z-vuoto { padding: 20px; border: 1px solid var(--bordo); color: var(--inchiostro-2); }
+@media (max-width: 760px) {
+  .z-prodotti, .z-alternative, .z-passi { grid-template-columns: 1fr; }
+  .z-sotto { font-size: 16.5px; }
+}

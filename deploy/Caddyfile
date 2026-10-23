@@ -1,0 +1,60 @@
+# Caddy davanti a Repobay: HTTPS automatico (Let's Encrypt), compressione, limite al corpo delle richieste, log.
+# Le due variabili arrivano da /etc/caddy/repobay.env (lo scrive deploy/installa.sh):
+#   DOMINIO      il dominio della piattaforma, es. tuodominio.it (i record DNS A e AAAA devono già puntare al server)
+#   ACME_EMAIL   l'email per Let's Encrypt (avvisi sui certificati in scadenza)
+# Per controllarlo sul server:
+#   runuser -u caddy -- env HOME=/var/lib/caddy $(cat /etc/caddy/repobay.env | xargs) caddy validate --adapter caddyfile --config /etc/caddy/Caddyfile
+
+{
+	email {$ACME_EMAIL}
+	# i log di Caddy stesso (certificati, errori) vanno nel journal: journalctl -u caddy
+}
+
+{$DOMINIO} {
+	# compressione delle risposte (zstd per i browser che la capiscono, gzip per gli altri)
+	encode zstd gzip
+
+	# limite al corpo delle richieste. Il server ha già i suoi (64 KB per il JSON, 1 MB per il webhook di Stripe):
+	# questo ferma prima, al bordo, chi manda corpi enormi
+	request_body {
+		max_size 2MB
+	}
+
+	reverse_proxy 127.0.0.1:4600 {
+		# Il server legge il PRIMO indirizzo di X-Forwarded-For (server/http.js, ipDi) per i limiti di tentativi e le
+		# sessioni. Qui lo si riscrive con l'indirizzo vero di chi si collega: un X-Forwarded-For mandato dal client
+		# viene buttato, così nessuno può fingersi un altro indirizzo.
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Real-IP {remote_host}
+		# se Node non risponde (riavvio in corso) Caddy riprova per qualche secondo invece di dare subito 502
+		lb_try_duration 10s
+	}
+
+	header {
+		# niente «Server: Caddy» nelle risposte; le altre intestazioni di sicurezza le mette già il server
+		-Server
+	}
+
+	# il registro degli accessi: JSON, a rotazione (20 MB a file, 10 file, al più 30 giorni)
+	log {
+		output file /var/log/caddy/repobay.log {
+			roll_size 20MiB
+			roll_keep 10
+			roll_keep_for 720h
+		}
+		format json
+	}
+}
+
+# www.dominio → dominio (serve anche il record DNS di www; se non c'è, Caddy non riesce a fare il certificato di www
+# e lo scrive nel journal, ma il dominio principale funziona lo stesso)
+www.{$DOMINIO} {
+	redir https://{$DOMINIO}{uri} permanent
+}
+
+# Gli altri domini che hai comprato (per esempio repobay.dev e repobay.io) rimandano al dominio principale: un solo sito per
+# i motori di ricerca, un solo indirizzo nelle email e nell'app GitHub. Servono i record DNS A e AAAA anche per loro (e per www).
+# Togli il # alle tre righe e metti i tuoi domini, separati da virgola; poi  systemctl reload caddy
+# altro-dominio.dev, www.altro-dominio.dev, altro-dominio.io, www.altro-dominio.io {
+# 	redir https://{$DOMINIO}{uri} permanent
+# }

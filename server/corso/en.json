@@ -1,0 +1,746 @@
+{
+  "titolo": "The installer course",
+  "lezioni": [
+    {
+      "id": "metodo",
+      "titolo": "How an installation works",
+      "minuti": 3,
+      "blocchi": [
+        {
+          "p": "Every piece of software in the catalogue has a step-by-step guide on its page: what you need, ready-made commands filled in with the customer's details, and a check at the end of each step. This course teaches you the method behind all the guides. If you know it, you can install almost the whole catalogue."
+        },
+        {
+          "titolo": "The job, from start to finish"
+        },
+        {
+          "lista": [
+            "Talk to the customer: what the software has to do, how many people will use it, where the data lives today.",
+            "Choose the software and the server, reading «You need» in the software's guide.",
+            "Install by following the guide, step by step, with the checks.",
+            "Set it up together with the customer: users, starting data, logo.",
+            "Turn on backups and try restoring one.",
+            "Hand over: the customer gets their admin access. The software and the data are theirs.",
+            "Put the support bubble in the software: from there the customer writes to you, and Repobay sees the request."
+          ],
+          "numerata": true
+        },
+        {
+          "p": "The customer pays on Repobay for the installation, at the price you set, and for the monthly support. The installation splits automatically between you, the developer of the software and the platform; of the support fee, after Stripe's cost, 60% is yours, because you answer customers first, and 40% goes to Repobay, which backs you up; the developer gets nothing from it."
+        },
+        {
+          "p": "An installation is finished when the customer has their access and you have tested restoring a backup. A login page that opens is not enough."
+        }
+      ]
+    },
+    {
+      "id": "server",
+      "titolo": "The server",
+      "minuti": 5,
+      "blocchi": [
+        {
+          "p": "Almost all the software in the catalogue runs on a Linux server. There are two ways to go. A virtual server (VPS) from a provider with data in Europe is the easiest to reach and to protect. A mini PC in the customer's office keeps the data on site, but you need a stable connection and a way to reach it from outside."
+        },
+        {
+          "p": "Put the server in the customer's name: the provider account is theirs, they pay for it and they give you access. If one day you stop working together, the server stays theirs."
+        },
+        {
+          "p": "Use Ubuntu Server in an LTS version, the one with long-term support. Check the RAM the guide asks for and leave some headroom."
+        },
+        {
+          "titolo": "Log in with a key, not a password"
+        },
+        {
+          "codice": "# on your computer, once only: create your key\nssh-keygen -t ed25519\n# copy it to the server\nssh-copy-id user@SERVER_IP"
+        },
+        {
+          "p": "Then create your own user with sudo and turn off password login: PasswordAuthentication no in /etc/ssh/sshd_config, then restart SSH."
+        },
+        {
+          "attenzione": "Before you turn off passwords, try logging in with the key from another window, keeping the one you are working in open. If something is wrong, you are locked out of the server."
+        },
+        {
+          "titolo": "Firewall and security updates"
+        },
+        {
+          "codice": "sudo ufw allow OpenSSH\nsudo ufw allow 80,443/tcp\nsudo ufw enable\nsudo apt install unattended-upgrades"
+        },
+        {
+          "p": "Only SSH, 80 and 443 stay open: everything else goes through the reverse proxy (lesson 4). The system's security updates install on their own."
+        }
+      ]
+    },
+    {
+      "id": "docker",
+      "titolo": "Docker and Docker Compose",
+      "minuti": 6,
+      "blocchi": [
+        {
+          "p": "Almost all the software in the catalogue is installed with Docker Compose. One file (compose.yaml, or docker-compose.yml) describes the pieces of the software, that is the app, the database and sometimes a cache, and how they connect to each other. Install Docker following the official guide for Ubuntu (docs.docker.com/engine/install/ubuntu): it also brings the docker compose command."
+        },
+        {
+          "titolo": "The commands you will use all the time, from the compose file's folder"
+        },
+        {
+          "codice": "docker compose up -d          # start everything, in the background\ndocker compose ps             # what is running, and whether it is healthy\ndocker compose logs -f app    # one service's logs, live\ndocker compose restart app    # restart one service\ndocker compose down           # stop and remove the containers (the data stays)"
+        },
+        {
+          "p": "If something doesn't start, look at the service's logs first: they almost always say what is missing, for example a variable, a password or a port already in use."
+        },
+        {
+          "attenzione": "docker compose down -v also deletes the volumes, that is the customer's data. Never use it on a real installation."
+        },
+        {
+          "titolo": "Where the data lives"
+        },
+        {
+          "p": "Containers get thrown away and recreated, the data doesn't. It lives in the volumes or in the mounted folders, that is the volumes: lines in the compose file. Those are what you save in the backups."
+        },
+        {
+          "titolo": "Passwords and versions"
+        },
+        {
+          "p": "Passwords go in the .env file next to the compose file. Generate long ones, one per service (openssl rand -base64 32), never keep the example ones from the guide, and never send them in plain text by email or chat."
+        },
+        {
+          "p": "Pin the image version, for example 1.4.2 and not latest. That way you decide when to update, and it doesn't arrive by chance at the next restart."
+        },
+        {
+          "attenzione": "Ports published by Docker (the ports: lines) bypass the ufw firewall. Publish the app only on the server itself, for example \"127.0.0.1:8080:80\", and let the reverse proxy expose it outside, over HTTPS."
+        }
+      ]
+    },
+    {
+      "id": "https",
+      "titolo": "Domain and HTTPS",
+      "minuti": 5,
+      "blocchi": [
+        {
+          "p": "The software must answer at one of the customer's addresses, for example erp.companyname.com, and always over HTTPS."
+        },
+        {
+          "titolo": "DNS"
+        },
+        {
+          "p": "In the customer's domain panel, create an A record with the name (erp) and the server's IP. Check with dig +short erp.companyname.com: it must answer with the server's IP. Sometimes this takes a few minutes."
+        },
+        {
+          "titolo": "The reverse proxy"
+        },
+        {
+          "p": "The reverse proxy receives visits on ports 80 and 443, handles the HTTPS certificate and passes them to the app. On Repobay the standard method is Nginx with Certbot: most guides use it, and it is the one the Inject button of the support bubble works with."
+        },
+        {
+          "codice": "sudo apt install nginx certbot python3-certbot-nginx"
+        },
+        {
+          "p": "The site block goes in /etc/nginx/sites-available/erp, with a link in /etc/nginx/sites-enabled:"
+        },
+        {
+          "codice": "server {\n    listen 80;\n    server_name erp.companyname.com;\n    location / {\n        proxy_pass http://127.0.0.1:8080;\n        proxy_set_header Host $host;\n        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n        proxy_set_header X-Forwarded-Proto $scheme;\n    }\n}"
+        },
+        {
+          "codice": "sudo nginx -t && sudo systemctl reload nginx\nsudo certbot --nginx -d erp.companyname.com"
+        },
+        {
+          "p": "nginx -t checks the configuration before reloading it: if it is wrong, Nginx keeps running with the previous one. Certbot requests the certificate from Let's Encrypt, adds HTTPS to the block and renews it on its own. If it fails, almost always the DNS doesn't point to the server yet, or port 80 is closed."
+        },
+        {
+          "p": "If the guide adds lines to the Nginx block, for example for WebSockets or for the size of uploaded files, copy them. Without those lines the software seems to work, but some parts break."
+        },
+        {
+          "p": "Some guides use Caddy or Traefik, which handle HTTPS on their own: that is fine, follow the software's guide. In that case you add the support bubble by hand: the code is on the customer's card."
+        }
+      ]
+    },
+    {
+      "id": "backup",
+      "titolo": "Backup and restore",
+      "minuti": 5,
+      "blocchi": [
+        {
+          "p": "A backup you have never restored is not a backup. The customer doesn't see this part of the job until they need it, and it is the part that matters most."
+        },
+        {
+          "titolo": "What to save"
+        },
+        {
+          "lista": [
+            "The database, with its export command: pg_dump for PostgreSQL, mariadb-dump or mysqldump for MariaDB and MySQL. Copying the database files while it is running gives copies that often won't open again.",
+            "The volumes and the folders with uploaded files.",
+            "The compose file and the .env file. Without the .env, some software can no longer open its own encrypted data."
+          ]
+        },
+        {
+          "codice": "# the PostgreSQL database of a Docker Compose installation\ndocker compose exec -T db pg_dump -U user dbname > backup-$(date +%F).sql"
+        },
+        {
+          "titolo": "The 3-2-1 rule"
+        },
+        {
+          "p": "Three copies, on two different media, one of them off the server. For example: the nightly copies on the server, plus an encrypted copy on external storage with restic or borg."
+        },
+        {
+          "p": "Automate everything with a nightly cron job and keep at least 14 days of copies. Once a month, test a restore on a test server. Write in the customer's notes where the copies are and how to restore them: on the day they are needed, you might not be there."
+        }
+      ]
+    },
+    {
+      "id": "aggiornamenti",
+      "titolo": "Updates and security",
+      "minuti": 4,
+      "blocchi": [
+        {
+          "p": "When a new version of software you offer comes out, Repobay tells you. It checks the version before announcing it: if it finds something serious it holds it back, if it finds something worth a look it says so in the notice."
+        },
+        {
+          "titolo": "How you update"
+        },
+        {
+          "lista": [
+            "Read the release notes, looking for breaking changes and migration steps.",
+            "Take a backup right before.",
+            "Change the version in the compose file, then docker compose pull and docker compose up -d.",
+            "Check the logs and test the features the customer uses most.",
+            "If something goes wrong, go back to the previous version with the backup."
+          ],
+          "numerata": true
+        },
+        {
+          "p": "Don't skip several major versions in one go: many programs want their migrations in order, from 3 to 4 and then to 5. Agree the time with the customer, outside their working hours."
+        },
+        {
+          "titolo": "Basic security"
+        },
+        {
+          "lista": [
+            "One admin user per person, never shared accounts, and two-factor authentication where the software offers it.",
+            "Database admin panels, such as Adminer or phpMyAdmin, are never exposed to the internet: use them from the server or through an SSH tunnel.",
+            "Change every example password from the guide, on day one."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dati",
+      "titolo": "The customer's data",
+      "minuti": 4,
+      "blocchi": [
+        {
+          "p": "Almost all software holds personal data: customers, employees, sometimes patients. Under the GDPR the customer is the data controller. If you access that data to install and support the software, you are the data processor, and you need a written agreement with the customer (GDPR art. 28)."
+        },
+        {
+          "lista": [
+            "Keep the server in Europe, or in a country with adequate safeguards.",
+            "Access the data only when the work requires it, and the customer knows about it.",
+            "Hand over passwords securely, with a password manager or in person, never in plain text by email or chat.",
+            "When the relationship ends, hand everything over to the customer and delete your copies."
+          ]
+        },
+        {
+          "p": "The software and the data belong to the customer. You have access to do the work, not to keep it."
+        }
+      ]
+    },
+    {
+      "id": "regole",
+      "titolo": "Support and Repobay rules",
+      "minuti": 5,
+      "blocchi": [
+        {
+          "p": "You provide the monthly support, with Repobay behind you: requests reach you first, and the platform's team sees them, checks the software from outside and steps in if you don't answer in time. Of the fee, after Stripe's cost, 60% is yours and 40% the platform's; the developer gets nothing. A well-done installation is one you can look after for years without trouble."
+        },
+        {
+          "lista": [
+            "The support bubble: take the bubble from the customer's card and put it in the software, with the Inject button if you use Nginx, or by hand. From there the customer writes to you, and Repobay sees the request.",
+            "Outside checks: in the customer's card, enter the software's public address. Repobay opens it every few minutes like a visitor and, if it stops responding, alerts you, the team and the customer; every month the customer gets a report with the numbers. It never enters the server.",
+            "You answer first, within 24 hours: after that a reminder arrives and, if you don't answer, Repobay's team steps in.",
+            "Leave notes on the customer's card about how you installed the software and where the backups are: whoever handles support starts from there."
+          ]
+        },
+        {
+          "titolo": "If the customer doesn't pay"
+        },
+        {
+          "p": "If a support payment fails, Repobay tells the customer and you. After the grace period, support is suspended until the customer pays, and you are not required to step in either."
+        },
+        {
+          "attenzione": "Never touch the customer's software: no locking it, changing passwords, switching off servers or holding back data. It is theirs, and locking it to get paid is a crime (taking the law into your own hands, article 392 of the Italian Criminal Code). For unpaid debts, use the normal channels."
+        },
+        {
+          "titolo": "Licences and partner programmes"
+        },
+        {
+          "lista": [
+            "Each page sums up the software's licence. Some, like n8n's, allow installing it on the customer's server but not hosting it yourself for your customers: follow what the page says.",
+            "If the company that develops the software has a mandatory partner programme, join through their form and confirm the terms before you offer it.",
+            "Never remove copyright and licence notices, and never present the software's brand as your own."
+          ]
+        },
+        {
+          "titolo": "Demanding software"
+        },
+        {
+          "p": "With this course you can offer the easy and medium software in the catalogue. The demanding ones, such as full ERP systems, large online shops and software with health data, unlock after 3 installations confirmed by customers. You learn on the easy software. If you have been doing this job for years already, write to us: we unlock them for you."
+        }
+      ]
+    }
+  ],
+  "domande": [
+    {
+      "id": "m1",
+      "lezione": "metodo",
+      "domanda": "The customer stops working with you. Who owns the software and the data?",
+      "opzioni": [
+        "The customer's, always",
+        "Yours, until they have paid you in full",
+        "Repobay's, since it made the sale",
+        "The developer of the software"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "m2",
+      "lezione": "metodo",
+      "domanda": "Where do you find how much RAM and which ports a piece of software in the catalogue needs?",
+      "opzioni": [
+        "In «You need», in the software's guide",
+        "In the contract you signed with Repobay",
+        "On the customer's card, in your area",
+        "In the compose file, after starting it"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "m3",
+      "lezione": "metodo",
+      "domanda": "When is an installation finished?",
+      "opzioni": [
+        "When the customer has their access and I have tested restoring a backup",
+        "When the login page opens from the customer's domain, already over HTTPS",
+        "When the customer has paid for the installation and the first month",
+        "When docker compose ps says all the services are healthy"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "s1",
+      "lezione": "server",
+      "domanda": "Whose name should a customer's server be in?",
+      "opzioni": [
+        "The customer's: they pay, you get access",
+        "Yours, so you can step in without having to ask",
+        "Repobay's, as it guarantees continuity",
+        "The developer's, since it's their software"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "s2",
+      "lezione": "server",
+      "domanda": "How do you log in over SSH to a production server?",
+      "opzioni": [
+        "With a key, and password login turned off",
+        "As root, with a password of at least 20 characters",
+        "With a password changed every month, never root",
+        "From the provider's web console, always and only"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "s3",
+      "lezione": "server",
+      "domanda": "You are about to turn off SSH password login. What do you do first?",
+      "opzioni": [
+        "I try the key from another window, keeping the current one open",
+        "I restart the server right away, so the new config loads cleanly",
+        "I turn off the firewall, so I don't get locked out by mistake",
+        "Nothing: if the key has been copied, it is sure to work"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "s4",
+      "lezione": "server",
+      "domanda": "Which ports do you leave open on the firewall of a server running web software?",
+      "opzioni": [
+        "SSH, 80 and 443",
+        "All of them, so the software is sure to work",
+        "SSH and the app's port, for example 8080",
+        "80, 443 and the database port, for backups"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "s5",
+      "lezione": "server",
+      "domanda": "Which version of Ubuntu do you choose for a server?",
+      "opzioni": [
+        "An LTS, with long-term support",
+        "The latest release, which has the newest packages",
+        "Whichever one the provider offers first",
+        "The desktop one, so the customer finds it easier"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "d1",
+      "lezione": "docker",
+      "domanda": "Which command starts the software described in a compose file in the background?",
+      "opzioni": [
+        "docker compose up -d",
+        "docker compose start --all",
+        "docker run compose",
+        "docker compose logs -f"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "d2",
+      "lezione": "docker",
+      "domanda": "What does docker compose down -v do on a real installation?",
+      "opzioni": [
+        "It also deletes the volumes: the customer's data",
+        "It stops the containers and saves the volumes to a backup",
+        "It updates the images to the latest version",
+        "It shows the volumes in use, without touching anything"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "d3",
+      "lezione": "docker",
+      "domanda": "A service doesn't start. Where do you look first?",
+      "opzioni": [
+        "In the service's logs (docker compose logs)",
+        "I reinstall Docker, which is often the cause",
+        "I delete the volumes and start over with a clean install",
+        "I restart the server: it usually fixes itself"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "d4",
+      "lezione": "docker",
+      "domanda": "Where does the data of software running with Docker live?",
+      "opzioni": [
+        "In the volumes and mounted folders in the compose file",
+        "Inside the container, which keeps it from one restart to the next",
+        "In the Docker image, which updates with the new data",
+        "On Docker Hub, together with the software's image"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "d5",
+      "lezione": "docker",
+      "domanda": "Why do you pin an image version (for example 1.4.2) instead of using latest?",
+      "opzioni": [
+        "So I decide myself when to update",
+        "Because latest always points to a test version",
+        "Because images with a pinned version are lighter",
+        "Because Repobay uses it to calculate the shares"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "d6",
+      "lezione": "docker",
+      "domanda": "In the compose file the app is published with \"8080:80\" and ufw blocks port 8080. Can it be reached from the internet?",
+      "opzioni": [
+        "Yes: Docker bypasses ufw, publish it on 127.0.0.1",
+        "No: ufw blocks the port and nobody can reach it",
+        "Only over HTTPS, because port 8080 has no certificate",
+        "Only once the DNS record points to the server"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "d7",
+      "lezione": "docker",
+      "domanda": "Where do you put the database passwords of a Docker Compose installation?",
+      "opzioni": [
+        "In the .env file, long and one per service",
+        "In the compose file, so they are all in one place",
+        "In a message to the customer, so they don't get lost",
+        "I keep the example ones from the guide, already tested"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "h1",
+      "lezione": "https",
+      "domanda": "The customer wants the software at erp.company.com. What do you create in the DNS?",
+      "opzioni": [
+        "An A record: erp → the server's IP",
+        "An MX record with the name erp and the IP",
+        "A TXT record with the server's name",
+        "Nothing: the Nginx server block is enough"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "h2",
+      "lezione": "https",
+      "domanda": "Certbot can't get the certificate. What is the most likely cause?",
+      "opzioni": [
+        "DNS not pointed yet, or port 80 closed",
+        "The server has less than 4 GB of RAM",
+        "Docker is off, so the site doesn't respond",
+        "The software doesn't have an admin user yet"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "h3",
+      "lezione": "https",
+      "domanda": "What is the reverse proxy, for example Nginx, for?",
+      "opzioni": [
+        "It receives visits, does HTTPS and hands them to the app",
+        "It backs up the database every night",
+        "It keeps every container updated to the very latest version",
+        "It blocks viruses before they reach the database"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "h4",
+      "lezione": "https",
+      "domanda": "You changed the Nginx configuration. What do you do before reloading it?",
+      "opzioni": [
+        "nginx -t, to see if it is valid",
+        "I restart the server, to be safe",
+        "I renew the certificates with certbot renew",
+        "Nothing: I reload it and see if the site responds"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "h5",
+      "lezione": "https",
+      "domanda": "The software's guide adds lines to the Nginx block, for WebSockets and file size. What do you do?",
+      "opzioni": [
+        "I copy them: without them, parts of the software break",
+        "I skip them: the basic block works for everyone",
+        "I put them in the compose file, where they really belong",
+        "I add them only if the customer reports problems"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "h6",
+      "lezione": "https",
+      "domanda": "The guide uses Caddy instead of Nginx. What changes for the support bubble?",
+      "opzioni": [
+        "Inject is Nginx-only: I add the bubble by hand",
+        "Nothing: Inject works with any proxy",
+        "The bubble can't be used with Caddy",
+        "I have to switch to Nginx before handing it over"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "b1",
+      "lezione": "backup",
+      "domanda": "How do you back up a PostgreSQL database while it is running?",
+      "opzioni": [
+        "With pg_dump",
+        "By copying its data folder",
+        "With a CSV export of every table",
+        "No need: the volume is already a backup"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "b2",
+      "lezione": "backup",
+      "domanda": "What does the 3-2-1 rule say?",
+      "opzioni": [
+        "3 copies, 2 different media, 1 off the server",
+        "3 backups a day for 2 weeks and 1 copy a month",
+        "3 servers, 2 databases, 1 shared backup",
+        "One backup every 3 days, kept for 21 days"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "b3",
+      "lezione": "backup",
+      "domanda": "When do you know a backup works?",
+      "opzioni": [
+        "When I have restored it on a test server",
+        "When the file has a reasonable size",
+        "When the cron job runs every night without errors",
+        "When the backup software says «completed»"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "b4",
+      "lezione": "backup",
+      "domanda": "Besides the database and the volumes, what do you save?",
+      "opzioni": [
+        "The compose file and the .env file",
+        "The downloaded Docker images",
+        "The logs from the last thirty days",
+        "The whole /var/lib/docker system folder"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "a1",
+      "lezione": "aggiornamenti",
+      "domanda": "A new major version of the software comes out. What is the right order?",
+      "opzioni": [
+        "Read the notes, back up, update, check the logs",
+        "Update, then read the notes if needed",
+        "Backup, update, and notes only if it breaks",
+        "Uninstall everything and install the new version"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "a2",
+      "lezione": "aggiornamenti",
+      "domanda": "The customer is on version 3 and the latest is 6. What do you do?",
+      "opzioni": [
+        "I follow the notes: often you go up one version at a time",
+        "I jump straight to 6, which already includes all the changes",
+        "I leave 3: if it works, better not to touch it",
+        "I install 6 from scratch and re-import the data by hand"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "a3",
+      "lezione": "aggiornamenti",
+      "domanda": "Repobay tells you about a new version, and the security check found something worth a look. What do you do?",
+      "opzioni": [
+        "I read what it found, then decide whether to update",
+        "I update right away: new versions are more secure",
+        "I ignore the notice: if it were serious, the release would be held",
+        "I uninstall the software from the customer's server"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "a4",
+      "lezione": "aggiornamenti",
+      "domanda": "The database admin panel (for example Adminer) opens from the internet. Is that OK?",
+      "opzioni": [
+        "No: only from the server or via an SSH tunnel",
+        "Yes, if it is protected by a long password",
+        "Yes, as long as only the customer knows the address",
+        "Yes, but only over HTTPS"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "a5",
+      "lezione": "aggiornamenti",
+      "domanda": "The software's admin users:",
+      "opzioni": [
+        "One per person, with two-factor where available",
+        "Just one, shared between you and the customer",
+        "The example one from the guide, with its password",
+        "None: whoever needs to administer logs in from the server"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "g1",
+      "lezione": "dati",
+      "domanda": "You support software that holds a company's customer data. What is your role under the GDPR?",
+      "opzioni": [
+        "Data processor, with a written agreement",
+        "Data controller, together with the company",
+        "None: I'm a technician, I don't process data",
+        "The company's DPO, for the whole length of the contract"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "g2",
+      "lezione": "dati",
+      "domanda": "How do you hand the admin password to the customer?",
+      "opzioni": [
+        "With a password manager, or in person",
+        "By email, in a separate message",
+        "On WhatsApp, so it stays in the chat",
+        "Written on a sheet left next to the server"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "g3",
+      "lezione": "dati",
+      "domanda": "Your relationship with the customer ends. What do you do?",
+      "opzioni": [
+        "I hand everything over and delete my copies",
+        "I keep the backups for a year, just in case",
+        "I switch off the server, since nobody looks after it",
+        "I keep the access in case the customer comes back"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "r1",
+      "lezione": "regole",
+      "domanda": "A customer you installed for hasn't paid for support in two months. What happens?",
+      "opzioni": [
+        "Support is suspended, never the software",
+        "You lock the software and unlock it when they pay",
+        "You change the admin password for a while",
+        "You switch off the server until the payment arrives"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "r2",
+      "lezione": "regole",
+      "domanda": "A customer writes from the support bubble. Who answers them?",
+      "opzioni": [
+        "You, first, within 24 hours; Repobay sees the request and steps in if you don't answer",
+        "Only Repobay's support team: you're not involved",
+        "The developer of the software, first",
+        "Nobody: the bubble only sends an email"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "r3",
+      "lezione": "regole",
+      "domanda": "The licence allows installing the software on the customer's server, but not hosting it yourself. The customer asks you to keep it on your server. What do you do?",
+      "opzioni": [
+        "I install it on a server in the customer's name",
+        "I keep it on mine, nobody checks anyway",
+        "I keep it on mine and add the cost to the monthly fee",
+        "I turn down the job and send them to someone else"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "r4",
+      "lezione": "regole",
+      "domanda": "The company that develops a piece of software has a mandatory partner programme. What do you do before offering it?",
+      "opzioni": [
+        "I join through their form and confirm the terms",
+        "I offer it now and join when the first customer arrives",
+        "Nothing: their programmes don't apply on Repobay",
+        "I remove their brand, so I don't need to join"
+      ],
+      "giusta": 0
+    },
+    {
+      "id": "r5",
+      "lezione": "regole",
+      "domanda": "Can you remove the copyright and licence notices from the software you install?",
+      "opzioni": [
+        "No, never",
+        "Yes, if the customer asks",
+        "Yes, if I change the logo",
+        "Yes, after a year"
+      ],
+      "giusta": 0
+    }
+  ]
+}

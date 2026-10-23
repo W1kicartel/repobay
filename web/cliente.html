@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Area clienti · {{NOME}}</title>
+<meta name="description" content="Per le attività che hanno comprato un'installazione: abbonamento, fatture, recensione e messaggi a chi ti segue. Si entra con un link via email."><meta property="og:type" content="website"><meta property="og:site_name" content="{{NOME}}"><meta property="og:title" content="Area clienti · {{NOME}}"><meta property="og:description" content="Per le attività che hanno comprato un'installazione: abbonamento, fatture, recensione e messaggi a chi ti segue. Si entra con un link via email."><meta property="og:image" content="{{URL}}/img/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="/stile.css"><link rel="stylesheet" href="/stile-accesso.css"><link rel="icon" href="/icona.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header class="barra"></header>
+<main id="contenuto" class="contenitore">
+<div id="avviso-pagina" class="avviso nascosto medio" role="status"></div>
+
+<!-- senza sessione: il link via email -->
+<div class="vista nascosto" id="v-fuori">
+  <div class="accesso">
+    <div>
+      <h1 class="piccolo">Area clienti</h1>
+      <p class="sotto">Per le attività che hanno comprato un'installazione. Scrivi l'email che hai usato per pagare: ti mandiamo il link per entrare.</p>
+      <div class="carta" data-modulo="RB-CLI-01" data-timbro="RB">
+        <form class="modulo" id="f-link" novalidate>
+          <label>Email <input type="email" name="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" required><span class="errore-campo" id="errore-email" aria-live="polite"></span></label>
+          <div class="messaggio" role="alert"></div>
+          <button class="bottone pieno">Mandami il link</button>
+        </form>
+        <div class="esito nascosto" role="status">
+          <div class="avviso ok">Se l'email ha un acquisto ti abbiamo scritto. Apri il link entro 30 minuti.</div>
+          <p class="tenue piccolo">Non arriva? Guarda nello spam, oppure <button type="button" class="collegamento" id="b-rifai">riprova con un'altra email</button>.</p>
+        </div>
+      </div>
+      <p class="cambia">Non serve una password: entri ogni volta con un link nuovo.</p>
+      <p class="cambia">Sviluppi o installi software? <a href="/accedi">Entra da qui</a></p>
+    </div>
+    <aside class="pannello-ruoli" aria-labelledby="titolo-area">
+      <figure class="figura figura-clienti"><img src="/img/sobrio/passo-negozio.svg" alt="Il programma al lavoro nell'attività, con l'assistenza ogni mese" width="600" height="420" loading="eager"></figure>
+      <span class="etichetta">Nella tua area</span>
+      <h2 id="titolo-area">Tutto quello che hai comprato, in un posto.</h2>
+      <ol>
+        <li class="ruolo-business"><span class="numero-ruolo">1</span><div><span class="adesivo-ruolo">Abbonamento e fatture</span><p>Cambi la carta, scarichi le fatture o disdici l'assistenza quando vuoi.</p></div></li>
+        <li class="ruolo-installatore"><span class="numero-ruolo">2</span><div><span class="adesivo-ruolo">L'assistenza</span><p>Chiedi aiuto dalla bolla nel programma o da qui: ti risponde chi te l'ha installato, con noi dietro; la risposta arriva anche per email.</p></div></li>
+        <li class="ruolo-piattaforma"><span class="numero-ruolo">3</span><div><span class="adesivo-ruolo">La tua recensione</span><p>Racconti com'è andata e aiuti le altre attività a scegliere.</p></div></li>
+      </ol>
+    </aside>
+  </div>
+</div>
+
+<!-- ?t=…: il bottone che consuma il link -->
+<div class="vista nascosto" id="v-token">
+  <div class="accesso">
+    <div>
+      <h1 class="piccolo">Entra nell'area clienti</h1>
+      <p class="sotto">Premi Entra per aprire la tua area. Il link vale una volta sola.</p>
+      <div class="carta modulo" data-modulo="RB-CLI-02" data-timbro="RB">
+        <button type="button" class="bottone grande pieno" id="b-entra">Entra</button>
+        <div class="messaggio" id="m-entra" role="alert"></div>
+        <button type="button" class="bottone secondario pieno nascosto" id="b-nuovo">Chiedi un nuovo link</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- dentro -->
+<div class="vista nascosto medio" id="v-dentro">
+  <div class="testa-cliente">
+    <div>
+      <h1 class="piccolo">I tuoi acquisti</h1>
+      <p id="chi"></p>
+    </div>
+    <button type="button" class="bottone secondario piccolo" id="b-esci">Esci</button>
+  </div>
+  <div class="acquisti" id="acquisti" aria-busy="true">
+    <div class="scheletro acquisto-finto"></div>
+    <div class="scheletro acquisto-finto"></div>
+  </div>
+</div>
+</main>
+<footer class="piede"></footer>
+<script type="module" src="/testata.js"></script>
+<script type="module" src="/cliente.js"></script>
+</body>
+</html>

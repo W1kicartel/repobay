@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Assistenza · {{NOME}}</title>
+<meta name="description" content="Scrivi all'assistenza del programma che usi: richieste, risposte e stato dell'assistenza in un posto.">
+<meta name="robots" content="noindex, nofollow"><meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#7B3DFF"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Assistenza">
+<link rel="apple-touch-icon" href="/img/assistenza-192.png">
+<link rel="stylesheet" href="/stile.css"><link rel="stylesheet" href="/stile-assistenza.css"><link rel="icon" href="/icona.svg" type="image/svg+xml">
+</head>
+<body class="pagina-assistenza">
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header class="barra"></header>
+<main id="contenuto" class="contenitore as-pagina">
+  <div id="as-caricamento" class="as-caricamento" role="status">Un momento…</div>
+  <div id="as-errore" class="vuoto nascosto" role="alert"></div>
+
+  <div id="as-dentro" class="nascosto">
+    <section class="as-testa">
+      <div>
+        <span class="etichetta">Assistenza</span>
+        <h1 class="piccolo" id="as-prodotto" data-no-t></h1>
+        <p class="as-chi"><span id="as-avatar"></span><span id="as-segue"></span></p>
+      </div>
+      <div id="as-stato" class="as-stato" role="status"></div>
+    </section>
+
+    <section id="as-salute" class="as-salute nascosto" aria-label="Il programma"></section>
+
+    <div class="as-griglia">
+      <section class="as-colonna" aria-labelledby="as-titolo-lista">
+        <div class="as-lista-testa">
+          <h2 id="as-titolo-lista" class="as-h2">Le tue richieste</h2>
+          <button class="bottone piccolo" type="button" id="as-nuova">Nuova richiesta</button>
+        </div>
+        <ul id="as-lista" class="as-lista"></ul>
+        <div id="as-installa" class="as-installa nascosto">
+          <strong>Tienila a portata di mano</strong>
+          <p class="piccolo tenue" id="as-installa-testo">Aggiungi questa pagina alla schermata Home: si apre come un'app, senza cercare il link.</p>
+          <button class="bottone secondario piccolo nascosto" type="button" id="as-installa-bottone">Aggiungi alla schermata Home</button>
+        </div>
+      </section>
+
+      <section class="as-dettaglio" id="as-dettaglio" aria-live="polite"></section>
+    </div>
+  </div>
+</main>
+<footer class="piede"></footer>
+<script type="module" src="/testata.js"></script>
+<script type="module" src="/assistenza.js"></script>
+</body>
+</html>

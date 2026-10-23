@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grazie · {{NOME}}</title>
+<meta name="description" content="Il pagamento è andato a buon fine: ecco cosa succede adesso."><meta property="og:type" content="website"><meta property="og:site_name" content="{{NOME}}"><meta property="og:title" content="Grazie · {{NOME}}"><meta property="og:description" content="Il pagamento è andato a buon fine: ecco cosa succede adesso."><meta property="og:image" content="{{URL}}/img/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/stile.css"><link rel="stylesheet" href="/stile-accesso.css"><link rel="icon" href="/icona.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header class="barra"></header>
+<main id="contenuto" class="contenitore">
+<div class="grazie">
+  <div class="grazie-testa">
+    <span class="coriandoli" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <div>
+      <p class="numero-sezione" data-n="RB">Ricevuta di consegna</p>
+      <h1>Fatto. Grazie.</h1>
+      <p class="sotto carta-testo">Il pagamento è andato a buon fine.</p>
+      <p class="sotto crypto-testo diretto-testo nascosto">La blockchain ha confermato il pagamento.</p>
+      <p class="sotto escrow-testo nascosto">Il deposito è nel contratto escrow: si sblocca quando confermi l'installazione dalla tua area, o da solo alla scadenza.</p>
+    </div>
+    <p class="timbro-pagato" aria-hidden="true"><span>Pagato<small class="carta-testo">carta · Stripe</small><small class="crypto-testo nascosto">on-chain</small></span></p>
+  </div>
+
+  <h2><span class="numero-sezione" data-n="01"></span>Cosa succede adesso</h2>
+  <ol class="scala">
+    <li><figure class="figura"><img src="/img/sobrio/passo-installa.svg" alt="L'installazione automatica sul server del cliente, passo per passo" width="600" height="420" loading="lazy"></figure><div><h3>Ti contatta chi installa</h3><p>Chi hai scelto ti scrive o ti chiama a breve per fissare l'installazione nella tua attività.</p></div></li>
+    <li class="carta-testo"><figure class="figura"><img src="/img/sobrio/passo-codice.svg" alt="Il progetto open source pubblicato nel catalogo" width="600" height="420" loading="lazy"></figure><div><h3>Arriva la ricevuta</h3><p>Stripe ti manda per email la ricevuta e, a ogni rinnovo (mese o anno), la ricevuta dell'assistenza.</p></div></li>
+    <li class="crypto-testo nascosto"><figure class="figura"><img src="/img/sobrio/passo-codice.svg" alt="Il progetto open source pubblicato nel catalogo" width="600" height="420" loading="lazy"></figure><div><h3>La ricevuta è la transazione</h3><p>La trovi nel tuo wallet. Se ci hai lasciato l'email, ti scriviamo anche lì.</p></div></li>
+    <li><figure class="figura"><img src="/img/sobrio/passo-negozio.svg" alt="Il programma al lavoro nell'attività, con l'assistenza ogni mese" width="600" height="420" loading="lazy"></figure><div><h3>Tutto nell'area clienti</h3><p>Abbonamento, fatture, recensione e messaggi a chi ti segue: entri con l'email, senza password.</p></div></li>
+  </ol>
+
+  <div class="azioni">
+    <a class="bottone grande magnetico" href="/cliente">Vai all'area clienti</a>
+    <a class="bottone secondario" href="/esplora">Torna ai prodotti</a>
+  </div>
+</div>
+</main>
+<footer class="piede"></footer>
+<script type="module" src="/testata.js"></script>
+<script type="module" src="/grazie.js"></script>
+</body>
+</html>

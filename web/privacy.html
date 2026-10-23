@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy · {{NOME}}</title>
+<meta name="description" content="Quali dati tratta la piattaforma, perché, per quanto tempo, chi li vede e come esercitare i tuoi diritti."><meta property="og:type" content="website"><meta property="og:site_name" content="{{NOME}}"><meta property="og:title" content="Privacy · {{NOME}}"><meta property="og:description" content="Quali dati tratta la piattaforma, perché, per quanto tempo, chi li vede e come esercitare i tuoi diritti."><meta property="og:image" content="{{URL}}/img/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="/stile.css"><link rel="stylesheet" href="/stile-legale.css"><link rel="icon" href="/icona.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header class="barra"></header>
+<main id="contenuto" class="contenitore documento">
+  <div class="testa-documento" data-codice="RB-L02">
+      <h1>Privacy</h1>
+      <p class="aggiornato">Ultimo aggiornamento: [data].</p>
+      <p class="avviso attesa bozza">BOZZA da far rivedere a un avvocato prima di aprire le iscrizioni. Le parti tra [parentesi] vanno completate.</p>
+  </div>
+  <div class="foglio">
+    <nav class="indice" aria-labelledby="indice-privacy">
+      <p class="etichetta" id="indice-privacy">Indice</p>
+      <ol>
+        <li><a href="#art-1"><span class="art-n">01</span> Chi è il titolare</a></li>
+        <li><a href="#art-2"><span class="art-n">02</span> Quali dati e perché</a></li>
+        <li><a href="#art-3"><span class="art-n">03</span> Chi li vede</a></li>
+        <li><a href="#art-4"><span class="art-n">04</span> Per quanto tempo</a></li>
+        <li><a href="#art-5"><span class="art-n">05</span> Cookie</a></li>
+        <li><a href="#art-6"><span class="art-n">06</span> I tuoi diritti</a></li>
+      </ol>
+    </nav>
+    <article class="testo-legale">
+      <div class="in-breve">
+      <p class="etichetta">In breve:</p>
+      <ul>
+        <li>raccogliamo solo i dati che servono al servizio e alla legge;</li>
+        <li>cifriamo quelli riservati;</li>
+        <li>non li vendiamo, non li cediamo e non li usiamo per pubblicità: li comunichiamo solo quando la legge lo impone;</li>
+        <li>non ci sono cookie di tracciamento;</li>
+        <li>documenti d'identità, conti bancari e carte non passano da noi: li gestisce Stripe;</li>
+        <li>puoi scaricare i tuoi dati e cancellare il conto da solo, dalla tua area.</li>
+      </ul>
+      </div>
+      <h2 id="art-1"><span class="art-n">01</span> Chi è il titolare</h2>
+      <p>[Ragione sociale o nome, sede, P. IVA, email per la privacy].</p>
+      <h2 id="art-2"><span class="art-n">02</span> Quali dati e perché</h2>
+      <p>Per ogni trattamento trovi cosa teniamo, perché (con la base giuridica del GDPR) e per quanto tempo.</p>
+      <ul>
+        <li><strong>Il tuo account:</strong> nome, email, password (conservata solo come impronta scrypt, mai in chiaro), la zona in cui installi.
+          <ul>
+            <li>Perché: per darti il servizio (contratto, art. 6.1.b GDPR).</li>
+            <li>Per quanto: finché non chiudi il conto.</li>
+          </ul>
+        </li>
+        <li><strong>GitHub, se entri con GitHub:</strong> il tuo identificativo e il nome utente. Il gettone d'accesso resta cifrato (AES-256-GCM) nella sessione e serve solo a leggere i tuoi repository pubblici quando metti in vendita un progetto. Non chiediamo nessun permesso sul tuo account GitHub.
+          <ul>
+            <li>Perché: contratto.</li>
+            <li>Per quanto: il gettone fino alla fine della sessione; identificativo e nome utente finché il conto è aperto.</li>
+          </ul>
+        </li>
+        <li><strong>Le sessioni:</strong> per ogni accesso, il tipo di dispositivo (per esempio «Chrome su macOS»), l'indirizzo IP accorciato (l'ultima parte azzerata, così non identifica la connessione) e le date di accesso. Servono a mostrarti dove sei collegato e a farti chiudere le sessioni che non riconosci.
+          <ul>
+            <li>Perché: la sicurezza del tuo conto (contratto e legittimo interesse, art. 6.1.b e 6.1.f).</li>
+            <li>Per quanto: finché la sessione è aperta, al massimo 30 giorni.</li>
+          </ul>
+        </li>
+        <li><strong>Le passkey:</strong> se entri con una passkey teniamo solo la sua chiave pubblica, il suo identificativo e un contatore. La chiave privata resta sul tuo dispositivo e non ci arriva mai, come la tua impronta o il tuo volto.
+          <ul>
+            <li>Perché: farti entrare senza password (contratto).</li>
+            <li>Per quanto: finché non la elimini o chiudi il conto.</li>
+          </ul>
+        </li>
+        <li><strong>La verifica in due passaggi:</strong> se la attivi, il segreto che genera i codici è conservato cifrato (AES-256-GCM).
+          <ul>
+            <li>Perché: la sicurezza del tuo conto (contratto).</li>
+            <li>Per quanto: finché non la disattivi o chiudi il conto.</li>
+          </ul>
+        </li>
+        <li><strong>Le vendite:</strong> i prodotti, i clienti che hai seguito (nome dell'attività ed email inseriti al pagamento), gli importi e le tue quote.
+          <ul>
+            <li>Perché: contratto e obblighi contabili (art. 6.1.c).</li>
+            <li>Per quanto: per il tempo che la legge impone [verificare: fino a 10 anni], poi si cancellano.</li>
+          </ul>
+        </li>
+        <li><strong>I dati fiscali, solo se ricevi pagamenti:</strong> codice fiscale o partita IVA e indirizzo, conservati cifrati. Prima dell'invio vedi nella tua area esattamente cosa viene comunicato.
+          <ul>
+            <li>Perché: obbligo di legge della Piattaforma (art. 6.1.c, comunicazione DAC7 del gestore della piattaforma).</li>
+            <li>Per quanto: per il tempo che la legge impone [verificare: 10 anni dalla comunicazione].</li>
+          </ul>
+        </li>
+        <li><strong>I wallet, se li colleghi:</strong> l'indirizzo pubblico di ogni wallet che colleghi (reti EVM, Solana, Bitcoin, Tron), provato con una firma che non sposta fondi. Per i pagamenti in crypto teniamo anche l'indirizzo di chi paga e gli identificativi delle transazioni. Attenzione: sulla blockchain questi dati sono pubblici per natura e non si possono cancellare.
+          <ul>
+            <li>Perché: contratto.</li>
+            <li>Per quanto: l'indirizzo finché non lo scolleghi o chiudi il conto; quelli legati a un pagamento quanto i dati delle vendite.</li>
+          </ul>
+        </li>
+        <li><strong>Le richieste dei business agli installatori:</strong> quando un business scrive a un installatore: nome, email, telefono (se lo lascia) e il messaggio. Li vede solo l'installatore a cui scrive, che li usa per rispondere.
+          <ul>
+            <li>Perché: rispondere a una richiesta di chi scrive, prima di un eventuale contratto (art. 6.1.b).</li>
+            <li>Per quanto: [verificare: 24 mesi], poi si cancellano; prima, se l'installatore chiude il conto.</li>
+          </ul>
+        </li>
+        <li><strong>Se sei un'attività che ha comprato:</strong> il nome dell'attività e l'email inseriti al pagamento, gli acquisti, lo stato dell'assistenza e dei pagamenti. I dati della carta o del conto li tratta Stripe: noi non li vediamo.
+          <ul>
+            <li>Perché: darti il servizio che hai comprato (contratto, art. 6.1.b) e gli obblighi contabili (art. 6.1.c).</li>
+            <li>Per quanto: come i dati delle vendite.</li>
+          </ul>
+        </li>
+        <li><strong>Le richieste di assistenza:</strong> il titolo, i messaggi, il nome e l'email che scrivi, se è bloccante, e per un intervento a chiamata il preventivo e se è pagato. Le legge la squadra di assistenza della piattaforma e, solo se lei li coinvolge, chi ha installato il programma o chi lo sviluppa.
+          <ul>
+            <li>Perché: darti l'assistenza (contratto, art. 6.1.b).</li>
+            <li>Per quanto: finché la richiesta è aperta e per 24 mesi da quando è risolta, poi si cancella con i suoi messaggi.</li>
+          </ul>
+        </li>
+        <li><strong>Il controllo del programma:</strong> l'indirizzo pubblico del tuo programma, se lo scrivi tu o chi te l'ha installato, e di ogni controllo l'ora, l'esito, il codice e il tempo di risposta, e la scadenza del certificato HTTPS. Il controllo apre l'indirizzo come farebbe un visitatore: non entra nel server e non legge i dati dentro il programma. Con questi dati calcoliamo il rapporto del mese.
+          <ul>
+            <li>Perché: l'assistenza che hai comprato (contratto, art. 6.1.b).</li>
+            <li>Per quanto: i controlli per 40 giorni; l'indirizzo finché non lo togli dalla tua pagina di assistenza.</li>
+          </ul>
+        </li>
+        <li><strong>La bolla di assistenza:</strong> il pulsante che chi installa mette dentro il programma è solo un link alla tua pagina di assistenza: non carica script e non raccoglie dati di chi usa il programma.</li>
+        <li><strong>Le recensioni:</strong> le stelle, il testo e il nome che scegli di mostrare, legati al tuo acquisto. Sono pubbliche sulla pagina del prodotto.
+          <ul>
+            <li>Perché: dare informazioni vere a chi sceglie un prodotto (legittimo interesse, art. 6.1.f); pubblicarle è una tua scelta.</li>
+            <li>Per quanto: finché il prodotto è in catalogo o finché chiedi di toglierla. Una recensione nascosta perché viola le regole resta salvata, non pubblica, per lo stesso tempo.</li>
+          </ul>
+        </li>
+        <li><strong>Webhook e chiavi API:</strong> gli indirizzi dei webhook che crei, il loro segreto di firma cifrato e il registro delle consegne (evento, esito, tentativi). Delle chiavi API teniamo solo l'impronta (hash) e i primi caratteri per riconoscerle, mai la chiave intera.
+          <ul>
+            <li>Perché: contratto.</li>
+            <li>Per quanto: finché non li elimini o chiudi il conto; il registro delle consegne per 30 giorni.</li>
+          </ul>
+        </li>
+        <li><strong>Telegram, Discord e Slack, se colleghi una chat:</strong> l'ID della chat Telegram e gli URL dei webhook di Discord o Slack, questi ultimi conservati cifrati. Servono solo a mandarti le notifiche che scegli.
+          <ul>
+            <li>Perché: contratto.</li>
+            <li>Per quanto: finché non scolleghi la chat o chiudi il conto.</li>
+          </ul>
+        </li>
+        <li><strong>Le email:</strong> le email che ti mandiamo (conferme, link d'accesso, notifiche e, se hai comprato, gli avvisi dell'assistenza e il rapporto del mese) partono tramite [fornitore email], che le tratta per nostro conto come responsabile del trattamento (art. 28 GDPR) e solo per consegnarle.
+          <ul>
+            <li>Perché: contratto; le notifiche facoltative solo se le lasci accese nelle preferenze.</li>
+            <li>Per quanto: il fornitore tiene i registri di consegna per [… giorni]; noi non teniamo copia delle email.</li>
+          </ul>
+        </li>
+        <li><strong>Le copie del database:</strong> ogni giorno facciamo una copia del database, per non perdere i dati in caso di guasto. I dati riservati restano cifrati anche nelle copie.
+          <ul>
+            <li>Perché: sicurezza e continuità del servizio (legittimo interesse, art. 6.1.f, e art. 32 GDPR).</li>
+            <li>Per quanto: le ultime [14] copie; i dati cancellati spariscono anche dalle copie quando queste scadono.</li>
+          </ul>
+        </li>
+        <li><strong>Il controllo delle password:</strong> se è attivo, quando scegli una password nuova controlliamo se compare in furti di dati pubblici con il servizio Have I Been Pwned. Il controllo usa il k-anonimato: esce solo l'inizio (5 caratteri) dell'impronta SHA-1 della password, mai la password né la sua impronta intera, e il confronto si fa da noi.
+          <ul>
+            <li>Perché: proteggere il tuo conto (legittimo interesse, art. 6.1.f).</li>
+            <li>Per quanto: niente: il risultato non viene conservato.</li>
+          </ul>
+        </li>
+        <li><strong>Sicurezza:</strong> l'indirizzo IP delle richieste d'accesso, tenuto in memoria per fermare chi prova le password.
+          <ul>
+            <li>Perché: legittimo interesse (art. 6.1.f).</li>
+            <li>Per quanto: pochi minuti.</li>
+          </ul>
+        </li>
+      </ul>
+      <h2 id="art-3"><span class="art-n">03</span> Chi li vede</h2>
+      <ul>
+        <li><strong>Stripe:</strong> i pagamenti e i tuoi versamenti. Raccoglie e verifica direttamente identità e conto bancario; noi non li vediamo.</li>
+        <li><strong>GitHub:</strong> solo per l'accesso e per leggere i repository pubblici.</li>
+        <li><strong>[Fornitore di hosting]:</strong> conserva il database e le sue copie per nostro conto.</li>
+        <li><strong>[Fornitore email]:</strong> consegna le email che ti mandiamo, come responsabile del trattamento.</li>
+        <li><strong>Have I Been Pwned:</strong> solo i primi 5 caratteri dell'impronta di una password nuova, che da soli non la rivelano.</li>
+        <li><strong>Telegram, Discord, Slack:</strong> il testo delle notifiche, solo se colleghi una chat.</li>
+        <li><strong>I tuoi webhook:</strong> gli eventi che scegli, agli indirizzi che indichi tu.</li>
+        <li><strong>L'installatore a cui scrivi:</strong> i dati della tua richiesta, che usa per risponderti come titolare autonomo.</li>
+        <li><strong>Se hai comprato:</strong> chi ti ha installato il programma vede il nome della tua attività, l'email, lo stato dell'assistenza e del controllo del programma; le richieste di assistenza le vedono la squadra della piattaforma e, solo se coinvolti, chi ha installato o chi sviluppa il programma.</li>
+        <li><strong>[Commercialista]:</strong> per gli adempimenti della Piattaforma.</li>
+        <li><strong>L'Agenzia delle Entrate:</strong> solo i dati della comunicazione DAC7 (nome, indirizzo, codice fiscale o partita IVA, importi ricevuti e commissioni trattenute), solo per chi ha ricevuto pagamenti. È un obbligo della Piattaforma. Nient'altro.</li>
+        <li><strong>Sulle pagine pubbliche:</strong> il nome e il profilo GitHub del builder sui suoi prodotti, il nome e la zona che l'installatore mostra sui prodotti che offre, le recensioni con il nome scelto da chi le scrive.</li>
+      </ul>
+      <p>Non vendiamo e non cediamo i dati a nessun altro. Li comunichiamo ad altri solo quando la legge lo impone, per esempio su richiesta dell'autorità giudiziaria.</p>
+      <p>Stripe, GitHub, Have I Been Pwned, [fornitore email], Telegram, Discord e Slack possono trattare dati fuori dall'Unione europea, con le garanzie previste dal GDPR [verificare: EU-US Data Privacy Framework o clausole contrattuali standard].</p>
+      <h2 id="art-4"><span class="art-n">04</span> Per quanto tempo</h2>
+      <ul>
+        <li>L'account finché non lo chiudi.</li>
+        <li>Le sessioni per 30 giorni al massimo.</li>
+        <li>I dati delle vendite e della comunicazione DAC7 per il tempo che la legge impone [verificare: fino a 10 anni]. Poi si cancellano.</li>
+        <li>Il registro delle consegne dei webhook per 30 giorni.</li>
+        <li>Le richieste di assistenza per 24 mesi da quando sono risolte.</li>
+        <li>I controlli del programma per 40 giorni.</li>
+        <li>Le copie giornaliere del database per [14] giorni.</li>
+      </ul>
+      <h2 id="art-5"><span class="art-n">05</span> Cookie</h2>
+      <p>Solo cookie tecnici, necessari al funzionamento, per cui non serve il consenso:</p>
+      <ul>
+        <li>«sessione», l'accesso, per 30 giorni;</li>
+        <li>«cliente», l'accesso all'area clienti dei business, per 7 giorni;</li>
+        <li>«lingua», la lingua che scegli, per un anno;</li>
+        <li>«ref», l'installatore da cui arrivi, per 30 giorni, così l'acquisto va a chi ti ha mandato il link [verificare con il legale che resti un cookie tecnico];</li>
+        <li>«gh_stato», la sicurezza dell'accesso con GitHub, per 15 minuti;</li>
+        <li>«passaggio» e «pk», la sicurezza della verifica in due passaggi e delle passkey, per 5 minuti.</li>
+      </ul>
+      <p>Nel browser, non da noi (memoria locale): la pagina di assistenza può ricordare il nome e l'email che scrivi, per non fartele riscrivere; l'area di chi installa ricorda il dominio del programma di un cliente per preparare il comando della bolla. Si cancellano cancellando i dati del sito dal browser.</p>
+      <p>Niente statistiche di terze parti, niente pubblicità.</p>
+      <h2 id="art-6"><span class="art-n">06</span> I tuoi diritti</h2>
+      <p>Puoi chiedere accesso, copia, correzione e cancellazione dei tuoi dati, limitarne il trattamento o opporti, scrivendo a [email].</p>
+      <p>Dalla tua area puoi anche fare da solo:</p>
+      <ul>
+        <li>scaricare tutti i tuoi dati in un file (esportazione, art. 15 e 20 GDPR);</li>
+        <li>cancellare il conto (art. 17 GDPR): l'accesso si chiude subito e i dati che non servono più si cancellano.</li>
+      </ul>
+      <p>La cancellazione non tocca i dati che la legge ci obbliga a conservare (vendite, quote, dati della comunicazione DAC7): restano, non più usati, per il tempo previsto, poi si cancellano. Se hai ancora quote da ricevere o clienti con un abbonamento attivo, prima si sistemano quelli: te lo dice la tua area.</p>
+      <p>Puoi anche fare reclamo al Garante per la protezione dei dati personali (garanteprivacy.it).</p>
+    </article>
+  </div>
+</main>
+<footer class="piede"></footer>
+<script type="module" src="/testata.js"></script>
+</body>
+</html>

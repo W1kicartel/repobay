@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prodotto · {{NOME}}</title>
+<meta property="og:type" content="website"><meta property="og:site_name" content="{{NOME}}"><meta property="og:title" content="Prodotto · {{NOME}}"><meta property="og:description" content="Software open source installato nella tua attività da un professionista della tua zona, con assistenza ogni mese."><meta property="og:image" content="{{URL}}/img/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#0D0B11">
+<meta name="description" content="Software open source installato nella tua attività da un professionista della tua zona, con assistenza ogni mese.">
+<link rel="stylesheet" href="/stile.css"><link rel="stylesheet" href="/stile-prodotto.css"><link rel="icon" href="/icona.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header class="barra"></header>
+<main id="contenuto" class="contenitore">
+
+  <div id="carico" class="pp-carico" aria-busy="true" aria-label="Caricamento del prodotto">
+    <div class="scheletro pp-sch-targa"></div>
+    <div class="pp-griglia">
+      <div class="scheletro pp-sch-blocco alto"></div>
+      <div class="scheletro pp-sch-blocco"></div>
+    </div>
+  </div>
+
+  <section id="manca" class="nascosto pp-manca">
+    <figure class="pp-figura pp-figura-vuoto"><img src="/img/sobrio/vuoto.svg" alt="" width="600" height="420" loading="lazy"></figure>
+    <div>
+      <p class="etichetta pp-codice-errore">Errore 404</p>
+      <h1 class="piccolo">Questo prodotto non c'è</h1>
+      <p class="sotto">Forse il link è sbagliato, o il prodotto è stato ritirato dal catalogo.</p>
+      <div class="azioni"><a class="bottone" href="/esplora">Guarda gli altri prodotti</a><a class="bottone secondario" href="/">Torna all'inizio</a></div>
+    </div>
+  </section>
+
+  <section id="guasto" class="nascosto pp-manca">
+    <figure class="pp-figura pp-figura-vuoto"><img src="/img/sobrio/vuoto.svg" alt="" width="600" height="420" loading="lazy"></figure>
+    <div>
+      <h1 class="piccolo">Non riusciamo a caricare il prodotto</h1>
+      <p class="sotto" id="guasto-testo">Controlla la connessione e riprova.</p>
+      <div class="azioni"><button class="bottone" id="riprova" type="button">Riprova</button></div>
+    </div>
+  </section>
+
+  <article id="pagina" class="nascosto">
+    <nav class="pp-briciole" aria-label="Percorso"><a href="/esplora">Prodotti</a><span aria-hidden="true">/</span><a id="cat-link" href="/esplora"></a></nav>
+    <div id="avvisi-testa" class="pp-avvisi"></div>
+
+    <!-- la targhetta del pezzo: codice, nome, adesivi, chi l'ha fatto -->
+    <header class="pp-targa">
+      <span class="pp-vite" aria-hidden="true"></span><span class="pp-vite" aria-hidden="true"></span><span class="pp-vite" aria-hidden="true"></span><span class="pp-vite" aria-hidden="true"></span>
+      <div class="pp-targa-riga">
+        <span class="pp-codice" id="codice" data-no-t></span>
+        <span id="targa-cat"></span>
+        <span class="pp-targa-rev" id="targa-rev" data-no-t></span>
+      </div>
+      <div class="pp-targa-corpo">
+        <div class="pp-targa-titolo">
+          <h1 id="nome" data-no-t></h1>
+          <p class="pp-descrizione" id="descrizione" data-no-t></p>
+          <div class="pp-consigliato nascosto" id="consigliato"><span class="pp-consigliato-eti">Consigliato per</span><span class="pp-chip-attivita" id="attivita-chip"></span></div>
+          <div class="pp-meta" id="meta"></div>
+        </div>
+        <div class="pp-adesivi" id="adesivi"></div>
+      </div>
+      <div class="pp-persone" id="persone"></div>
+    </header>
+
+    <div class="pp-griglia">
+      <aside class="pp-acquisto" id="acquisto" aria-label="Acquisto"></aside>
+
+      <div class="pp-corpo">
+        <section class="pp-sezione" id="sezione-readme" aria-labelledby="titolo-readme">
+          <div class="pp-sezione-testa"><span class="pp-n" aria-hidden="true">01</span><h2 id="titolo-readme">Il progetto</h2><a class="bottone fantasma piccolo" id="readme-github" target="_blank" rel="noopener">Apri su GitHub</a></div>
+          <div class="angoli pp-foglio-cornice">
+            <div class="pp-foglio">
+              <span class="pp-nastro" aria-hidden="true"></span>
+              <p class="pp-foglio-testa" aria-hidden="true"><span>README.md</span><span id="foglio-codice" data-no-t></span></p>
+              <div class="readme" id="readme"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="pp-sezione nascosto" id="sezione-idee" aria-labelledby="titolo-idee">
+          <div class="pp-sezione-testa"><span class="pp-n" aria-hidden="true">02</span><h2 id="titolo-idee">Idee di applicazione</h2></div>
+          <p class="pp-sezione-sotto">Come può servire in un'attività vera: tre esempi, ognuno con quello che vedrebbe il titolare.</p>
+          <div class="pp-idee" id="idee"></div>
+        </section>
+
+        <section class="pp-sezione pp-banda" aria-labelledby="titolo-guida">
+          <div class="carta scura pp-passi-carta">
+            <div class="pp-sezione-testa"><span class="pp-n" aria-hidden="true">02</span><h2 id="titolo-guida">Come funziona l'installazione</h2></div>
+            <ol class="pp-passi">
+              <li><h3>Scegli chi lo installa</h3><p>Un professionista della tua zona: ognuno ha il suo prezzo, le sue recensioni e le installazioni confermate.</p></li>
+              <li><h3>Paghi qui, in modo sicuro</h3><p>Con carta o in crypto. L'installazione si divide da sola fra chi l'ha costruito, chi lo installa e la piattaforma.</p></li>
+              <li><h3>Ti contatta per l'appuntamento</h3><p>L'installatore lo configura nella tua attività e ti spiega come si usa.</p></li>
+              <li><h3>Assistenza ogni mese</h3><p>La dà chi te l'ha installato, con noi dietro: risponde lui per primo, noi controlliamo il programma da fuori, ti mandiamo il rapporto del mese e interveniamo se serve. Disdici quando vuoi.</p></li>
+            </ol>
+          </div>
+          <div class="pp-guida nascosto" id="guida-carta">
+            <p class="etichetta">Le note di chi l'ha costruito</p>
+            <p id="guida" data-no-t></p>
+          </div>
+        </section>
+
+        <section class="pp-sezione nascosto" id="sezione-installa" aria-labelledby="titolo-installa">
+          <div class="pp-sezione-testa"><span class="pp-n" aria-hidden="true">04</span><h2 id="titolo-installa">Come si installa</h2><a class="bottone fantasma piccolo nascosto" id="installa-fonte" target="_blank" rel="noopener noreferrer">Documentazione ufficiale</a></div>
+          <p class="pp-sezione-sotto">La guida per chi lo installa, passo per passo. Spunta i passi mentre li fai: il segno resta su questo browser.</p>
+          <div id="installa"></div>
+        </section>
+
+        <section class="pp-sezione nascosto" id="sezione-versioni" aria-labelledby="titolo-versioni">
+          <div class="pp-sezione-testa"><span class="pp-n" aria-hidden="true">03</span><h2 id="titolo-versioni">Versioni</h2></div>
+          <div class="pp-versioni" id="versioni"></div>
+        </section>
+
+        <section class="pp-sezione" id="recensioni" aria-labelledby="titolo-recensioni">
+          <div class="pp-sezione-testa"><span class="pp-n" aria-hidden="true">04</span><h2 id="titolo-recensioni">Recensioni</h2><span id="recensioni-media" class="pp-media"></span></div>
+          <div id="recensioni-lista" class="pp-recensioni"></div>
+        </section>
+
+        <section class="pp-sezione" id="sezione-tua" aria-label="Per chi installa e per chi l'ha costruito"></section>
+
+        <details class="domanda pp-badge" id="badge">
+          <summary>Il badge per il tuo README</summary>
+          <p>Mettilo nel README del progetto: chi lo legge trova subito chi può installarlo.</p>
+          <p class="pp-badge-img"><img id="badge-img" alt="Badge del prodotto" height="20"></p>
+          <div class="copia"><code id="badge-md" data-no-t></code><button class="bottone secondario piccolo" type="button" id="badge-copia">Copia</button></div>
+        </details>
+      </div>
+    </div>
+  </article>
+</main>
+<footer class="piede"></footer>
+<script type="module" src="/testata.js"></script>
+<script type="module" src="/prodotto.js"></script>
+</body>
+</html>

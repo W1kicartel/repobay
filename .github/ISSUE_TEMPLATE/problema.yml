@@ -1,0 +1,50 @@
+name: Qualcosa non funziona · Bug report
+description: Un errore nel codice o sul sito. / Something is broken in the code or on the site.
+labels: [problema]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Una vulnerabilità di sicurezza? Non aprire una issue pubblica:** segui [SECURITY.md](../blob/main/SECURITY.md).
+        **A security vulnerability? Do not open a public issue:** follow [SECURITY.md](../blob/main/SECURITY.md).
+
+        Puoi scrivere in italiano o in inglese. / You can write in Italian or English.
+        Niente chiavi, password, email o dati di clienti nei messaggi e nei registri. / No keys, passwords, emails or customer data, please.
+  - type: textarea
+    id: cosa
+    attributes:
+      label: Cosa succede / What happens
+      description: Cosa hai fatto, cosa ti aspettavi, cosa è successo. / What you did, what you expected, what happened.
+    validations:
+      required: true
+  - type: textarea
+    id: passi
+    attributes:
+      label: Come rifarlo / Steps to reproduce
+      placeholder: |
+        1. node strumenti/demo.mjs 4610
+        2. apri http://localhost:4610/…
+        3. …
+    validations:
+      required: true
+  - type: dropdown
+    id: dove
+    attributes:
+      label: Dove / Where
+      options:
+        - In locale (npm start, demo o prove) / Locally (npm start, demo or tests)
+        - Su repobay.net / On repobay.net
+        - Su un'altra installazione / On another deployment
+    validations:
+      required: true
+  - type: input
+    id: versione
+    attributes:
+      label: Versione / Version
+      description: Il commit (git rev-parse HEAD) o quello che dice /versione sul sito. / The commit, or what /versione shows on the site.
+  - type: textarea
+    id: registro
+    attributes:
+      label: Messaggi o registro / Logs
+      description: Togli prima chiavi, gettoni, email e indirizzi. / Remove keys, tokens, emails and addresses first.
+      render: text
