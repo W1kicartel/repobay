@@ -123,3 +123,17 @@ test('/versione senza versione.json: nessun commit, nessuna intestazione', async
   assert.equal(v.url, s.url);
   assert.equal(r.headers.get('x-versione'), null);
 });
+
+test('una riga di richiesta malformata riceve 400 e non spegne il server', async () => {
+  // la forma assoluta con un host rotto, come la mandano gli scanner: new URL(req.url) fallisce, il server deve rispondere e restare acceso
+  const { createConnection } = await import('node:net');
+  const { hostname, port } = new URL(s.url);
+  const risposta = await new Promise((risolvi, rifiuta) => {
+    const c = createConnection({ host: hostname, port: Number(port) }, () => c.write('GET http://[::1 HTTP/1.1\r\nHost: x\r\nConnection: close\r\n\r\n'));
+    let dati = ''; c.setEncoding('utf8'); c.on('data', d => { dati += d; }); c.on('end', () => risolvi(dati)); c.on('error', rifiuta);
+    c.setTimeout(5000, () => { c.destroy(); rifiuta(new Error('nessuna risposta')); });
+  });
+  assert.match(risposta, /^HTTP\/1\.1 400 /);
+  const r = await s.chiedi('/salute');
+  assert.equal(r.status, 200);
+});

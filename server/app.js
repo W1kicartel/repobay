@@ -192,7 +192,11 @@ export function creaApp(cfg, { db, stripe, github, rpc, prezzo, posta = null, ch
   gestore.notifiche = notifiche;   // i lavori usano le stesse notifiche: un giro di consegne dei webhook alla volta, non due
   return gestore;
   async function gestore(req, res) {
-    const url = new URL(req.url, 'http://x'); const b = biscotti(req); const lingua = linguaDi(req, b, cfg.lingua);
+    // una riga di richiesta malformata (la forma assoluta con un host rotto, come «GET http://[::1 HTTP/1.1», che gli scanner mandano)
+    // fa fallire new URL: senza questa guardia l'eccezione usciva dal gestore e spegneva tutto il server (successo il 21/10/2026)
+    let url;
+    try { url = new URL(req.url, 'http://x'); } catch { res.writeHead(400, { 'content-type': 'text/plain; charset=utf-8' }); return res.end('Richiesta non valida'); }
+    const b = biscotti(req); const lingua = linguaDi(req, b, cfg.lingua);
     if (versione.commit) res.setHeader('x-versione', versione.commit);   // su ogni risposta, anche di errore
     // HEAD vale come GET (curl -I, monitor, controlli dei link): stesse intestazioni, e Node non scrive il corpo
     const metodo = req.method === 'HEAD' ? 'GET' : req.method;
