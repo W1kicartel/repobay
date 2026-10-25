@@ -1,4 +1,5 @@
-# Social preview (1200x630): the hero scene, smaller, on the right; left free for the HTML title.
+# NO LONGER THE SOURCE of web/img/og.png: since 2026-10-25 the social preview is composed in code by strumenti/marchio/og.mjs
+# (the new mark, no Blender). Kept only as a record of the old 3D scene: the hero scene, smaller, on the right; left free for the title.
 # 1) Blender -b -P og.py  -> controllo/og-scena.png (transparent)   2) python3 og_componi.py -> web/img/og.png
 import sys, os, math
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
