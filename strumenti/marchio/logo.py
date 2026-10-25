@@ -1,80 +1,82 @@
-# The Repobay mark: the bay (a frame open on one side, also a code bracket) with the box sliding out of it, and the wordmark in
-# Bricolage Grotesque. Writes web/marchio/*.svg (+ a preview page). The wordmark SVGs embed the font: outlined versions need fontTools.
+# Il marchio Repobay: la porta del negozio (architrave spesso come l'insegna, due stipiti) e dentro, a terra, il quadrato viola,
+# il programma che entra nell'attività. La parola è Mona Sans 800, larghezza 110, tracciata come contorni: i file non dipendono
+# da nessun carattere. Scrive web/marchio/*.svg e web/icona.svg; i PNG li fa png.mjs. Le regole d'uso: web/marchio/README.md.
+#
+#   pip install fonttools uharfbuzz        (solo per rigenerare i file; Repobay non ne ha bisogno)
 #   python3 strumenti/marchio/logo.py
-import os, base64
+#
+# Il carattere variabile MonaSans[wdth,wght].ttf sta qui accanto, con la sua licenza (OFL-MonaSans.txt, github.com/github/mona-sans).
+import os, sys, io
+from fontTools.ttLib import TTFont
+from fontTools.varLib.instancer import instantiateVariableFont
+from fontTools.pens.svgPathPen import SVGPathPen
+from fontTools.pens.transformPen import TransformPen
+import uharfbuzz as hb
+
 QUI = os.path.dirname(os.path.abspath(__file__)); RADICE = os.path.normpath(os.path.join(QUI, '..', '..'))
-OUT = os.path.join(RADICE, 'web', 'marchio'); FONT = os.path.join(RADICE, 'web', 'font')
-VIOLA, NERO, BIANCO, CARTA, ORCHIDEA = '#7B3DFF', '#0D0B11', '#FFFFFF', '#F2EFF7', '#FF6BD6'
+OUT = os.path.join(RADICE, 'web', 'marchio'); FONT = os.path.join(QUI, 'MonaSans[wdth,wght].ttf')
+INK, VIOLA, VIOLA_NOTTE, BIANCO = '#15112B', '#6D3BFF', '#8B63FF', '#FFFFFF'
 
-# ---- the mark, on a 100-unit square: the bay (a thick frame open on the right) and the box sliding out of it ----
-def marchio(cornice, scatola, t=14, x0=14, x1=66, y0=14, y1=86, bx=52, bw=32, r=3):
-    """cornice/scatola: the two colours (frame and box). The opening is on the right: the box is half inside, half out."""
-    cornice_d = (f'M{x0 + r} {y0}H{x1}V{y0 + t}H{x0 + t}V{y1 - t}H{x1}V{y1}H{x0 + r}A{r} {r} 0 0 1 {x0} {y1 - r}V{y0 + r}A{r} {r} 0 0 1 {x0 + r} {y0}Z')
-    by = (y0 + y1) / 2 - bw / 2
-    return (f'<path fill="{cornice}" d="{cornice_d}"/>'
-            f'<rect x="{bx}" y="{by}" width="{bw}" height="{bw}" rx="{r + 1}" fill="{scatola}"/>')
+# ---- il segno, su un quadrato di 100 unità ----
+PORTA = 'M12 10H88V90H74V32H26V90H12Z'
+def segno(porta, prodotto, x=0, y=0, s=1.0):
+    return (f'<g transform="translate({x} {y}) scale({s})"><path fill="{porta}" d="{PORTA}"/>'
+            f'<rect x="38" y="66" width="24" height="24" fill="{prodotto}"/></g>')
+def svg(corpo, vb, w, h): return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{vb}" width="{w}" height="{h}">{corpo}</svg>'
+def tessera(fondo, porta, prodotto, rx=22, s=0.74):
+    o = 50 - 50 * s
+    return f'<rect width="100" height="100" rx="{rx}" fill="{fondo}"/>' + segno(porta, prodotto, o, o, s)
 
-def simbolo(stile='due', scala=1.0, inchiostro=NERO):
-    """due: frame in ink, box in purple (the everyday mark). mono: one colour (currentColor or `inchiostro`).
-    piatto: on a black rounded square (favicon, app icons). adesivo: tilted purple badge with ink border and hard shadow."""
-    testa = f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="{100*scala}" height="{100*scala}">'
-    if stile == 'due': return testa + marchio(inchiostro, VIOLA) + '</svg>'
-    if stile == 'mono': return testa + marchio(inchiostro, inchiostro) + '</svg>'
-    if stile == 'piatto':
-        return testa + f'<rect width="100" height="100" rx="14" fill="{NERO}"/><g transform="translate(50 50) scale(.78) translate(-50 -50)">{marchio("#F3EFFA", VIOLA)}</g></svg>'
-    # the sticker: 120-unit canvas so the rotation and the shadow fit
-    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="{120*scala}" height="{120*scala}">'
-            f'<g transform="translate(60 58) rotate(-4) translate(-50 -50)">'
-            f'<rect x="5" y="5" width="100" height="100" rx="6" fill="{inchiostro}"/>'
-            f'<rect width="100" height="100" rx="6" fill="{VIOLA}" stroke="{inchiostro}" stroke-width="3"/>'
-            f'<g transform="translate(50 50) scale(.74) translate(-50 -50)">{marchio(BIANCO, NERO)}</g></g></svg>')
-def dentro(svg): return svg[svg.index('>') + 1:-6]   # the content of an svg, to nest it
+# ---- la parola: Mona Sans istanziata a 800/110, modellata con HarfBuzz (crenatura compresa), ogni glifo come tracciato ----
+class Parola:
+    def __init__(self, wght=800, wdth=110, tracking=-0.025):
+        self.f = instantiateVariableFont(TTFont(FONT), {'wght': wght, 'wdth': wdth}, inplace=False)
+        self.upm = self.f['head'].unitsPerEm; self.cap = self.f['OS/2'].sCapHeight / self.upm
+        b = io.BytesIO(); self.f.save(b); self.hb = hb.Font(hb.Face(b.getvalue())); self.hb.scale = (self.upm, self.upm)
+        self.glifi = self.f.getGlyphSet(); self.ordine = self.f.getGlyphOrder(); self.tracking = tracking
+    def tracciati(self, testo, size, x0, baseline):
+        """→ (i path della parola, la sua larghezza), con il corpo `size` e la base a y=baseline"""
+        buf = hb.Buffer(); buf.add_str(testo); buf.guess_segment_properties()
+        hb.shape(self.hb, buf, {'kern': True, 'liga': True})
+        k = size / self.upm; x = x0; out = []
+        for info, pos in zip(buf.glyph_infos, buf.glyph_positions):
+            pen = SVGPathPen(self.glifi, ntos=lambda v: f'{v:.2f}'.rstrip('0').rstrip('.'))
+            # dal sistema del carattere (y verso l'alto) al disegno (y verso il basso): scala, specchio, traslazione
+            self.glifi[self.ordine[info.codepoint]].draw(TransformPen(pen, (k, 0, 0, -k, x + pos.x_offset * k, baseline - pos.y_offset * k)))
+            d = pen.getCommands()
+            if d: out.append(d)
+            x += pos.x_advance * k + self.tracking * size
+        return ' '.join(out), x - self.tracking * size - x0   # niente spaziatura dopo l'ultima lettera
 
-def font64(nome):
-    with open(os.path.join(FONT, nome), 'rb') as f: return base64.b64encode(f.read()).decode()
-
-STILE = lambda: ('<style>@font-face{font-family:B;src:url(data:font/woff2;base64,' + font64('BricolageGrotesque-normal-latin.woff2')
-                 + ') format("woff2");font-weight:200 800;font-stretch:75% 100%}text{font:800 100px B;font-stretch:88%;letter-spacing:-.025em}</style>')
-
-def orizzontale(inchiostro, sfondo=None):
-    # symbol 120 tall at the left, the word to its right; the baseline sits on the badge's visual bottom
-    fondo = f'<rect width="560" height="140" fill="{sfondo}"/>' if sfondo else ''
-    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 140" width="560" height="140">{STILE()}{fondo}'
-            f'<g transform="translate(0 12) scale(1.16)">{dentro(simbolo("due", inchiostro=inchiostro))}</g>'
-            f'<text x="134" y="106" fill="{inchiostro}">Repobay</text></svg>')
-
-def impilato(inchiostro, sfondo=None):
-    fondo = f'<rect width="400" height="300" fill="{sfondo}"/>' if sfondo else ''
-    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">{STILE()}{fondo}'
-            f'<g transform="translate(140 8) scale(1.2)">{dentro(simbolo("due", inchiostro=inchiostro))}</g>'
-            f'<text x="200" y="256" text-anchor="middle" fill="{inchiostro}">Repobay</text></svg>')
+def scrivi():
+    os.makedirs(OUT, exist_ok=True); P = Parola(); pad = 10
+    def f(nome, contenuto): open(os.path.join(OUT, nome), 'w').write(contenuto)
+    # il simbolo da solo
+    f('simbolo.svg', svg(segno(INK, VIOLA), '0 0 100 100', 100, 100))
+    f('simbolo-chiaro.svg', svg(segno(BIANCO, VIOLA_NOTTE), '0 0 100 100', 100, 100))
+    f('simbolo-mono.svg', svg(segno('currentColor', 'currentColor'), '0 0 100 100', 100, 100))
+    for nome, col in [('nero', INK), ('bianco', BIANCO), ('viola', VIOLA)]: f(f'simbolo-mono-{nome}.svg', svg(segno(col, col), '0 0 100 100', 100, 100))
+    # la tessera (icona dell'app, favicon, segnalibri) e la sua versione notte; la favicon del sito è la tessera
+    f('simbolo-piatto.svg', svg(tessera(VIOLA, BIANCO, BIANCO), '0 0 100 100', 100, 100))
+    f('simbolo-piatto-notte.svg', svg(tessera(INK, BIANCO, VIOLA_NOTTE), '0 0 100 100', 100, 100))
+    open(os.path.join(RADICE, 'web', 'icona.svg'), 'w').write(svg(tessera(VIOLA, BIANCO, BIANCO), '0 0 100 100', 100, 100))
+    # la firma orizzontale: segno 100, parola con le maiuscole alte 58 (la luce della porta), base sulla soglia (y 90), 26 di aria
+    size = 58 / P.cap; x0 = 100 + 26
+    percorso, larg = P.tracciati('Repobay', size, x0, 90); W = x0 + larg
+    vb = f'{-pad} {-pad} {W + 2*pad:.1f} {100 + 2*pad}'
+    for nome, porta, prodotto, testo in [('logo', INK, VIOLA, INK), ('logo-chiaro', BIANCO, VIOLA_NOTTE, BIANCO), ('logo-mono', 'currentColor', 'currentColor', 'currentColor')]:
+        f(f'{nome}.svg', svg(segno(porta, prodotto) + f'<path fill="{testo}" d="{percorso}"/>', vb, round(W + 2*pad, 1), 100 + 2*pad))
+    # la firma impilata: segno 100 centrato sopra, parola con le maiuscole alte 40, 24 di aria
+    size2 = 40 / P.cap
+    _, larg2 = P.tracciati('Repobay', size2, 0, 0)
+    W2 = max(100, larg2); cx = W2 / 2; base2 = 100 + 24 + 40; H2 = base2 + 0.22 * size2   # sotto, lo spazio della discendente della y
+    percorso2, _ = P.tracciati('Repobay', size2, cx - larg2 / 2, base2)
+    vb2 = f'{-pad} {-pad} {W2 + 2*pad:.1f} {H2 + 2*pad:.1f}'
+    for nome, porta, prodotto, testo in [('logo-impilato', INK, VIOLA, INK), ('logo-impilato-chiaro', BIANCO, VIOLA_NOTTE, BIANCO)]:
+        f(f'{nome}.svg', svg(segno(porta, prodotto, cx - 50, 0) + f'<path fill="{testo}" d="{percorso2}"/>', vb2, round(W2 + 2*pad, 1), round(H2 + 2*pad, 1)))
+    # l'avatar per i social: la tessera senza angoli (li taglia il cerchio del profilo), segno più piccolo per stare nel tondo
+    f('avatar.svg', svg(f'<rect width="100" height="100" fill="{VIOLA}"/>' + segno(BIANCO, BIANCO, 17, 17, 0.66), '0 0 100 100', 1080, 1080))
+    print('scritti i file SVG in web/marchio e web/icona.svg; ora: node strumenti/marchio/png.mjs')
 
 if __name__ == '__main__':
-    os.makedirs(OUT, exist_ok=True)
-    file = {
-        'simbolo.svg': simbolo('due'), 'simbolo-chiaro.svg': simbolo('due', inchiostro='#F3EFFA'), 'simbolo-piatto.svg': simbolo('piatto'),
-        'simbolo-mono.svg': simbolo('mono', inchiostro='currentColor'), 'simbolo-mono-nero.svg': simbolo('mono'), 'simbolo-mono-bianco.svg': simbolo('mono', inchiostro=BIANCO),
-        'simbolo-mono-viola.svg': simbolo('mono', inchiostro=VIOLA), 'adesivo.svg': simbolo('adesivo'), 'adesivo-chiaro.svg': simbolo('adesivo', inchiostro='#F3EFFA'),
-        'logo.svg': orizzontale(NERO), 'logo-chiaro.svg': orizzontale(BIANCO),
-        'logo-impilato.svg': impilato(NERO), 'logo-impilato-chiaro.svg': impilato(BIANCO),
-    }
-    for n, s in file.items():
-        with open(os.path.join(OUT, n), 'w') as f: f.write(s)
-    print('scritti', len(file), 'in', OUT)
-    # the PNGs (app icons, social, places that don't take SVG): rendered by Chromium on a transparent background
-    import asyncio, base64
-    from playwright.async_api import async_playwright
-    async def png():
-        async with async_playwright() as p:
-            b = await p.chromium.launch()
-            for nome, w, h, sorgente in [('icona-512.png', 512, 512, 'simbolo-piatto.svg'), ('icona-1024.png', 1024, 1024, 'simbolo-piatto.svg'),
-                                         ('simbolo.png', 480, 480, 'simbolo.svg'), ('adesivo.png', 480, 480, 'adesivo.svg'), ('logo.png', 1680, 420, 'logo.svg'), ('logo-chiaro.png', 1680, 420, 'logo-chiaro.svg'),
-                                         ('logo-impilato.png', 1200, 900, 'logo-impilato.svg'), ('logo-impilato-chiaro.png', 1200, 900, 'logo-impilato-chiaro.svg')]:
-                pg = await b.new_page(viewport={'width': w, 'height': h})
-                # the SVG goes in as a data: URL: from the blank page Chromium refuses file:// images (and the PNG came out as a broken image)
-                with open(os.path.join(OUT, sorgente), 'rb') as f: dati = base64.b64encode(f.read()).decode()
-                await pg.set_content(f'<body style="margin:0;background:transparent"><img src="data:image/svg+xml;base64,{dati}" style="width:{w}px;height:{h}px;display:block"></body>')
-                await pg.wait_for_function('document.images[0].complete && document.images[0].naturalWidth > 0')
-                await pg.wait_for_timeout(600); await pg.screenshot(path=os.path.join(OUT, nome), omit_background=True); await pg.close()
-            await b.close()
-    asyncio.run(png()); print('png ok')
+    scrivi()
