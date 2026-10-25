@@ -179,12 +179,13 @@ export function rotteCrypto(c) {
   // i depositi in escrow che il browser non ha segnalato (pagina chiusa, connessione persa): cercati per id negli eventi del contratto,
   // dal blocco in cui è nato l'ordine fino a quando il contratto li accettava (scadenzaDeposito). ordine.blocco fa da segno: avanza a
   // ogni giro, torna NULL quando non c'è più niente da cercare. Un deposito d'altri con lo stesso id non corrisponde e si salta.
-  const PASSO = 2000;   // blocchi per richiesta, dentro i limiti dei nodi pubblici
+  // blocchi per richiesta: il limite del nodo della rete (RETI[].passoLog), perché i nodi pubblici rifiutano gli intervalli larghi
   c.cercaDepositi = async (quanti = 20) => {
     const l = db.prepare("SELECT * FROM ordine WHERE escrow IS NOT NULL AND stato IN ('aperto', 'scaduto') AND blocco IS NOT NULL AND creato > datetime('now', '-3 days') ORDER BY id LIMIT ?").all(quanti);
     let n = 0;
     for (const o of l) {
       const r = retiAccese(cfg).find(x => x.id === o.rete); if (r?.tipo !== 'evm') continue;
+      const PASSO = r.passoLog || 2000;
       try {
         const ultimo = Number(BigInt(await c.rpc(r.rpc, 'eth_blockNumber'))), a = Math.min(ultimo, o.blocco + PASSO - 1);
         if (a < o.blocco) continue;

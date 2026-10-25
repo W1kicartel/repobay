@@ -117,8 +117,18 @@ export function esitoDaLog(logs, escrow, chiave) {
   const w = parole(log.data, 3), n = i => BigInt('0x' + w(i)), quanti = Number(n(2));   // parola 0: il rimborso; 1: l'offset dell'array; 2: la lunghezza; poi gli elementi
   return { rimborso: n(0), pagamenti: Array.from({ length: quanti }, (_, i) => n(3 + i)) };
 }
-export async function esitoDaRete(rpc, rete, escrow, chiave, daBlocco = 0) {
-  return esitoDaLog(await rpc(rete.rpc, 'eth_getLogs', [{ address: escrow, fromBlock: '0x' + Math.max(0, daBlocco).toString(16), toBlock: 'latest', topics: [EVENTI.Resolved, chiave] }]), escrow, chiave);
+// dalla rete, a pezzi di rete.passoLog blocchi (il massimo che il nodo accetta) dall'ultimo blocco indietro fino a daBlocco: la decisione
+// è di solito recente rispetto al controllo, quindi si trova nel primo pezzo; dopo `massimo` pezzi senza niente si rinuncia (null)
+export async function esitoDaRete(rpc, rete, escrow, chiave, daBlocco = 0, massimo = 50) {
+  const passo = rete.passoLog || 2000, hex = n => '0x' + n.toString(16);
+  let a = Number(BigInt(await rpc(rete.rpc, 'eth_blockNumber')));
+  for (let i = 0; i < massimo && a >= Math.max(0, daBlocco); i++) {
+    const da = Math.max(0, daBlocco, a - passo + 1);
+    const esito = esitoDaLog(await rpc(rete.rpc, 'eth_getLogs', [{ address: escrow, fromBlock: hex(da), toBlock: hex(a), topics: [EVENTI.Resolved, chiave] }]), escrow, chiave);
+    if (esito) return esito;
+    a = da - 1;
+  }
+  return null;
 }
 // una transazione è davvero un'azione su questo ordine? riuscita, e con un evento del contratto per la sua chiave
 export const azioneDellOrdine = (ricevuta, escrow, chiave) => ricevuta?.status === '0x1'

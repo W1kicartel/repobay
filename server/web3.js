@@ -13,17 +13,20 @@ export const etichettaOrdine = codice => createHash('sha256').update(`ordine:${c
 export const TRANSFER = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';   // keccak256("Transfer(address,address,uint256)")
 const nativo = (simbolo, prezzo) => ({ simbolo, indirizzo: null, decimali: 18, prezzo });
 const token = (simbolo, indirizzo, prezzo) => ({ simbolo, indirizzo, decimali: 6, prezzo });
+// passoLog: quanti blocchi per volta accetta il nodo in eth_getLogs (misurato il 23/10/2026: Base Sepolia 200, il nodo Bor di Polygon
+// meno di 1000, gli altri almeno 10000). I nodi: PublicNode per Base e Polygon perché mainnet.base.org risponde «request limit
+// reached» a ogni eth_getLogs e polygon-rpc.com è spento (401 «API key disabled»); si cambiano con RPC_BASE, RPC_POLYGON…
 export const RETI = {
-  ethereum: { nome: 'Ethereum', chainId: 1, rpc: 'https://ethereum-rpc.publicnode.com', esploratore: 'https://etherscan.io', conferme: 3,
+  ethereum: { nome: 'Ethereum', chainId: 1, rpc: 'https://ethereum-rpc.publicnode.com', esploratore: 'https://etherscan.io', conferme: 3, passoLog: 2000,
     monete: [nativo('ETH', 'ethereum'), token('USDC', '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 'usd-coin'), token('USDT', '0xdAC17F958D2ee523a2206206994597C13D831ec7', 'tether'), token('EURC', '0x1aBaEA1f7C830bD89Acc67eC4af516284b1bC33c', 'euro-coin')] },
-  base: { nome: 'Base', chainId: 8453, rpc: 'https://mainnet.base.org', esploratore: 'https://basescan.org', conferme: 3,
+  base: { nome: 'Base', chainId: 8453, rpc: 'https://base-rpc.publicnode.com', esploratore: 'https://basescan.org', conferme: 3, passoLog: 2000,
     monete: [nativo('ETH', 'ethereum'), token('USDC', '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', 'usd-coin'), token('EURC', '0x60a3E35Cc302bFA44Cb288Bc5a4F316Fdb1adb42', 'euro-coin')] },
-  arbitrum: { nome: 'Arbitrum', chainId: 42161, rpc: 'https://arb1.arbitrum.io/rpc', esploratore: 'https://arbiscan.io', conferme: 3,
+  arbitrum: { nome: 'Arbitrum', chainId: 42161, rpc: 'https://arb1.arbitrum.io/rpc', esploratore: 'https://arbiscan.io', conferme: 3, passoLog: 2000,
     monete: [nativo('ETH', 'ethereum'), token('USDC', '0xaf88d065e77c8cC2239327C5EDb3A432268e5831', 'usd-coin')] },
-  polygon: { nome: 'Polygon', chainId: 137, rpc: 'https://polygon-rpc.com', esploratore: 'https://polygonscan.com', conferme: 5,
+  polygon: { nome: 'Polygon', chainId: 137, rpc: 'https://polygon-bor-rpc.publicnode.com', esploratore: 'https://polygonscan.com', conferme: 5, passoLog: 500,
     monete: [nativo('POL', 'polygon-ecosystem-token'), token('USDC', '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359', 'usd-coin')] },
   // per le prove con soldi finti (faucet di Circle e di Base)
-  'base-sepolia': { nome: 'Base Sepolia (prova)', chainId: 84532, rpc: 'https://sepolia.base.org', esploratore: 'https://sepolia.basescan.org', conferme: 1, prova: true,
+  'base-sepolia': { nome: 'Base Sepolia (prova)', chainId: 84532, rpc: 'https://sepolia.base.org', esploratore: 'https://sepolia.basescan.org', conferme: 1, prova: true, passoLog: 200,
     monete: [nativo('ETH', 'ethereum'), token('USDC', '0x036CbD53842c5426634e7929541eC2318f3dCF7e', 'usd-coin'), token('EURC', '0x808456652fdb597867f38412077A9182bf77359F', 'euro-coin')] },
 };
 
