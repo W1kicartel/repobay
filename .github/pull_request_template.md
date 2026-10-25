@@ -18,4 +18,4 @@
 - [ ] i testi nuovi delle pagine hanno la traduzione in `web/lingue/en/` / new page text has its English translation
 - [ ] niente chiavi, password, email o dati veri nel codice, nelle prove o nelle schermate / no keys, passwords, emails or real data
 - [ ] se tocca i pagamenti, la divisione dei soldi, l'accesso o la crittografia, l'ho scritto qui sopra / if it touches payments, the money split, login or cryptography, I said so above
-- [ ] contribuisco con la licenza MIT del progetto / I contribute under the project's MIT license
+- [ ] accetto i [termini per chi contribuisce](https://github.com/W1kicartel/repobay/blob/main/CONTRIBUTING.md#termini-per-chi-contribuisce) / I accept the contributor terms

@@ -8,7 +8,9 @@
 > contract on EVM networks, direct wallet payments elsewhere). Installed software never stops because of a missed payment: only
 > the support does.
 >
-> The code is Node.js 22 with **no dependencies**, SQLite and plain HTML, under the MIT license. Code, comments and UI are written
+> The code is Node.js 22 with **no dependencies**, SQLite and plain HTML. It is source-available under the PolyForm Shield 1.0.0
+> license: read it, run it locally and contribute, but do not use it to offer a competing service; the name and logos are not
+> licensed ([MARCHIO.md](MARCHIO.md)). Code, comments and UI are written
 > in Italian, and the whole interface has an English translation. Start with `npm test` (fake Stripe, GitHub, email and blockchains:
 > no network, no keys) and `npm run demo`. Contributions are welcome: read [CONTRIBUTING.md](CONTRIBUTING.md), and report
 > vulnerabilities privately as explained in [SECURITY.md](SECURITY.md). Each release served by the site states its commit at
@@ -104,7 +106,8 @@ npm run demo        # http://localhost:4610, con finti Stripe e GitHub
 ## Accenderla
 
 - **Sul Mac, con le chiavi di prova:** [docs/AVVIO.md](docs/AVVIO.md).
-- **Su un server:** [deploy/LEGGIMI.md](deploy/LEGGIMI.md).
+- **Su un server:** [deploy/LEGGIMI.md](deploy/LEGGIMI.md). È la guida con cui si pubblica repobay.net; una copia sul tuo
+  server va bene per provare il codice, non per aprirla al pubblico (vedi [Licenza e marchio](#licenza-e-marchio)).
 
 ## Contribuire
 
@@ -151,4 +154,11 @@ Il codice del server invece resta una dichiarazione: la garanzia è il metodo (s
 repository, dopo le prove e la scansione dei segreti), non una prova crittografica. I dettagli, e come si pubblica, sono in
 [deploy/LEGGIMI.md](deploy/LEGGIMI.md#che-codice-gira-sul-sito).
 
-Licenza MIT.
+## Licenza e marchio
+
+Repobay è codice visibile, sotto la [PolyForm Shield 1.0.0](LICENSE): lo puoi leggere, accendere sul tuo computer, modificare e
+migliorare con una pull request, ma non usarlo per offrire un servizio che faccia concorrenza a Repobay, nemmeno gratis. Il nome
+Repobay e i loghi non sono concessi con il codice: cosa si può fare è in [MARCHIO.md](MARCHIO.md). Chi contribuisce accetta i
+[termini per chi contribuisce](CONTRIBUTING.md#termini-per-chi-contribuisce).
+
+I prodotti in catalogo sono un'altra cosa: ognuno ha la sua licenza, scelta da chi lo sviluppa.

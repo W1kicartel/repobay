@@ -1,5 +1,9 @@
 # Repobay su un server vero
 
+> Questa è la guida con cui si pubblica repobay.net, ed è qui perché chiunque possa vedere come gira il sito. Una copia sul tuo
+> server va bene per provare il codice o per contribuire; aprirla al pubblico no: la [licenza](../LICENSE) vieta di usare il codice
+> per un servizio che faccia concorrenza a Repobay, e il nome e i loghi non sono concessi ([MARCHIO.md](../MARCHIO.md)).
+
 Questi sono i passi per mettere Repobay online su un server Linux, anche se non hai mai gestito un server. Ci vuole circa un'ora, quasi tutta di attesa.
 
 Alla fine avrai:

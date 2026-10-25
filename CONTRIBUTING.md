@@ -5,7 +5,9 @@
 > no keys. `npm run demo` starts the site with realistic fake data. Code, comments and UI text are written in Italian, with the
 > English translation of every page string in `web/lingue/en/`; issues and pull requests in English are welcome. Open an issue
 > before large changes, keep pull requests small, and never add a dependency, an external script or a real key. Security problems
-> go through [SECURITY.md](SECURITY.md), never through a public issue. Contributions are licensed under the project's MIT license.
+> go through [SECURITY.md](SECURITY.md), never through a public issue. Repobay is source-available under the PolyForm Shield 1.0.0
+> license, and the name and logos are not licensed ([MARCHIO.md](MARCHIO.md)). By opening a pull request you accept the
+> [contributor terms](#termini-per-chi-contribuisce): your work stays yours, and W1kicartel may use it under any license.
 > New features need an issue labelled «accettata» first; at most three open pull requests per person; CI on pull requests from
 > forks starts after a maintainer approves it; inactive pull requests close automatically; during traffic spikes we may limit
 > for a few days who can open issues and pull requests.
@@ -135,8 +137,25 @@ Repobay lo mantengono poche persone. Perché ogni proposta riceva una revisione 
 - **Nei momenti di traffico molto alto** possiamo limitare per qualche giorno chi apre issue e pull request agli account che hanno
   già una storia su GitHub o che hanno già contribuito.
 
-Contribuendo accetti che il tuo codice sia distribuito con la [licenza MIT](LICENSE) del progetto, e il
-[codice di comportamento](CODE_OF_CONDUCT.md).
+Contribuendo accetti i [termini qui sotto](#termini-per-chi-contribuisce) e il [codice di comportamento](CODE_OF_CONDUCT.md).
+
+## Termini per chi contribuisce
+
+Repobay è codice visibile, non open source: la [licenza PolyForm Shield 1.0.0](LICENSE) permette di leggerlo, provarlo e
+modificarlo, ma non di usarlo per un servizio che faccia concorrenza a Repobay. Il nome e i loghi seguono [MARCHIO.md](MARCHIO.md).
+
+Aprendo una pull request dichiari che:
+
+1. il contributo l'hai scritto tu, o hai il diritto di proporlo, e non contiene codice preso da altri con una licenza che non lo
+   permette;
+2. dai a W1kicartel, e a chi in futuro gestirà Repobay al suo posto, il diritto non esclusivo, gratuito, per sempre e in tutto il
+   mondo di usare, copiare, modificare, pubblicare e concedere in licenza il tuo contributo, anche con una licenza diversa da quella
+   di oggi, e di usarlo per far funzionare repobay.net; se il contributo usa un tuo brevetto, la stessa cosa vale per il brevetto;
+3. il contributo resta tuo: puoi usarlo per altro come vuoi.
+
+In inglese, in breve: you confirm you have the right to submit your contribution, and you grant W1kicartel and any future operator
+of Repobay a non-exclusive, royalty-free, perpetual, worldwide license, including under patents you own that the contribution uses,
+to use, copy, modify, publish and license it under any terms, including to run repobay.net. You keep the copyright.
 
 ## Sicurezza
 
