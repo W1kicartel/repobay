@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "private": true,
   "description": "Repobay: chi scrive software open source trova chi lo installa nelle attività vere; ogni pagamento si divide da solo fra builder, installatore e piattaforma (Stripe Connect o crypto non custodial).",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "author": "W1kicartel",
   "type": "module",
   "engines": { "node": ">=22.13" },
