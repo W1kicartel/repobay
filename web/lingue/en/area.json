@@ -26,7 +26,7 @@
  "Il link di conferma è scaduto o è già stato usato. Se serve, chiedine un altro.": "The confirmation link has expired or was already used. If you need one, ask for another.",
  "Questa email è già usata da un altro conto: non l'abbiamo cambiata.": "This email is already used by another account: we didn't change it.",
  "Fatto. Stripe sta controllando i tuoi dati: di solito bastano pochi minuti.": "Done. Stripe is checking your details: it usually takes a few minutes.",
- "Il link di Stripe è scaduto: premi di nuovo «Completa su Stripe».": "The Stripe link has expired: press “Finish on Stripe” again.",
+ "Il link di Stripe è scaduto: premi di nuovo «Completa qui».": "The Stripe link has expired: press “Finish here” again.",
  "Progetti rivendicati: le quote in attesa ora sono tue. Collega il conto per riceverle.": "Projects claimed: the pending shares are now yours. Connect your account to receive them.",
  "Chiudi": "Close",
  "{n} da vedere": "{n} to see",
@@ -276,7 +276,6 @@
  "Apri il pannello Stripe": "Open the Stripe dashboard",
  "Da completare": "To finish",
  "Stripe chiede ancora qualche dato (identità o IBAN). Finché manca, le tue parti restano in attesa.": "Stripe still needs a few details (identity or IBAN). Until then, your shares stay pending.",
- "Completa su Stripe": "Finish on Stripe",
  "Non collegato": "Not connected",
  "Stripe verifica identità e IBAN e ti versa le tue parti. Senza il conto restano in attesa, al sicuro.": "Stripe verifies your identity and IBAN and pays out your shares. Without the account they stay pending, safely.",
  "Collega il conto": "Connect the account",
@@ -795,5 +794,11 @@
  "Fra {m} vendite confermate sali ancora.": "{m} more confirmed sales and you go up again.",
  "arrivano {n} giorni dopo il pagamento, se hai inserito i dati fiscali": "they arrive {n} days after the payment, if you've entered your tax details",
  "Le tue parti dei pagamenti con carta arrivano qui da sole, {n} giorni dopo ogni pagamento, se hai inserito i dati fiscali.": "Your shares of card payments arrive here by themselves, {n} days after each payment, if you've entered your tax details.",
- "arriva {n} giorni dopo ogni pagamento, se hai inserito i dati fiscali": "arrives {n} days after each payment, if you've entered your tax details"
+ "arriva {n} giorni dopo ogni pagamento, se hai inserito i dati fiscali": "arrives {n} days after each payment, if you've entered your tax details",
+ "Cambia IBAN o dati": "Change IBAN or details",
+ "Completa qui": "Finish here",
+ "Stripe verifica identità e IBAN e ti versa le tue parti. Lo fai qui, senza lasciare il sito: servono un documento e l'IBAN. Senza il conto le tue parti restano in attesa, al sicuro.": "Stripe checks your identity and IBAN and pays out your shares. You do it here, without leaving the site: you need an ID document and your IBAN. Without the account your shares stay pending, safe.",
+ "Non riesco a caricare Stripe in questa pagina: controlla la connessione o disattiva il blocco degli annunci, oppure continua sul sito di Stripe.": "I can't load Stripe on this page: check your connection or turn off the ad blocker, or continue on Stripe's site.",
+ "Continua sul sito di Stripe": "Continue on Stripe's site",
+ "Carico il modulo di Stripe…": "Loading the Stripe form…"
 }

@@ -80,7 +80,7 @@ function avvisiDaLink() {
     'email=scaduto': ['errore', 'Il link di conferma è scaduto o è già stato usato. Se serve, chiedine un altro.'],
     'email=occupata': ['errore', 'Questa email è già usata da un altro conto: non l\'abbiamo cambiata.'],
     'stripe=fatto': ['ok', 'Fatto. Stripe sta controllando i tuoi dati: di solito bastano pochi minuti.'],
-    'stripe=rinnova': ['attesa', 'Il link di Stripe è scaduto: premi di nuovo «Completa su Stripe».'],
+    'stripe=rinnova': ['attesa', 'Il link di Stripe è scaduto: premi di nuovo «Completa qui».'],
     'rivendicato=1': ['ok', 'Progetti rivendicati: le quote in attesa ora sono tue. Collega il conto per riceverle.'],
   };
   let c = false;

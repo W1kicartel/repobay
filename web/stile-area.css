@@ -436,3 +436,5 @@ img.mancante { visibility: hidden; }
 /* il saluto dell'area nel colore del ruolo prevalente */
 .targa h1 { font-weight: 650; letter-spacing: -.03em; }
 .contatore-m.colore-menta .ruote, .contatore-m.colore-sole .ruote { color: var(--soldi); }
+/* il conto Stripe incorporato (Connect.js): il modulo di Stripe sotto la scheda, separato da un filo */
+.stripe-incorporato { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--bordo); min-height: 120px; }

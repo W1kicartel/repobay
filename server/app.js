@@ -38,6 +38,15 @@ const DA_FUORI = new Set(['/api/stripe/webhook', '/api/telegram', '/api/solana/p
 const CSP_CASSA = "default-src 'self'; script-src 'self' https://js.stripe.com; frame-src https://js.stripe.com https://checkout.stripe.com https://hooks.stripe.com; "
   + "img-src 'self' data: https:; connect-src 'self' https://api.stripe.com https://checkout.stripe.com https://*.stripe.com; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; "
   + "form-action 'self' https://checkout.stripe.com";
+// l'area incorpora il conto di Stripe Connect (attivazione e gestione, con l'IBAN): lo script di Connect.js, i suoi riquadri e
+// l'impronta del suo <style> vuoto (https://docs.stripe.com/connect/get-started-connect-embedded-components#csp-and-http-header-requirements).
+// La finestrella in cui Stripe chiede di confermare chi sei ha bisogno di poter parlare con la pagina: qui niente
+// Cross-Origin-Opener-Policy «same-origin»
+const CSP_AREA = "default-src 'self'; script-src 'self' https://connect-js.stripe.com https://js.stripe.com; frame-src https://connect-js.stripe.com https://js.stripe.com; "
+  + "style-src 'self' 'sha256-0hAheEzaMe6uXIKV4EehS9pu1am1lj/KnnzrOYqckXk='; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; "
+  + "form-action 'self' https://checkout.stripe.com https://billing.stripe.com";
+const INTESTAZIONI_AREA = { 'content-security-policy': CSP_AREA, 'cross-origin-opener-policy': 'unsafe-none',
+  'permissions-policy': 'camera=("https://connect-js.stripe.com" "https://js.stripe.com"), microphone=(), geolocation=(), payment=(self)' };
 
 export function creaApp(cfg, { db, stripe, github, rpc, prezzo, posta = null, chiedi = fetch, chiediBitcoin = null, chiediTron = null, versione = leggiVersione() }) {
   proxyCloudflare(cfg.cloudflare);
@@ -201,7 +210,7 @@ export function creaApp(cfg, { db, stripe, github, rpc, prezzo, posta = null, ch
     // HEAD vale come GET (curl -I, monitor, controlli dei link): stesse intestazioni, e Node non scrive il corpo
     const metodo = req.method === 'HEAD' ? 'GET' : req.method;
     try {
-      if (metodo === 'GET' && PAGINE[url.pathname]) return h.pagina(res, PAGINE[url.pathname], { lingua });
+      if (metodo === 'GET' && PAGINE[url.pathname]) return h.pagina(res, PAGINE[url.pathname], { lingua, ...(url.pathname === '/area' ? { extra: INTESTAZIONI_AREA } : {}) });
       // le pagine per i motori di ricerca (server/seo.js): composte qui; una pagina locale senza installatori è un 404
       const seo = metodo === 'GET' && c.seo.pagina(url.pathname);
       if (seo) return seo.html ? h.html(res, seo.html, { tipo: seo.tipo || '.html' }) : h.pagina(res, '404.html', { lingua, stato: 404, extra: { 'x-robots-tag': 'noindex' } });

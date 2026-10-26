@@ -8,6 +8,7 @@ import { join } from 'node:path';
 import { leggiConfig } from '../server/config.js';
 import { apriDb } from '../server/db.js';
 import { clienteGithub } from '../server/github.js';
+import { clienteStripe } from '../server/stripe.js';
 import { creaApp } from '../server/app.js';
 
 const ascolta = server => new Promise(ok => server.listen(0, '127.0.0.1', () => ok(`http://127.0.0.1:${server.address().port}`)));
@@ -28,8 +29,9 @@ async function fintoGithub() {
   return { url: await ascolta(server), chiudi: () => spegni(server) };
 }
 
-// → { url, cfg, db, posta: [{a, oggetto, testo}], chiedi(percorso, opzioni), chiudi() }
-export async function accendi(env = {}, { versione } = {}) {
+// → { url, cfg, db, posta: [{a, oggetto, testo}], chiedi(percorso, opzioni), chiudi() }; con stripe: true il client di Stripe vero,
+// da puntare con STRIPE_BASE sul finto (strumenti/finto-stripe.mjs)
+export async function accendi(env = {}, { versione, stripe = false } = {}) {
   const cartella = mkdtempSync(join(tmpdir(), 'repobay-prova-'));
   const gh = await fintoGithub();
   let app;
@@ -38,7 +40,7 @@ export async function accendi(env = {}, { versione } = {}) {
   const cfg = leggiConfig({ APP_URL: url, APP_DATI: cartella, APP_SEGRETO: 'solo-per-le-prove-'.repeat(3), APP_ADMIN: 'admin@prova.test', POSTA_DRIVER: 'console',
     GITHUB_CLIENT_ID: 'finto', GITHUB_CLIENT_SECRET: 'finto', GITHUB_WEB: gh.url, GITHUB_API: gh.url, ...env });
   const db = apriDb(cartella), posta = [];
-  app = creaApp(cfg, { db, stripe: null, github: clienteGithub(cfg.github), rpc: reteSpenta, prezzo: reteSpenta, chiedi: reteSpenta,
+  app = creaApp(cfg, { db, stripe: stripe ? clienteStripe(cfg.stripe) : null, github: clienteGithub(cfg.github), rpc: reteSpenta, prezzo: reteSpenta, chiedi: reteSpenta,
     posta: { invia: async m => { posta.push(m); return { id: `prova-${posta.length}` }; } }, ...(versione ? { versione } : {}) });
   // le richieste come da una pagina del sito: stessa origine (le POST da altre origini sono rifiutate), niente redirect seguiti
   const chiedi = (percorso, { corpo, biscotto, ...o } = {}) => fetch(url + percorso, { redirect: 'manual', ...o,

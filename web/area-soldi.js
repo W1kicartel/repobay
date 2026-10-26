@@ -53,11 +53,31 @@ function statoQuota(q) {
   return el('span', { class: 'pila-stretta' }, stato(q.stato), b);
 }
 
+// il conto Stripe dentro l'area: Connect.js (lo script di Stripe, caricato solo quando serve) mostra qui l'attivazione (identità,
+// IBAN, termini di Stripe) o, a conto pronto, la gestione dove si cambia l'IBAN. Se lo script non si carica (un blocco degli
+// annunci) resta la strada di prima: la pagina di Stripe e ritorno all'area
+let connect;   // una sola istanza per pagina, come chiede Stripe
+const caricaConnect = (pubblica, da) => connect ??= new Promise((ok, no) => {
+  const avvia = () => {
+    try {
+      const v = n => getComputedStyle(da).getPropertyValue(n).trim();
+      ok(window.StripeConnect.init({ publishableKey: pubblica, locale: document.documentElement.lang === 'en' ? 'en-GB' : 'it-IT',
+        fetchClientSecret: async () => (await chiama('POST', '/api/stripe/sessione', {})).client_secret,
+        appearance: { overlays: 'dialog', variables: { colorPrimary: v('--segnale') || '#6D3BFF', colorText: v('--inchiostro') || '#15112B', colorBackground: v('--carta') || '#FFFFFF',
+          colorBorder: v('--bordo') || '#D9D5E6', borderRadius: '4px', fontFamily: 'Geist, system-ui, sans-serif' } } }));
+    } catch (e) { connect = null; no(e); }
+  };
+  if (window.StripeConnect?.init) return avvia();
+  const s = document.createElement('script'); s.src = 'https://connect-js.stripe.com/v1.0/connect.js'; s.async = true;
+  s.onload = avvia; s.onerror = () => { connect = null; s.remove(); no(new Error(t('Non riesco a caricare Stripe in questa pagina: controlla la connessione o disattiva il blocco degli annunci, oppure continua sul sito di Stripe.'))); };
+  document.head.append(s);
+});
+
 function stripe(io) {
   const m = messaggio();
-  const [titolo, testo, etichetta] = io.pronto ? ['Pronto', t(io.fiscale ? 'Le tue parti dei pagamenti con carta arrivano qui da sole, {n} giorni dopo ogni pagamento.' : 'Le tue parti dei pagamenti con carta arrivano qui da sole, {n} giorni dopo ogni pagamento, se hai inserito i dati fiscali.', { n: io.trattenuta }), 'Apri il pannello Stripe']
-    : io.collegato ? ['Da completare', t('Stripe chiede ancora qualche dato (identità o IBAN). Finché manca, le tue parti restano in attesa.'), 'Completa su Stripe']
-      : ['Non collegato', t('Stripe verifica identità e IBAN e ti versa le tue parti. Senza il conto restano in attesa, al sicuro.'), 'Collega il conto'];
+  const [titolo, testo, etichetta] = io.pronto ? ['Pronto', t(io.fiscale ? 'Le tue parti dei pagamenti con carta arrivano qui da sole, {n} giorni dopo ogni pagamento.' : 'Le tue parti dei pagamenti con carta arrivano qui da sole, {n} giorni dopo ogni pagamento, se hai inserito i dati fiscali.', { n: io.trattenuta }), 'Cambia IBAN o dati']
+    : io.collegato ? ['Da completare', t('Stripe chiede ancora qualche dato (identità o IBAN). Finché manca, le tue parti restano in attesa.'), 'Completa qui']
+      : ['Non collegato', t('Stripe verifica identità e IBAN e ti versa le tue parti. Lo fai qui, senza lasciare il sito: servono un documento e l\'IBAN. Senza il conto le tue parti restano in attesa, al sicuro.'), 'Collega il conto'];
   // il paese del conto: dove vivi o ha sede la tua attività (Stripe lo verifica e dopo non si cambia). Stripe versa nello Spazio
   // economico europeo, nel Regno Unito, in Svizzera, negli Stati Uniti e in Canada
   const PAESI = ['IT', 'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IS', 'LV', 'LI', 'LT', 'LU', 'MT', 'NL', 'NO', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'GB', 'CH', 'US', 'CA'];
@@ -67,15 +87,36 @@ function stripe(io) {
   const iniziale = soloQui || (PAESI.includes(io.fiscale?.paese) ? io.fiscale.paese : 'IT');
   const paese = io.pronto ? null : el('select', { name: 'paese', 'aria-label': t('Paese del conto') },
     ...elenco.map(x => el('option', { value: x, ...(x === iniziale ? { selected: '' } : {}) }, nomi?.of(x) || x)).sort((a, b) => a.value === 'IT' ? -1 : b.value === 'IT' ? 1 : a.textContent.localeCompare(b.textContent)));
-  const b = bottone(etichetta, io.pronto ? 'secondario' : '', () => occupato(b, async () => {
-    const r = await chiama('POST', io.pronto ? '/api/stripe/pannello' : '/api/stripe/collega', io.pronto ? {} : { paese: paese.value }); location.href = r.url;
+  const scelta = paese ? el('div', { class: 'pila-stretta' }, el('label', { class: 'piccolo' }, t('Il paese dove vivi o ha sede la tua attività'), ' ', paese),
+    el('p', { class: 'piccolo tenue' }, soloQui ? t('Qui il conto per la carta si apre solo in {paese}. Altrove ricevi la tua parte con un wallet.', { paese: nomi?.of(soloQui) || soloQui })
+      : t('Stripe versa nello Spazio economico europeo, nel Regno Unito, in Svizzera, negli Stati Uniti e in Canada. Altrove ricevi la tua parte con un wallet.'))) : null;
+  const corpo = () => paese ? { paese: paese.value } : {};
+  // la strada di riserva: la pagina di Stripe (o il pannello Express, a conto pronto) e ritorno all'area
+  const fuori = async () => { location.href = (await chiama('POST', io.pronto ? '/api/stripe/pannello' : '/api/stripe/collega', corpo())).url; await new Promise(() => {}); };
+  const riserva = el('button', { type: 'button', class: `bottone fantasma piccolo ${io.pronto ? '' : 'nascosto'}`, onclick: e => occupato(e.currentTarget, fuori, m) },
+    t(io.pronto ? 'Apri il pannello Stripe' : 'Continua sul sito di Stripe'));   // a conto pronto il pannello Express resta a portata di mano
+  const riquadro = el('div', { class: 'stripe-incorporato nascosto' }), azioni = el('div', { class: 'azioni' });
+  const chiudi = el('button', { type: 'button', class: 'bottone secondario piccolo nascosto', onclick: () => aggiorna(['stripe', 'totali']) }, t('Chiudi'));
+  const b = bottone(etichetta, '', () => occupato(b, async () => {
+    const r = await chiama('POST', '/api/stripe/collega', { ...corpo(), incorporato: true });
+    if (r.url) { location.href = r.url; await new Promise(() => {}); }
+    let C;
+    try { C = await caricaConnect(r.pubblica, riquadro.parentElement || document.body); }
+    catch (e) { riserva.classList.remove('nascosto'); throw e; }
+    const attesa = el('p', { class: 'tenue piccolo' }, t('Carico il modulo di Stripe…'));
+    const c = C.create(io.pronto ? 'account-management' : 'account-onboarding');
+    c.setOnLoaderStart?.(() => attesa.remove());
+    c.setOnLoadError?.(() => { attesa.remove(); riserva.classList.remove('nascosto'); });
+    // finita l'attivazione si rilegge il conto (GET /api/io chiede a Stripe se è pronto) e la scheda si ridisegna
+    if (!io.pronto) c.setOnExit(() => aggiorna(['stripe', 'totali']));
+    riquadro.replaceChildren(attesa, c); riquadro.classList.remove('nascosto');
+    b.classList.add('nascosto'); scelta?.classList.add('nascosto'); chiudi.classList.remove('nascosto');
+    riquadro.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
   }, m));
+  azioni.append(b, chiudi, riserva);
   return carta({ class: 'stripe' }, el('div', { class: 'etichetta' }, t('Conto per ricevere i pagamenti con carta')),
     el('h3', { class: `stato-conto ${io.pronto ? 'ok' : io.collegato ? 'attesa' : ''}` }, t(titolo)), el('p', {}, testo),
-    paese ? el('label', { class: 'piccolo' }, t('Il paese dove vivi o ha sede la tua attività'), ' ', paese) : null,
-    paese ? el('p', { class: 'piccolo tenue' }, soloQui ? t('Qui il conto per la carta si apre solo in {paese}. Altrove ricevi la tua parte con un wallet.', { paese: nomi?.of(soloQui) || soloQui })
-      : t('Stripe versa nello Spazio economico europeo, nel Regno Unito, in Svizzera, negli Stati Uniti e in Canada. Altrove ricevi la tua parte con un wallet.')) : null,
-    el('div', { class: 'azioni' }, b), m);
+    scelta, azioni, m, riquadro);
 }
 
 function fiscale(io) {

@@ -115,6 +115,20 @@ export async function avviaFintoStripe({ porta = 0, versione = process.env.FINTO
       if (!a.pronto && ++a.letture >= 2 && a.type === 'custom') { a.pronto = true; evento('account.updated', vistaConto(a), a.id); }
       return vistaConto(a);
     }],
+    ['POST', /^\/v1\/account_links$/, (b) => {
+      if (!S.conti.get(serve(b.account, 'account'))) throw new Rifiuto(`No such account: '${b.account}'`, 'account');
+      serve(b.refresh_url, 'refresh_url'); serve(b.return_url, 'return_url');
+      return { object: 'account_link', created: adesso(), expires_at: adesso() + 300, url: `https://connect.stripe.com/setup/e/${b.account}/${casuale('x', 12)}` };
+    }],
+    // la sessione dei componenti incorporati: solo per un conto connesso e con almeno un componente acceso
+    ['POST', /^\/v1\/account_sessions$/, (b) => {
+      if (!S.conti.get(serve(b.account, 'account'))) throw new Rifiuto(`No such account: '${b.account}'`, 'account');
+      const accesi = Object.entries(b.components || {}).filter(([, v]) => v?.enabled === 'true' || v?.enabled === true);
+      if (!accesi.length) throw new Rifiuto('You must enable at least one component.', 'components');
+      const id = casuale('accs', 16);
+      return { object: 'account_session', account: b.account, client_secret: `${id}_secret_${casuale('x', 24).slice(2)}`, expires_at: adesso() + 1800, livemode: false,
+        components: Object.fromEntries(accesi.map(([k, v]) => [k, { enabled: true, features: v.features || {} }])) };
+    }],
     ['POST', /^\/v1\/checkout\/sessions$/, (b) => {
       if (!['payment', 'subscription', 'setup'].includes(b.mode)) throw new Rifiuto('Invalid mode', 'mode');
       if (!Array.isArray(b.line_items) || !b.line_items.length) throw new Rifiuto('Missing required param: line_items.', 'line_items');
