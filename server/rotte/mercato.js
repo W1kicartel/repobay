@@ -5,7 +5,7 @@ import { randomBytes } from 'node:crypto';
 import { nuovoGettone, usaGettone, hashGettone, troppiTentativi } from '../conti.js';
 import { avvisaLivello, dividi, dividiCanone, quotaDi, collaboratoriDi, sviluppatoreAssente, conAggiornamenti, percentualeDi, livelloDi, conLivello, prezzoAvvioDi, stimaStripe, quotaSviluppatoreAssistenza, quotaInstallatoreAssistenza } from '../soldi.js';
 import { leggiJson } from '../contenuti.js';
-import { canone, statoAssistenza, codiceAssistenza, linkAssistenza, attuale } from '../assistenza.js';
+import { canone, statoAssistenza, codiceAssistenza, linkAssistenza, attuale, squadra } from '../assistenza.js';
 import { retiAccese, walletDi } from '../reti.js';
 import { CATEGORIE } from './github.js';
 import { ATTIVITA } from '../attivita.js';
@@ -82,8 +82,10 @@ export function rotteMercato(c) {
       const i = db.prepare(`SELECT u.* FROM adozione a JOIN utente u ON u.id = a.installatore WHERE a.prodotto = ? AND u.codice = ? AND u.stato = 'attivo'
         AND (? = 0 OR a.programma_accettato IS NOT NULL)${ab.sql}`).get(p.id, String(installatore || ''), p.programma_obbligatorio ? 1 : 0, ...ab.par);
       if (!i) throw errore(400, 'Scegli chi viene a installarlo');
-      // «per conto»: il venditore davanti al cliente è l'installatore (on_behalf_of); serve il suo conto Stripe completo
-      if (cfg.stripe.perConto && !(i.stripe && i.stripe_pronto)) throw errore(400, `${i.nome} deve ancora completare il conto per incassare: scegli un altro installatore o scrivigli`);
+      // «per conto»: il venditore davanti al cliente è l'installatore (on_behalf_of); serve il suo conto Stripe completo. Chi gestisce
+      // la piattaforma vende col conto della piattaforma, che è il suo
+      const casa = squadra(db, cfg).includes(i.id);
+      if (cfg.stripe.perConto && !casa && !(i.stripe && i.stripe_pronto)) throw errore(400, `${i.nome} deve ancora completare il conto per incassare: scegli un altro installatore o scrivigli`);
       const conAgg = aggiornamenti === true && conAggiornamenti(p);
       if (aggiornamenti === true && !conAgg) throw errore(400, 'Questo prodotto non ha gli aggiornamenti garantiti da chi sviluppa');
       const righe = [], avvio = prezzoAvvioDi(db, p.id, i.id);   // il prezzo di chi vende
@@ -101,7 +103,7 @@ export function rotteMercato(c) {
       // parti del canone a chi ha installato e a chi sviluppa
       const q = quotaDi(db, cfg, p.id, i.id), md = { prodotto: p.id, ...(acquisto ? { acquisto } : {}), installatore: i.id, qa: q, qm: q, pa: avvio, qs: quotaSviluppatoreAssistenza(db, cfg, p.id), ...(anno ? { periodo: 'anno' } : {}),
         ...(cfg.assistenzaPiattaforma ? { ap: '1', qi: quotaInstallatoreAssistenza(db, cfg, p.id) } : {}), ...(conAgg ? { ag, agm: p.prezzo_aggiornamenti, qg: cfg.quotaInstallatoreAggiornamenti } : {}) };
-      const abbonamento = p.prezzo_mese > 0 || conAgg, obo = cfg.stripe.perConto ? { on_behalf_of: i.stripe } : {};
+      const abbonamento = p.prezzo_mese > 0 || conAgg, obo = cfg.stripe.perConto && !casa ? { on_behalf_of: i.stripe } : {};
       const s = await stripe.post('/v1/checkout/sessions', {
         mode: abbonamento ? 'subscription' : 'payment', locale: c.lingua(req) === 'en' ? 'en' : 'it', billing_address_collection: 'required', tax_id_collection: { enabled: true },
         line_items: righe, metadata: md,
@@ -159,7 +161,7 @@ export function rotteMercato(c) {
       const qs = quotaSviluppatoreAssistenza(db, cfg, p.id), qi = quotaInstallatoreAssistenza(db, cfg, p.id);
       const mese = q => cfg.assistenzaPiattaforma ? dividiCanone(p.prezzo_mese, qi, qs, true, stimaStripe(cfg, p.prezzo_mese)) : carta(p.prezzo_mese, q);
       // chi lo installa: con il corso superato (e l'esperienza, se è impegnativo) e, se il programma partner è obbligatorio, confermato
-      const ab = filtroAbilitati(cfg, p);
+      const ab = filtroAbilitati(cfg, p), casa = squadra(db, cfg);
       const inst = db.prepare(`SELECT u.id, u.nome, u.codice, u.avatar, u.calendario, a.zona, a.quota, COALESCE(a.prezzo_avvio, ?) AS prezzo_avvio, u.wallet, u.wallet_sol, u.wallet_btc, u.wallet_tron, u.stripe_pronto
           FROM adozione a JOIN utente u ON u.id = a.installatore WHERE a.prodotto = ? AND u.stato = 'attivo' AND (? = 0 OR a.programma_accettato IS NOT NULL)${ab.sql} ORDER BY a.creato`).all(p.prezzo_avvio, p.id, p.programma_obbligatorio ? 1 : 0, ...ab.par)
         .map(i => { const v = voto('installatore', i.id), f = fiducia(i.id), l = livelloDi(db, cfg, p.id, i.id), q = assente ? 1 : conLivello(i.quota ?? qBase, l.fattore);
@@ -167,7 +169,7 @@ export function rotteMercato(c) {
           prezzo_avvio: i.prezzo_avvio, vendite: l.vendite, livello: l.livello,
           quota: q, concordata: i.quota != null, divisione: { avvio: carta(i.prezzo_avvio, q), mese: mese(q), crypto: dividi(i.prezzo_avvio, q, cfg.piattaformaCrypto), bonifico: dividi(i.prezzo_avvio, q, cfg.piattaformaBonifico) },
           totale_crypto: i.prezzo_avvio + canone(p.prezzo_mese, cfg.crypto.mesi, cfg.scontoAnno),
-          confermate: f.confermate, contestazioni: f.contestazioni, reti: reti.filter(r => walletDi(i, r.tipo)).map(r => r.id), carta: !cfg.stripe.perConto || !!i.stripe_pronto,
+          confermate: f.confermate, contestazioni: f.contestazioni, reti: reti.filter(r => walletDi(i, r.tipo)).map(r => r.id), carta: !cfg.stripe.perConto || !!i.stripe_pronto || casa.includes(i.id),
           bonifico: !!c.bonificoPer?.(i.id) }; });
       // i prezzi li decide chi vende: il più basso e il più alto fra chi lo offre (per «da … €»); la divisione d'esempio è sul più basso
       const prezzi = inst.map(i => i.prezzo_avvio), da = prezzi.length ? Math.min(...prezzi) : null;

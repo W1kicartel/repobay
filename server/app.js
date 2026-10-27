@@ -23,7 +23,7 @@ import { rotteBonifico } from './rotte/bonifico.js';
 import { rotteAcquisto } from './rotte/acquisto.js';
 import { CODICE_ACQUISTO } from './installa.js';
 import { livello, manca } from './corso.js';
-import { statoAssistenza, CODICE, attuale, eAdminDi, fissaAdmin, canoneMese, allineaCanone } from './assistenza.js';
+import { statoAssistenza, CODICE, attuale, eAdminDi, fissaAdmin, canoneMese, allineaCanone, squadra } from './assistenza.js';
 import { percentualeDi, quotaDi, livelloDi, conLivello, titolariDi } from './soldi.js';
 import { scriptBolla } from './bolla.js';
 import { creaMappa, DURATA_MAPPA } from './mappa.js';
@@ -137,6 +137,7 @@ export function creaApp(cfg, { db, stripe, github, rpc, prezzo, posta = null, ch
         nome: io.nome, email: io.email, emailVerificata: !!io.email_verificata, github: io.github_login, avatar: io.avatar, zona: io.zona, bio: io.bio, sito: io.sito, calendario: io.calendario,
         lingua: io.lingua, codice: io.codice, stato: io.stato, haParola: !!io.parola,
         githubAttivo: !!(io.sessione_github && decifra(io.sessione_github, chiave)), collegato: !!io.stripe, pronto: !!io.stripe_pronto, admin: eAdmin(io),
+        incassaPiattaforma: squadra(db, cfg).includes(io.id),   // chi gestisce la piattaforma: le sue parti restano sul conto Stripe della piattaforma
         owner: db.prepare("SELECT p.id, p.nome, p.slug FROM cotitolare t JOIN prodotto p ON p.id = t.prodotto WHERE t.utente = ? AND t.stato = 'attivo' AND p.builder != ?").all(io.id, io.id)
           .map(p => ({ ...p, quota: titolariDi(db, p.id).altri.find(x => x.utente === io.id)?.quota ?? 0 })),
         sicurezza: {

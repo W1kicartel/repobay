@@ -33,7 +33,7 @@ function numeri(io) {
   const prodotti = io.prodotti.length, installo = io.adozioni.length;
   return el('div', { class: 'cruscotto' },
     contatore({ n: '01', etichetta: 'Guadagnato', valore: euro(versato), nota: t('già versato sul tuo conto'), colore: 'menta', href: '#soldi' }),
-    contatore({ n: '02', etichetta: 'In arrivo', valore: euro(attesa), nota: io.pronto ? t(io.fiscale ? 'arriva {n} giorni dopo ogni pagamento' : 'arriva {n} giorni dopo ogni pagamento, se hai inserito i dati fiscali', { n: io.trattenuta }) : t('collega il conto per riceverlo'), colore: 'sole', href: '#soldi' }),
+    contatore({ n: '02', etichetta: 'In arrivo', valore: euro(attesa), nota: io.incassaPiattaforma ? t('resta sul conto della piattaforma {n} giorni dopo ogni pagamento', { n: io.trattenuta }) : io.pronto ? t(io.fiscale ? 'arriva {n} giorni dopo ogni pagamento' : 'arriva {n} giorni dopo ogni pagamento, se hai inserito i dati fiscali', { n: io.trattenuta }) : t('collega il conto per riceverlo'), colore: 'sole', href: '#soldi' }),
     contatore({ n: '03', etichetta: 'Clienti attivi', valore: String(attivi), zeri: 3, nota: conta(io.clienti.length, 'cliente in tutto', 'clienti in tutto'), colore: 'segnale', href: '#vendite' }),
     prodotti || !installo
       ? contatore({ n: '04', etichetta: 'Prodotti', valore: String(prodotti), zeri: 3, colore: 'cobalto', href: '#prodotti',
@@ -50,8 +50,8 @@ function passi(io) {
     const b = el('button', { type: 'button', class: 'bottone secondario piccolo', onclick: () => occupato(b, async () => { await chiama('POST', '/api/email/rinvia', {}); m.className = 'messaggio bene'; m.textContent = t('Mandata: controlla anche lo spam.'); }, m) }, t('Rimanda l\'email'));
     passo(io.emailVerificata, 'Conferma la tua email', 'Serve per ricevere le richieste e per recuperare il conto.', el('div', { class: 'azioni' }, b, m));
   } else passo(false, 'Aggiungi un\'email', 'Ti scriviamo solo per vendite, versamenti e sicurezza.', link('Aggiungi', '#sicurezza/email', 'bottone secondario piccolo'));
-  passo(io.pronto, io.collegato ? 'Completa il conto Stripe' : 'Collega il conto Stripe', 'È lì che arrivano le tue parti dei pagamenti con carta.', link(io.collegato ? 'Completa' : 'Collega', '#soldi/stripe', 'bottone secondario piccolo'));
-  passo(!!io.fiscale, 'Inserisci i dati fiscali', 'Servono per la DAC7 e per ricevere i versamenti: senza, le tue quote restano in attesa. Sono cifrati.', link('Inserisci', '#soldi/fiscale', 'bottone secondario piccolo'));
+  if (!io.incassaPiattaforma) passo(io.pronto, io.collegato ? 'Completa il conto Stripe' : 'Collega il conto Stripe', 'È lì che arrivano le tue parti dei pagamenti con carta.', link(io.collegato ? 'Completa' : 'Collega', '#soldi/stripe', 'bottone secondario piccolo'));
+  if (!io.incassaPiattaforma) passo(!!io.fiscale, 'Inserisci i dati fiscali', 'Servono per la DAC7 e per ricevere i versamenti: senza, le tue quote restano in attesa. Sono cifrati.', link('Inserisci', '#soldi/fiscale', 'bottone secondario piccolo'));
   if (io.github || io.prodotti.length) passo(io.prodotti.length > 0, 'Metti in vendita il primo progetto', 'Scegli un tuo repository open source e scegli la tua percentuale.', link('Inizia', '#prodotti', 'bottone secondario piccolo'));
   if (!io.github || io.adozioni.length) passo(io.adozioni.length > 0, 'Scegli il primo prodotto da installare', 'Dal catalogo, quelli che sai installare nella tua zona.', link('Apri il catalogo', '/esplora', 'bottone secondario piccolo'));
   passo(io.sicurezza.dueFattori || io.sicurezza.passkey.length > 0, 'Proteggi il conto', 'Attiva la verifica in due passaggi o aggiungi una passkey.', link('Attiva', '#sicurezza/2fa', 'bottone secondario piccolo'));

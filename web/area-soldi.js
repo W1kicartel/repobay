@@ -27,7 +27,7 @@ function totali(io) {
   return el('div', { class: 'pila' },
     el('div', { class: 'cruscotto' },
       voce('01', 'Versati', s('versata'), conta(n('versata'), 'quota', 'quote'), 'menta'),
-      voce('02', 'In attesa', s('in_attesa'), io.pronto ? t(io.fiscale ? 'arrivano {n} giorni dopo il pagamento' : 'arrivano {n} giorni dopo il pagamento, se hai inserito i dati fiscali', { n: io.trattenuta }) : t('arrivano quando colleghi il conto'), 'sole'),
+      voce('02', 'In attesa', s('in_attesa'), io.incassaPiattaforma ? t('restano sul conto della piattaforma {n} giorni dopo il pagamento', { n: io.trattenuta }) : io.pronto ? t(io.fiscale ? 'arrivano {n} giorni dopo il pagamento' : 'arrivano {n} giorni dopo il pagamento, se hai inserito i dati fiscali', { n: io.trattenuta }) : t('arrivano quando colleghi il conto'), 'sole'),
       s('in_escrow') ? voce('03', 'In escrow', s('in_escrow'), t('nel contratto finché il cliente conferma o finisce la trattenuta'), 'sole') : null,
       s('annullata') ? voce(s('in_escrow') ? '04' : '03', 'Annullati', s('annullata'), t('rimborsi e storni'), 'errore') : null),
     ruoli.length ? el('div', { class: 'per-ruolo' }, ...ruoli.map(r => el('span', { class: `adesivo piatto ruolo-${r === 'collaboratore' || r === 'cotitolare' ? 'builder' : r}` }, t('come {ruolo}: {x}', { ruolo: ruolo(r), x: euro(per(r)) })))) : null);
@@ -74,6 +74,10 @@ const caricaConnect = (pubblica, da) => connect ??= new Promise((ok, no) => {
 });
 
 function stripe(io) {
+  // chi gestisce la piattaforma: le sue parti restano sul conto Stripe della piattaforma, che è il suo, e non serve un altro conto
+  if (io.incassaPiattaforma) return carta({ class: 'stripe' }, el('div', { class: 'etichetta' }, t('Conto per ricevere i pagamenti con carta')),
+    el('h3', { class: 'stato-conto ok' }, t('Sul conto della piattaforma')),
+    el('p', {}, t('Gestisci tu la piattaforma: le tue parti dei pagamenti con carta restano sul suo conto Stripe, {n} giorni dopo ogni pagamento, e arrivano al tuo IBAN con i suoi bonifici. Non serve collegare un altro conto.', { n: io.trattenuta })));
   const m = messaggio();
   const [titolo, testo, etichetta] = io.pronto ? ['Pronto', t(io.fiscale ? 'Le tue parti dei pagamenti con carta arrivano qui da sole, {n} giorni dopo ogni pagamento.' : 'Le tue parti dei pagamenti con carta arrivano qui da sole, {n} giorni dopo ogni pagamento, se hai inserito i dati fiscali.', { n: io.trattenuta }), 'Cambia IBAN o dati']
     : io.collegato ? ['Da completare', t('Stripe chiede ancora qualche dato (identità o IBAN). Finché manca, le tue parti restano in attesa.'), 'Completa qui']

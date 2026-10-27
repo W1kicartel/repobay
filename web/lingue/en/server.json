@@ -262,6 +262,7 @@
  "Acquisto non trovato": "Purchase not found",
  "Scegli da 1 a 5 stelle": "Choose from 1 to 5 stars",
  "Collega prima il conto": "Connect your account first",
+ "Le tue parti restano sul conto Stripe della piattaforma: non serve collegarne un altro": "Your shares stay on the platform’s Stripe account: no other account to connect",
  "firma non valida": "invalid signature",
  "Stripe non è configurato: manca STRIPE_CHIAVE": "Stripe is not configured: STRIPE_CHIAVE is missing",
  "Stripe ha risposto {stato}": "Stripe responded {stato}",

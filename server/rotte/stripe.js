@@ -2,6 +2,7 @@
 // Stripe, o sulla pagina di Stripe se lo script non si carica), il pannello Express, il webhook firmato.
 import { verificaFirma } from '../stripe.js';
 import { gestisciEvento } from '../soldi.js';
+import { squadra } from '../assistenza.js';
 import { errore } from '../http.js';
 
 // i paesi dove Stripe accetta i trasferimenti di una piattaforma europea (separate charges and transfers, senza on_behalf_of): lo
@@ -15,6 +16,8 @@ export function rotteStripe(c) {
   return {
     'POST /api/stripe/collega': async (req, res, { io }) => {
       c.serve(io); let conto = io.stripe;
+      // chi gestisce la piattaforma incassa sul conto Stripe della piattaforma (vedi versaQuote in soldi.js): un altro conto non serve
+      if (squadra(db, cfg).includes(io.id)) throw errore(400, 'Le tue parti restano sul conto Stripe della piattaforma: non serve collegarne un altro');
       const x = await h.json(req).catch(() => ({}));
       // il paese del conto è quello dove vive (o ha sede) chi riceve: Stripe lo verifica, e dopo non si cambia. «Per conto»
       // (on_behalf_of) i trasferimenti fra paesi non si fanno: solo STRIPE_PAESE

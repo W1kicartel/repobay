@@ -10,7 +10,8 @@
 //                  QUOTA_SVILUPPATORE_ASSISTENZA (0 per difetto). Le frazioni si fissano alla vendita (qi, qs nei metadati)
 //   aggiornamenti  la riga facoltativa di chi sviluppa: tolta la piattaforma, a lui
 // Le quote maturano dopo i giorni di trattenuta e si versano con un trasferimento sul conto Stripe di chi le riceve (separate
-// charges and transfers: https://docs.stripe.com/connect/separate-charges-and-transfers). Le mance di chi sviluppa a chi vende
+// charges and transfers: https://docs.stripe.com/connect/separate-charges-and-transfers); quelle di chi gestisce la piattaforma
+// restano sul conto Stripe della piattaforma, che è il suo (un trasferimento verso sé stessi Stripe non lo fa). Le mance di chi sviluppa a chi vende
 // sono pagamenti a parte (Checkout senza fattura), con la loro quota.
 // Un rimborso annulla le quote non ancora versate, o le storna (transfer reversal) se erano già partite.
 // Le fatture di Stripe hanno cambiato forma nel 2025 (abbonamento e tipo di riga sotto «parent»): si leggono tutte e due.
@@ -347,7 +348,7 @@ export async function gestisciEvento(ev, { db, cfg, stripe, notifica = () => {},
       let fatto = 0;
       for (const q of righe) {
         const dovuto = Math.round(q.importo * frazione) - q.stornato; if (dovuto <= 0) continue;
-        if (q.stato === 'versata' && q.trasferimento) {
+        if (q.stato === 'versata' && q.trasferimento?.startsWith('tr_')) {   // solo un trasferimento di Stripe si storna: non le quote rimaste alla piattaforma
           await stripe.post(`/v1/transfers/${q.trasferimento}/reversals`, { amount: dovuto, metadata: { quota: q.id, motivo: 'rimborso' } },
             { idempotenza: `storno-${q.id}-${q.stornato + dovuto}` });
         }
@@ -431,9 +432,13 @@ async function registraMancia(o, { db, cfg, stripe, notifica }, adesso) {
 }
 
 // versa le quote maturate a chi è attivo, ha il conto Stripe pronto e ha dato i dati fiscali (servono alla comunicazione DAC7
-// della piattaforma); un errore resta scritto e si riprova al giro dopo
+// della piattaforma); un errore resta scritto e si riprova al giro dopo. Le quote maturate di chi gestisce la piattaforma (la squadra
+// di APP_ADMIN) sono già sul conto della piattaforma: si segnano versate, senza trasferimento e senza avviso
 export async function versaQuote({ db, stripe, cfg, notifica = () => {} }, adesso = Date.now()) {
   db.prepare("UPDATE quota SET stato = 'annullata' WHERE stato = 'in_attesa' AND importo - stornato <= 0").run();
+  const casa = squadra(db, cfg);
+  if (casa.length) db.prepare(`UPDATE quota SET stato = 'versata', trasferimento = 'piattaforma', errore = NULL
+    WHERE stato = 'in_attesa' AND disponibile <= ? AND beneficiario IN (${casa.map(() => '?').join(', ')})`).run(new Date(adesso).toISOString(), ...casa);
   const da = db.prepare(`SELECT q.*, u.stripe AS conto FROM quota q JOIN utente u ON u.id = q.beneficiario
                          WHERE q.stato = 'in_attesa' AND q.disponibile <= ? AND u.stato = 'attivo' AND u.stripe_pronto = 1 AND u.stripe IS NOT NULL AND u.fiscale IS NOT NULL LIMIT 500`).all(new Date(adesso).toISOString());
   let versate = 0;
