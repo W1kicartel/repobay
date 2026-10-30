@@ -13,6 +13,9 @@ export const PAESI_STRIPE = ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI
 
 export function rotteStripe(c) {
   const { cfg, db, h, stripe, notifiche } = c;
+  const sessioneConto = conto => stripe.post('/v1/account_sessions', { account: conto, components: {
+    account_onboarding: { enabled: true, features: { external_account_collection: true } },
+    account_management: { enabled: true, features: { external_account_collection: true } } } });
   return {
     'POST /api/stripe/collega': async (req, res, { io }) => {
       c.serve(io); let conto = io.stripe;
@@ -41,7 +44,12 @@ export function rotteStripe(c) {
       }
       // dentro l'area: la pagina carica Connect.js e chiede la sessione del conto qui sotto. Senza la chiave pubblicabile, o se lo
       // script di Stripe non si carica (un blocco degli annunci), si va sulla pagina di Stripe e si torna all'area
-      if (x?.incorporato && cfg.stripe.pubblica) return h.rispondi(res, 200, { incorporato: true, pubblica: cfg.stripe.pubblica });
+      // La prima sessione dei componenti si chiede qui: se Stripe la rifiuta (una chiave senza il permesso «Account Sessions», i
+      // componenti non attivi) si va sulla pagina di Stripe invece di lasciare un riquadro vuoto
+      if (x?.incorporato && cfg.stripe.pubblica) {
+        try { return h.rispondi(res, 200, { incorporato: true, pubblica: cfg.stripe.pubblica, client_secret: (await sessioneConto(conto)).client_secret }); }
+        catch (e) { console.error(`sessione dei componenti Stripe rifiutata, si usa la pagina di Stripe: ${String(e.message).slice(0, 300)}`); }
+      }
       const l = await stripe.post('/v1/account_links', { account: conto, type: 'account_onboarding', refresh_url: `${cfg.url}/area?stripe=rinnova#soldi`, return_url: `${cfg.url}/area?stripe=fatto#soldi` });
       h.rispondi(res, 200, { url: l.url });
     },
@@ -51,10 +59,7 @@ export function rotteStripe(c) {
     // in una sua finestrella (un codice via SMS o email): non si può togliere finché i dati li raccoglie Stripe
     'POST /api/stripe/sessione': async (req, res, { io }) => {
       c.serve(io); if (!io.stripe) throw errore(400, 'Collega prima il conto');
-      const s = await stripe.post('/v1/account_sessions', { account: io.stripe, components: {
-        account_onboarding: { enabled: true, features: { external_account_collection: true } },
-        account_management: { enabled: true, features: { external_account_collection: true } } } });
-      h.rispondi(res, 200, { client_secret: s.client_secret });
+      h.rispondi(res, 200, { client_secret: (await sessioneConto(io.stripe)).client_secret });
     },
     'POST /api/stripe/pannello': async (req, res, { io }) => {
       c.serve(io); if (!io.stripe) throw errore(400, 'Collega prima il conto');

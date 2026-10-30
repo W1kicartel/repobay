@@ -229,5 +229,7 @@
   "Il deposito è nel contratto escrow: si sblocca quando confermi l'installazione dalla tua area, o da solo alla scadenza.": "The deposit is in the escrow contract: it is released when you confirm the installation from your area, or on its own at the deadline.",
   "Accetto le condizioni d'uso e ho letto l'informativa privacy": "I accept the terms of use and have read the privacy notice",
   "Per mandare il messaggio conferma di aver letto l'informativa privacy": "To send the message, confirm you have read the privacy notice",
-  "Per mandare la richiesta conferma di aver letto l'informativa privacy": "To send the request, confirm you have read the privacy notice"
+  "Per mandare la richiesta conferma di aver letto l'informativa privacy": "To send the request, confirm you have read the privacy notice",
+  "(facoltativa)": "(optional)",
+  "Senza, entri con un link via email. Se la scegli: almeno 10 caratteri, una frase che ricordi va benissimo.": "Without one, you sign in with an email link. If you choose one: at least 10 characters, a phrase you remember works great."
 }

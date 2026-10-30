@@ -84,6 +84,24 @@ for (const b of $$('[data-modo]')) b.addEventListener('click', () => { sc.modo =
 for (const b of $$('[data-livello]')) b.addEventListener('click', () => { sc.livello = Number(b.dataset.livello); for (const x of $$('[data-livello]')) x.setAttribute('aria-pressed', String(x === b)); aggiornaScontrino(); });
 aggiornaScontrino();
 
+// ---------------- l'iscrizione in un passo: nome, email e le condizioni; si entra subito nell'area, la password si sceglie dopo ----------------
+for (const f of $$('form[data-iscrizione]')) f.addEventListener('submit', async e => {
+  e.preventDefault();
+  const m = f.querySelector('.messaggio'), b = f.querySelector('button'), nome = f.elements.nome.value.trim(), email = f.elements.email.value.trim();
+  const no = (testo, campo) => { m.replaceChildren(t(testo)); campo.focus(); };
+  if (nome.length < 2) return no('Scrivi il tuo nome', f.elements.nome);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return no('Email non valida', f.elements.email);
+  if (!f.elements.contratto.checked) return no('Per iscriverti devi accettare le condizioni', f.elements.contratto);
+  m.replaceChildren(); b.disabled = true; b.classList.add('carica');
+  try {
+    await chiama('POST', '/api/iscrizione', { nome, email, contratto: true, lingua, sito_web: f.elements.sito_web.value });
+    location.href = '/area?benvenuto=1';
+  } catch (err) {
+    b.disabled = false; b.classList.remove('carica');
+    m.replaceChildren(err.message, ...(err.stato === 409 ? [' ', el('a', { href: '/accedi' }, t('Entra'))] : []));   // già iscritta: entra
+  }
+});
+
 // ---------------- i tre passi, che avanzano da soli finché non li tocchi ----------------
 const COLORI = ['k-viola', 'k-verde-porta', 'k-ambra'];
 const passi = $('.k-passi'), schermi = $('.k-schermi');

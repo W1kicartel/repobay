@@ -103,7 +103,8 @@ const contesto = form => ({ email: form.elements.email?.value || '', nome: form.
 function misura(form) {
   const i = form.elements.parola, p = i.value, l = livello(p, contesto(form));
   const barra = form.querySelector('.forza'); barra.dataset.livello = String(l);
-  form.querySelector('.forza-testo').textContent = t(l === 1 ? debole(p, contesto(form)) : PAROLE[l]);
+  form.querySelector('.forza-testo').textContent = t(!p && form.id === 'f-iscriviti' ? 'Senza, entri con un link via email. Se la scegli: almeno 10 caratteri, una frase che ricordi va benissimo.'
+    : l === 1 ? debole(p, contesto(form)) : PAROLE[l]);
 }
 
 // regole dei campi: restituiscono il messaggio d'errore o null
@@ -115,7 +116,7 @@ const REGOLE = {
   recupero: v => !/^[0-9a-z]{8}$/i.test(v.replace(/[\s-]/g, '')) ? 'Il codice di recupero ha 8 caratteri, come XXXX-XXXX' : null,
 };
 function regolaDi(form, i) {
-  if (i.name === 'parola') return form.id === 'f-entra' ? (i.value ? null : 'Scrivi la password') : debole(i.value, contesto(form));
+  if (i.name === 'parola') return form.id === 'f-entra' ? (i.value ? null : 'Scrivi la password') : form.id === 'f-iscriviti' && !i.value ? null : debole(i.value, contesto(form));   // all'iscrizione è facoltativa
   if (i.name === 'parola2') return !i.value ? 'Ripeti la password' : i.value !== form.elements.parola.value ? 'Le due password non coincidono' : null;
   return REGOLE[i.name]?.(i.value, i) ?? null;
 }

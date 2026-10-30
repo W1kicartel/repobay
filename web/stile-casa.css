@@ -210,6 +210,21 @@
 .k-invito p { max-width: 32em; margin: 16px 0 0; font-size: 18px; color: rgba(255, 255, 255, .82); }
 .k-invito .azioni { gap: 12px; }
 
+/* l'iscrizione in un passo (nell'eroe e nella chiusura): nome ed email affiancati, il bottone sotto; poi le condizioni e la nota */
+.k-iscrizione { position: relative; z-index: 1; display: grid; gap: 14px; max-width: 660px; margin-top: 32px; }
+.k-iscrizione-campi { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 10px; }
+.k-iscrizione-campi .bottone { grid-column: 1 / -1; justify-content: center; }
+.k-iscrizione-campi label { display: block; }
+.k-iscrizione-campi input { min-height: 50px; }
+.k-iscrizione .spunta { font-size: 14.5px; line-height: 1.45; color: var(--inchiostro-2); }
+.k-iscrizione .spunta a, .k-iscrizione-nota a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.k-iscrizione-nota { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--inchiostro-3); }
+.k-iscrizione .messaggio a { color: inherit; }
+.k-invito .k-iscrizione { margin-top: 0; }
+.k-invito .k-iscrizione .spunta { color: rgba(255, 255, 255, .86); }
+.k-invito p.k-iscrizione-nota { margin: 0; font-size: 13.5px; color: rgba(255, 255, 255, .72); }
+.k-invito .k-iscrizione .messaggio { color: #FFB4A6; }
+
 @keyframes k-dissolve { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @keyframes k-sale { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
@@ -229,6 +244,7 @@
   .k-chi button { padding: 8px 12px; font-size: 14px; }
   .k-cifre { gap: 14px; }
   .k-per .azioni .bottone { width: 100%; }
+  .k-iscrizione-campi { grid-template-columns: minmax(0, 1fr); }
   .k-scontrino { padding: 22px 20px 36px; }
   .k-regole { grid-template-columns: minmax(0, 1fr); }
   .k-schermi { min-height: 340px; padding: 22px 14px; }

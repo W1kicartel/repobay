@@ -29,7 +29,18 @@
         </div>
         <div class="k-per" data-per="vende">
           <p class="k-sottotitolo">Non devi saper programmare. Fai il corso gratuito, scegli i programmi da proporre e fissa il tuo prezzo. Ti pagano a ogni installazione e ogni mese per l'assistenza.</p>
-          <div class="azioni"><a class="bottone grande" href="/installatori">Diventa installatore <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="bottone grande secondario" href="#guadagni">Calcola quanto guadagni</a></div>
+          <!-- l'iscrizione in un passo: nome, email e le condizioni; la password si sceglie dopo, se si vuole -->
+          <form class="k-iscrizione k-iscrizione-eroe" data-iscrizione novalidate>
+            <div class="k-iscrizione-campi">
+              <label><span class="sr">Nome e cognome</span><input type="text" name="nome" autocomplete="name" maxlength="80" placeholder="Nome e cognome" required></label>
+              <label><span class="sr">Email</span><input type="email" name="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="La tua email" required></label>
+              <button class="bottone grande">Inizia gratis <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            </div>
+            <label class="trappola" aria-hidden="true">Sito web <input type="text" name="sito_web" tabindex="-1" autocomplete="off"></label>
+            <label class="spunta"><input type="checkbox" name="contratto" required> <span>Accetto le <a href="/contratto" target="_blank" rel="noopener">condizioni</a> e ho letto l'<a href="/privacy" target="_blank" rel="noopener">informativa privacy</a></span></label>
+            <p class="k-iscrizione-nota">Niente password: entri subito e ti mandiamo un'email per confermare. Poi il corso gratuito e scegli cosa installare. <a href="#guadagni">Calcola quanto guadagni</a> · <a href="/installatori">Come funziona</a></p>
+            <div class="messaggio" role="alert"></div>
+          </form>
         </div>
         <div class="k-per" data-per="sviluppa" hidden>
           <p class="k-sottotitolo">Pubblica il tuo progetto open source e scegli la percentuale che vuoi. Gli installatori lo portano nelle attività della loro zona e tu ricevi la tua parte a ogni installazione.</p>
@@ -286,8 +297,18 @@
     <div class="contenitore">
       <div class="k-invito appare">
         <canvas class="muro muro-invito" data-muro aria-hidden="true"></canvas>
-        <div class="k-invito-testo"><h2>Iscriviti gratis, <em>in due minuti</em></h2><p>Pubblica il tuo progetto, oppure scegli i programmi da installare nella tua zona.</p></div>
-        <div class="azioni"><a class="bottone grande chiaro" href="/installatori">Diventa installatore <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="bottone grande trasparente" href="/builder">Pubblica il tuo progetto</a></div>
+        <div class="k-invito-testo"><h2>Iscriviti gratis, <em>in un minuto</em></h2><p>Scegli i programmi da installare nella tua zona: il corso è gratuito e il prezzo lo decidi tu.</p></div>
+        <form class="k-iscrizione k-iscrizione-invito" data-iscrizione novalidate>
+            <div class="k-iscrizione-campi">
+              <label><span class="sr">Nome e cognome</span><input type="text" name="nome" autocomplete="name" maxlength="80" placeholder="Nome e cognome" required></label>
+              <label><span class="sr">Email</span><input type="email" name="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="La tua email" required></label>
+              <button class="bottone grande">Inizia gratis <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            </div>
+            <label class="trappola" aria-hidden="true">Sito web <input type="text" name="sito_web" tabindex="-1" autocomplete="off"></label>
+            <label class="spunta"><input type="checkbox" name="contratto" required> <span>Accetto le <a href="/contratto" target="_blank" rel="noopener">condizioni</a> e ho letto l'<a href="/privacy" target="_blank" rel="noopener">informativa privacy</a></span></label>
+            <p class="k-iscrizione-nota">Niente password: entri subito. Sviluppi software? <a href="/builder">Pubblica il tuo progetto con GitHub</a></p>
+            <div class="messaggio" role="alert"></div>
+          </form>
       </div>
     </div>
   </section>

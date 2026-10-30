@@ -76,6 +76,7 @@ function promemoria() {
 function avvisiDaLink() {
   const q = new URLSearchParams(location.search), box = $('#avvisi-area');
   const MSG = {
+    'benvenuto=1': ['ok', 'Conto creato. Il primo passo è il corso gratuito: 8 lezioni brevi e un test.', ['/corso', 'Inizia il corso']],
     'email=verificata': ['ok', 'Email confermata. Grazie.'],
     'email=scaduto': ['errore', 'Il link di conferma è scaduto o è già stato usato. Se serve, chiedine un altro.'],
     'email=occupata': ['errore', 'Questa email è già usata da un altro conto: non l\'abbiamo cambiata.'],
@@ -87,6 +88,7 @@ function avvisiDaLink() {
   for (const [k, v] of q) {
     const m = MSG[`${k}=${v}`]; if (!m) continue; c = true;
     const x = el('div', { class: `avviso ${m[0]}`, role: 'status' }, el('span', { class: 'cresce' }, t(m[1])),
+      m[2] ? el('a', { class: 'bottone piccolo', href: m[2][0] }, t(m[2][1])) : null,   // il passo dopo, se c'è
       el('button', { type: 'button', class: 'chiudi', 'aria-label': t('Chiudi'), onclick: () => x.remove() }, '×'));
     box.append(x);
   }

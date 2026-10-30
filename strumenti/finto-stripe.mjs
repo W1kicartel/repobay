@@ -123,6 +123,8 @@ export async function avviaFintoStripe({ porta = 0, versione = process.env.FINTO
     // la sessione dei componenti incorporati: solo per un conto connesso e con almeno un componente acceso
     ['POST', /^\/v1\/account_sessions$/, (b) => {
       if (!S.conti.get(serve(b.account, 'account'))) throw new Rifiuto(`No such account: '${b.account}'`, 'account');
+      // una chiave limitata senza il permesso «Account Sessions» (come quella live fino al 30/10/2026): le prove lo accendono a mano
+      if (S.sessioniNegate) throw new Rifiuto('Permission denied. The provided key does not have the required permissions for this endpoint. Enabling Account Sessions Write (\'account_session_write\') permissions on this key would allow this request to continue.', null, 403, 'more_permissions_required');
       const accesi = Object.entries(b.components || {}).filter(([, v]) => v?.enabled === 'true' || v?.enabled === true);
       if (!accesi.length) throw new Rifiuto('You must enable at least one component.', 'components');
       const id = casuale('accs', 16);

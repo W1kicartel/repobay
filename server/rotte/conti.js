@@ -62,11 +62,14 @@ export function rotteConti(c) {
       if (!emailValida(String(email || '').trim())) throw errore(400, 'Email non valida');
       if (contratto !== true) throw errore(400, 'Per iscriverti devi accettare le condizioni');
       const em = email.trim().toLowerCase();
-      await controllaNuova(parola, { email: em, nome });
+      // la password è facoltativa (l'iscrizione in un passo della home): senza, si entra con il link via email o una passkey, e la
+      // si crea quando si vuole dall'area. Se c'è, valgono le regole di sempre
+      const conParola = parola !== undefined && parola !== null && parola !== '';
+      if (conParola) await controllaNuova(parola, { email: em, nome });
       if (db.prepare('SELECT 1 FROM utente WHERE email = ?').get(em)) throw errore(409, 'Questa email è già iscritta: accedi');
-      const id = c.nuovoUtente({ nome: testo(nome, 80), email: em, parola: cifraParola(parola), zona: testo(zona, 60), lingua: lingua === 'en' ? 'en' : lingua === 'it' ? 'it' : c.linguaDi(req) });
+      const id = c.nuovoUtente({ nome: testo(nome, 80), email: em, parola: conParola ? cifraParola(parola) : null, zona: testo(zona, 60), lingua: lingua === 'en' ? 'en' : lingua === 'it' ? 'it' : c.linguaDi(req) });
       mandaVerifica(utente(id));
-      c.entra(req, res, utente(id), { metodo: 'parola', stato: 201, json: { ok: true }, nuovo: true });
+      c.entra(req, res, utente(id), { metodo: conParola ? 'parola' : 'iscrizione', stato: 201, json: { ok: true }, nuovo: true });
     },
     'POST /api/accesso': async (req, res) => {
       const { email, parola } = await h.json(req); const em = String(email || '').trim().toLowerCase();

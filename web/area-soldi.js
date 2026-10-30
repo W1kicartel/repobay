@@ -57,12 +57,13 @@ function statoQuota(q) {
 // IBAN, termini di Stripe) o, a conto pronto, la gestione dove si cambia l'IBAN. Se lo script non si carica (un blocco degli
 // annunci) resta la strada di prima: la pagina di Stripe e ritorno all'area
 let connect;   // una sola istanza per pagina, come chiede Stripe
+let pronto = null;   // la prima sessione arriva con /api/stripe/collega: Connect.js la usa senza chiederne un'altra
 const caricaConnect = (pubblica, da) => connect ??= new Promise((ok, no) => {
   const avvia = () => {
     try {
       const v = n => getComputedStyle(da).getPropertyValue(n).trim();
       ok(window.StripeConnect.init({ publishableKey: pubblica, locale: document.documentElement.lang === 'en' ? 'en-GB' : 'it-IT',
-        fetchClientSecret: async () => (await chiama('POST', '/api/stripe/sessione', {})).client_secret,
+        fetchClientSecret: async () => { const s = pronto; pronto = null; return s || (await chiama('POST', '/api/stripe/sessione', {})).client_secret; },
         appearance: { overlays: 'dialog', variables: { colorPrimary: v('--segnale') || '#6D3BFF', colorText: v('--inchiostro') || '#15112B', colorBackground: v('--carta') || '#FFFFFF',
           colorBorder: v('--bordo') || '#D9D5E6', borderRadius: '4px', fontFamily: 'Geist, system-ui, sans-serif' } } }));
     } catch (e) { connect = null; no(e); }
@@ -103,7 +104,8 @@ function stripe(io) {
   const chiudi = el('button', { type: 'button', class: 'bottone secondario piccolo nascosto', onclick: () => aggiorna(['stripe', 'totali']) }, t('Chiudi'));
   const b = bottone(etichetta, '', () => occupato(b, async () => {
     const r = await chiama('POST', '/api/stripe/collega', { ...corpo(), incorporato: true });
-    if (r.url) { location.href = r.url; await new Promise(() => {}); }
+    if (r.url) { location.href = r.url; await new Promise(() => {}); }   // Stripe ha rifiutato la sessione: la sua pagina
+    pronto = r.client_secret || null;
     let C;
     try { C = await caricaConnect(r.pubblica, riquadro.parentElement || document.body); }
     catch (e) { riserva.classList.remove('nascosto'); throw e; }

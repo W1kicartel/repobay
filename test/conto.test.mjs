@@ -28,7 +28,9 @@ test('il conto si apre dentro l\'area: niente link verso Stripe, poi la sessione
   const link = chiamate('/v1/account_links');
   const r = await s.chiedi('/api/stripe/collega', { corpo: { paese: 'IT', incorporato: true }, biscotto });
   assert.equal(r.status, 200);
-  assert.deepEqual(await r.json(), { incorporato: true, pubblica: PUBBLICA });
+  const j = await r.json();
+  assert.deepEqual({ ...j, client_secret: undefined }, { incorporato: true, pubblica: PUBBLICA, client_secret: undefined });
+  assert.match(j.client_secret, /^accs_\w+_secret_\w+$/, 'la prima sessione arriva subito, senza un\'altra richiesta');
   assert.equal(chiamate('/v1/account_links'), link, 'dentro l\'area non serve il link di Stripe');
   const conto = s.db.prepare('SELECT stripe, stripe_pronto FROM utente WHERE email = ?').get('ivo@prova.test');
   assert.match(conto.stripe, /^acct_/);
@@ -48,6 +50,18 @@ test('la strada di riserva resta: senza «incorporato» si va sulla pagina di St
   const r = await s.chiedi('/api/stripe/collega', { corpo: { paese: 'IT' }, biscotto });
   assert.equal(r.status, 200);
   assert.match((await r.json()).url, /^https:\/\/connect\.stripe\.com\//);
+});
+
+test('se Stripe rifiuta la sessione (la chiave senza il permesso) si va sulla sua pagina, non su un riquadro vuoto', async () => {
+  const biscotto = await iscrivi('Ugo Riserva', 'ugo@prova.test');
+  f.stato.sessioniNegate = true;
+  try {
+    const r = await s.chiedi('/api/stripe/collega', { corpo: { paese: 'IT', incorporato: true }, biscotto });
+    assert.equal(r.status, 200);
+    const j = await r.json();
+    assert.match(j.url, /^http/, 'il link della pagina di Stripe');
+    assert.equal(j.incorporato, undefined);
+  } finally { f.stato.sessioniNegate = false; }
 });
 
 test('la sessione è solo per chi è dentro e solo dalle nostre pagine', async () => {

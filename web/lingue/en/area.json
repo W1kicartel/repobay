@@ -804,5 +804,8 @@
  "Stripe verifica identità e IBAN e ti versa le tue parti. Lo fai qui, senza lasciare il sito: servono un documento e l'IBAN. Senza il conto le tue parti restano in attesa, al sicuro.": "Stripe checks your identity and IBAN and pays out your shares. You do it here, without leaving the site: you need an ID document and your IBAN. Without the account your shares stay pending, safe.",
  "Non riesco a caricare Stripe in questa pagina: controlla la connessione o disattiva il blocco degli annunci, oppure continua sul sito di Stripe.": "I can't load Stripe on this page: check your connection or turn off the ad blocker, or continue on Stripe's site.",
  "Continua sul sito di Stripe": "Continue on Stripe's site",
- "Carico il modulo di Stripe…": "Loading the Stripe form…"
+ "Carico il modulo di Stripe…": "Loading the Stripe form…",
+ "Conto creato. Il primo passo è il corso gratuito: 8 lezioni brevi e un test.": "Account created. The first step is the free course: 8 short lessons and a test.",
+ "iscrizione": "sign-up",
+ "Inizia il corso": "Start the course"
 }

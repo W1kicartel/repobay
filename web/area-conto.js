@@ -179,7 +179,7 @@ function passkey(io) {
           })));
     })) : vuoto('Nessuna passkey', 'Aggiungine una per entrare più in fretta e in modo più sicuro.'));
 }
-const METODI = { parola: 'password', link: 'link via email', github: 'GitHub', passkey: 'passkey' };
+const METODI = { parola: 'password', link: 'link via email', github: 'GitHub', passkey: 'passkey', iscrizione: 'iscrizione' };
 function sessioni(io) {
   const m = messaggio(), l = io.sicurezza.sessioni, altre = l.filter(s => !s.attuale).length;
   return carta({}, titoletto('Dove sei entrato', altre ? bottone('Chiudi tutte le altre', 'pericolo piccolo', async e => {

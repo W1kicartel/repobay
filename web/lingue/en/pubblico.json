@@ -833,5 +833,16 @@
  "Sì. Del canone mensile di ogni tuo cliente, tolto il costo di Stripe, il 60% è tuo finché il cliente paga: su 37,50 € sono 22,01 € al mese per cliente, e con trenta clienti più di 650 € al mese. In cambio rispondi tu per primo alle sue richieste, dalla bolla o dalla sua pagina di assistenza. La piattaforma le vede tutte, controlla il programma da fuori, manda al cliente il rapporto del mese e interviene se non rispondi nei tempi.": "Yes. Of each client's monthly fee, after the Stripe cost, 60% is yours for as long as the client pays: on €37.50 that's €22.01 a month per client, and with thirty clients more than €650 a month. In return you answer their requests first, from the bubble or their support page. The platform sees them all, monitors the program from outside, sends the client the monthly report and steps in if you don't answer in time.",
  "Ogni mese, dall'assistenza di {x}: all'installatore": "Every month, from the {x} support plan: to the installer",
  "Assistenza:": "Support:",
- "al mese per cliente, uguale per tutti i programmi. Tolta la carta, il 60% è tuo.": "a month per client, the same for every program. After card fees, 60% is yours."
+ "al mese per cliente, uguale per tutti i programmi. Tolta la carta, il 60% è tuo.": "a month per client, the same for every program. After card fees, 60% is yours.",
+ "Inizia gratis": "Start for free",
+ "Accetto le": "I accept the",
+ "e ho letto l'": "and have read the ",
+ "informativa privacy": "privacy notice",
+ "Niente password: entri subito e ti mandiamo un'email per confermare. Poi il corso gratuito e scegli cosa installare.": "No password: you're in right away and we email you to confirm. Then the free course, and you pick what to install.",
+ "in un minuto": "in a minute",
+ "Scegli i programmi da installare nella tua zona: il corso è gratuito e il prezzo lo decidi tu.": "Pick the programs to install in your area: the course is free and you set the price.",
+ "Niente password: entri subito. Sviluppi software?": "No password: you're in right away. Do you build software?",
+ "Pubblica il tuo progetto con GitHub": "Publish your project with GitHub",
+ "La tua email": "Your email",
+ "Nome e cognome": "Full name"
 }
