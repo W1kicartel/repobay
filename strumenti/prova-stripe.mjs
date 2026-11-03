@@ -175,6 +175,12 @@ try {
     U.inst = nuovo('Nico Prova', `installatore+${giro}@example.com`, `prova-i-${giro}`,
       { tipo: 'persona', nome: 'Nico Prova', codice: 'BNCNCI90A01A794X', via: 'Via Roma 1', cap: '24121', citta: 'Bergamo', provincia: 'BG' });
     U.codiceInst = `prova-i-${giro}`;
+    // le quote di questo giro partono da un id nuovo: il sito manda i trasferimenti con la chiave d'idempotenza quota-<id>-<stornato>,
+    // che Stripe ricorda 24 ore, e il database della prova è nuovo a ogni giro. Una quota segnaposto già annullata, con l'id
+    // preso dall'ora, sposta in avanti quelle vere; i controlli guardano solo quelle dopo
+    U.primaQuota = Date.now();
+    db.prepare(`INSERT INTO quota (id, beneficiario, ruolo, fattura, riga, tipo, base, frazione, importo, disponibile, stato)
+      VALUES (?, ?, 'builder', 'segnaposto', 'segnaposto', 'avvio', 0, 0, 0, datetime('now'), 'annullata')`).run(U.primaQuota, U.builder);
     db.prepare("UPDATE utente SET corso = datetime('now'), corso_punti = 20 WHERE id = ?").run(U.inst);   // il test del corso superato
     for (const p of Object.values(P)) {
       p.id = Number(db.prepare(`INSERT INTO prodotto (builder, slug, repo, repo_id, url, licenza, nome, descrizione, categoria, guida, prezzo_avvio, prezzo_mese, quota_avvio, quota_mese, stato)
@@ -318,14 +324,24 @@ try {
 
   // ---------------------------------------------------------------- 6. le quote
   await passo('Le quote giuste (installatore e builder, per ogni riga)', async () => {
-    const q = db.prepare('SELECT * FROM quota ORDER BY id').all();
-    const attese = [];
+    const q = db.prepare('SELECT * FROM quota WHERE id > ? ORDER BY id').all(U.primaQuota);
+    // il costo vero di Stripe di una fattura, come lo legge il sito (costoStripe in server/soldi.js): dalla transazione del suo
+    // pagamento. Una carta fuori dall'Europa costa più della stima (1,5% + 0,25 €; le carte di prova sono americane); se la
+    // transazione non si legge vale la stima, come nel sito
+    const costoDi = async (fattura, totale) => {
+      const f = await api('GET', `/v1/invoices/${fattura}`);
+      const pi = f.payment_intent?.id || f.payment_intent || (await api('GET', `/v1/invoice_payments?invoice=${fattura}`)).data?.[0]?.payment?.payment_intent || null;
+      const fee = pi && (await api('GET', `/v1/payment_intents/${pi}?expand[]=latest_charge.balance_transaction`)).latest_charge?.balance_transaction?.fee;
+      return Number.isInteger(fee) ? fee : stimaStripe(cfg, totale);
+    };
+    const attese = [], costi = [];
     for (const [p, fattura] of [[P.unico, U.fatturaUnico], [P.abbonamento, U.fatturaAbb]]) {
-      // il costo di Stripe della fattura (quello del finto Stripe: 1,5% + 0,25 €), diviso fra le righe in proporzione, l'ultima prende il resto
+      // il costo della fattura diviso fra le righe in proporzione, l'ultima prende il resto
       const righe = [['avvio', p.avvio, p.qa], ['mese', p.mese, p.qm]].filter(([, base]) => base), totale = righe.reduce((s, [, b]) => s + b, 0);
-      let resto = stimaStripe(cfg, totale);
+      const costoFattura = await costoDi(fattura, totale); let resto = costoFattura;
+      costi.push(`${(costoFattura / 100).toFixed(2)} € su ${(totale / 100).toFixed(2)} €`);
       for (const [i, [tipo, base, fi]] of righe.entries()) {
-        const costo = i === righe.length - 1 ? resto : Math.round(stimaStripe(cfg, totale) * base / totale); resto -= costo;
+        const costo = i === righe.length - 1 ? resto : Math.round(costoFattura * base / totale); resto -= costo;
         const d = dividi(base, fi, cfg.piattaforma, true, costo);
         attese.push({ fattura, tipo, ruolo: 'installatore', importo: d.installatore, chi: U.inst }, { fattura, tipo, ruolo: 'builder', importo: d.builder, chi: U.builder });
       }
@@ -339,7 +355,7 @@ try {
     if (q.length !== attese.length) errori.push(`${q.length} quote nel database, attese ${attese.length}`);
     atteso(!errori.length, errori.join('\n       '));
     const senzaPagamento = q.filter(x => !x.pagamento).length;
-    return `${q.length} quote giuste: ${q.map(x => `${x.ruolo} ${x.tipo} ${(x.importo / 100).toFixed(2)} €`).join(', ')}`
+    return `${q.length} quote giuste: ${q.map(x => `${x.ruolo} ${x.tipo} ${(x.importo / 100).toFixed(2)} €`).join(', ')} (costo di Stripe: ${costi.join(', ')})`
       + (senzaPagamento ? `\n      attenzione: ${senzaPagamento} quote senza «pagamento» (il PaymentIntent non è nell'evento invoice.paid: vedi il passo del rimborso)` : '');
   });
 
@@ -350,7 +366,7 @@ try {
     const dovuto = db.prepare("SELECT COALESCE(SUM(importo - stornato), 0) n FROM quota WHERE stato = 'in_attesa'").get().n;
     console.log(`    saldo disponibile ${(eur / 100).toFixed(2)} €, da versare ${(dovuto / 100).toFixed(2)} €`);
     const n = await versaQuote({ db, stripe, cfg }, Date.now() + (cfg.trattenuta + 1) * giorno);
-    const q = db.prepare('SELECT q.*, u.stripe conto FROM quota q JOIN utente u ON u.id = q.beneficiario ORDER BY q.id').all();
+    const q = db.prepare('SELECT q.*, u.stripe conto FROM quota q JOIN utente u ON u.id = q.beneficiario WHERE q.id > ? ORDER BY q.id').all(U.primaQuota);
     const errori = q.filter(x => x.stato !== 'versata').map(x => `quota #${x.id} (${x.ruolo}) ${x.stato}${x.errore ? `: ${x.errore}` : ''}`);
     for (const x of q.filter(y => y.trasferimento)) {
       const t = await api('GET', `/v1/transfers/${x.trasferimento}`); creati.push(`trasferimento ${t.id}`);
