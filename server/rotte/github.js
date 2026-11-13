@@ -9,7 +9,8 @@ import { errore, testo, centesimi, urlValido } from '../http.js';
 import { percentualeDi, titolariDi } from '../soldi.js';
 import { attivitaPulite, attivitaDi } from '../attivita.js';
 
-export const CATEGORIE = ['gestionale', 'cassa', 'prenotazioni', 'sito', 'ecommerce', 'magazzino', 'contabilità', 'crm', 'comunicazione', 'sanità', 'ristorazione', 'scuola', 'altro'];
+export const CATEGORIE = ['gestionale', 'cassa', 'prenotazioni', 'sito', 'ecommerce', 'magazzino', 'contabilità', 'crm', 'comunicazione', 'automazioni', 'documenti',
+  'informatica', 'sanità', 'ristorazione', 'scuola', 'altro'];
 
 // una pagina del sito dove tornare dopo l'accesso (mai un altro sito: niente «//», niente schemi)
 const paginaInterna = x => typeof x === 'string' && /^\/[A-Za-z0-9/_.#?=&%-]{0,200}$/.test(x) && !x.startsWith('//');

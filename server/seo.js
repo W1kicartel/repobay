@@ -16,7 +16,8 @@ export const ALTERNATIVE = JSON.parse(readFileSync(new URL('./alternative.json',
 // le categorie nelle pagine: lo slug nell'indirizzo e il titolo al plurale
 export const CATEGORIE_SEO = { gestionale: ['gestionali', 'Gestionali'], cassa: ['cassa', 'Programmi di cassa'], prenotazioni: ['prenotazioni', 'Agende e prenotazioni'],
   sito: ['siti-web', 'Siti web'], ecommerce: ['e-commerce', 'E-commerce'], magazzino: ['magazzino', 'Programmi per il magazzino'], 'contabilità': ['contabilita', 'Contabilità e fatture'],
-  crm: ['crm', 'CRM'], comunicazione: ['comunicazione', 'Programmi per comunicare'], 'sanità': ['sanita', 'Programmi per la sanità'], ristorazione: ['ristorazione', 'Programmi per la ristorazione'],
+  crm: ['crm', 'CRM'], comunicazione: ['comunicazione', 'Programmi per comunicare'], automazioni: ['automazioni', 'Automazioni'], documenti: ['documenti', 'Documenti e firme'],
+  informatica: ['informatica', 'Strumenti per l\'informatica'], 'sanità': ['sanita', 'Programmi per la sanità'], ristorazione: ['ristorazione', 'Programmi per la ristorazione'],
   scuola: ['scuola', 'Programmi per scuola e formazione'], altro: ['altri-programmi', 'Altri programmi per l\'ufficio'] };
 const categoriaDaSlug = s => Object.keys(CATEGORIE_SEO).find(k => CATEGORIE_SEO[k][0] === s) || null;
 const DIFFICOLTA = { facile: 'facile', media: 'media', impegnativa: 'impegnativa' };

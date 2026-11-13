@@ -7,7 +7,8 @@ import { el, t, chiama, occupato, conferma, avviso, copia, euro, percento, conta
 import { S, blocco, aggiorna, carta, testa, titoletto, vuoto, bottone, link, messaggio, campo, stato, barraQuote, pubblico, scheletro } from './area-base.js';
 
 const NOMI_CATEGORIE = { gestionale: 'gestionale', cassa: 'cassa', prenotazioni: 'prenotazioni', sito: 'sito', ecommerce: 'e-commerce', magazzino: 'magazzino', 'contabilità': 'contabilità',
-  crm: 'CRM', comunicazione: 'comunicazione', 'sanità': 'sanità', ristorazione: 'ristorazione', scuola: 'scuola', altro: 'altro' };
+  crm: 'CRM', comunicazione: 'comunicazione', automazioni: 'automazioni', documenti: 'documenti e firme', informatica: 'informatica',
+  'sanità': 'sanità', ristorazione: 'ristorazione', scuola: 'scuola', altro: 'altro' };
 // i prezzi di chi vende (la fascia fra chi lo offre) e l'assistenza mensile della piattaforma
 const pc = x => `${String(Math.round(x * 1000) / 10).replace('.', ',')}%`;
 function prezzi(p) {

@@ -20,7 +20,8 @@ export const ICONE = {
 export const svgIcona = nome => icona(ICONE[nome] || []);
 
 export const NOMI_CATEGORIE = { gestionale: 'Gestionale', cassa: 'Cassa', prenotazioni: 'Prenotazioni', sito: 'Siti web', ecommerce: 'E-commerce', magazzino: 'Magazzino',
-  contabilità: 'Contabilità', crm: 'CRM', comunicazione: 'Comunicazione', sanità: 'Sanità', ristorazione: 'Ristorazione', scuola: 'Scuola', altro: 'Altro' };
+  contabilità: 'Contabilità', crm: 'CRM', comunicazione: 'Comunicazione', automazioni: 'Automazioni', documenti: 'Documenti e firme', informatica: 'Informatica',
+  sanità: 'Sanità', ristorazione: 'Ristorazione', scuola: 'Scuola', altro: 'Altro' };
 export const nomeCategoria = c => t(NOMI_CATEGORIE[c] || c);
 const numero = n => Number(n || 0).toLocaleString(lingua === 'en' ? 'en-IE' : 'it-IT');
 const voto = v => Number(v).toLocaleString(lingua === 'en' ? 'en-IE' : 'it-IT', { minimumFractionDigits: 1, maximumFractionDigits: 1 });

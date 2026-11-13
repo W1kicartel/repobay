@@ -22,6 +22,9 @@ const PER_CATEGORIA = {
   sanità: ['studio medico', 'farmacia'],
   ristorazione: ['bar', 'ristorante', 'pizzeria'],
   scuola: ['scuola', 'associazione'],
+  automazioni: ['negozio', 'studio professionale', 'agenzia', 'artigiano'],
+  documenti: ['studio professionale', 'artigiano', 'negozio', 'associazione'],
+  informatica: ['studio professionale', 'agenzia', 'negozio'],
   altro: [],
 };
 
